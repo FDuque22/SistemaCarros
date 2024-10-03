@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Estilos gerais para o formulário */
+    form {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    /* Estilos para as divs de grupo de formulários */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    /* Estilos para os campos de entrada */
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin: 5px 0;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    /* Estilos para os erros de validação */
+    .form-group .error {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    /* Estilos para o botão de submit */
+    input[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    /* Estilos para a mensagem de sucesso ou erro */
+    .form-group.success {
+        color: green;
+    }
+
+    .form-group.error {
+        color: red;
+    }
+
+</style>
+
+<!-- Formulário de cadastro -->
+<form method="post">
+    <h2>CRIE SUA CONTA</h2>
+    {% csrf_token %}
+
+    <div class="form-group">
+        {{ user_form.username.errors }}
+        <label>Usuário: </label>
+        {{ user_form.username }}
+        <div class="error">
+            {% for error in user_form.username.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ user_form.password1.errors }}
+        <label>Senha: </label>
+        {{ user_form.password1 }}
+        <div class="error">
+            {% for error in user_form.password1.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-group">
+        {{ user_form.password2.errors }}
+        <label>Confirmação de Senha: </label>
+        {{ user_form.password2 }}
+        <div class="error">
+            {% for error in user_form.password2.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Cadastrar">
+    </div>
+
+</form>
+
+{% endblock %}
