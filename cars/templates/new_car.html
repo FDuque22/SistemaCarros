@@ -33,21 +33,21 @@
         h3 {
             font-size: 18px;
             color: #333;
-            text-align: center;  /* Centraliza o texto */
-            position: relative;  /* Necessário para posicionar o ::after */
-            margin-bottom: 15px; /* Espaço após o título */
-            padding-bottom: 10px; /* Distância entre o título e a linha */
+            text-align: center;  
+            position: relative;  
+            margin-bottom: 15px; 
+            padding-bottom: 10px; 
         }
 
         h3::after {
-            content: '';  /* Cria a linha */
+            content: '';  
             position: absolute;
-            bottom: -5px;  /* Distância entre o texto e a linha */
-            left: 50%;  /* Posiciona no centro */
-            width: 50%;  /* Ajuste o comprimento da linha (pode ser alterado conforme necessário) */
-            height: 2px;  /* Espessura da linha */
-            background-color: #898989;  /* Cor da linha */
-            transform: translateX(-50%); /* Centraliza a linha com o texto */
+            bottom: -5px;  
+            left: 50%;  
+            width: 50%;  
+            height: 2px;  
+            background-color: #898989;  
+            transform: translateX(-50%); 
         }
 
         .form-row {
@@ -95,6 +95,26 @@
 
         .btn-primary:hover {
             background-color: #0056b3;
+        }
+
+        /* Estilos para telas menores */
+        @media (max-width: 768px) {
+            h2 {
+                margin-left: 20px; /* Ajusta a margem para telas menores */
+            }
+
+            .text-Cabecalho {
+                margin-left: 20px; /* Ajusta a margem para telas menores */
+            }
+
+            .form-group {
+                flex: 1 0 100%; /* Faz com que cada grupo ocupe 100% da largura */
+                margin-bottom: 15px; /* Adiciona um espaço entre os campos */
+            }
+
+            .form-row {
+                flex-direction: column; /* Alinha os elementos em coluna */
+            }
         }
     </style>
 
