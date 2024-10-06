@@ -4,7 +4,7 @@
 <style>
     .car-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, 1fr); /* Três cartões por linha em telas grandes */
         gap: 20px;
         margin: 0 auto;
         max-width: 1200px;
@@ -48,9 +48,10 @@
         margin-bottom: 10px;
     }
 
+    /* Media query para telas menores */
     @media (max-width: 768px) {
         .car-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr; /* Apenas um cartão por linha em telas menores */
         }
     }
 

@@ -33,6 +33,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap; /* Permite que os itens se movam para a linha seguinte se necessário */
     }
 
     nav ul {
@@ -40,6 +41,7 @@
       margin: 0;
       padding: 0;
       display: flex;
+      flex-wrap: wrap; /* Permite que a lista de itens se ajuste em telas menores */
     }
 
     nav ul li {
@@ -72,11 +74,13 @@
       max-width: 1200px;
       margin: 0 auto;
       color: #ccc;
+      flex-wrap: wrap; /* Permite que as seções do rodapé se ajustem em telas menores */
     }
 
     .footer-section {
       flex: 1;
       padding: 0 20px;
+      min-width: 200px; /* Define uma largura mínima para as seções do rodapé */
     }
 
     .footer-section h4 {
@@ -101,6 +105,27 @@
       text-decoration: underline;
     }
 
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column; /* Muda para uma coluna em telas menores */
+        align-items: center; /* Centraliza os itens */
+        padding: 0; /* Remove o padding padrão */
+      }
+
+      nav ul li {
+        margin: 5px 0; /* Ajusta a margem entre os itens */
+      }
+
+      .footer-container {
+        flex-direction: column; /* Muda o layout do rodapé para uma coluna em telas menores */
+        align-items: center; /* Centraliza os itens do rodapé */
+      }
+
+      .footer-section {
+        margin-bottom: 20px; /* Espaço entre as seções do rodapé */
+        text-align: center; /* Centraliza o texto nas seções do rodapé */
+      }
+    }
   </style>
 </head>
 
