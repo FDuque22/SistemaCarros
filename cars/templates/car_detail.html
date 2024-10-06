@@ -119,6 +119,9 @@
         height: 100%;
         overflow: auto;
         background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center; /* Centraliza o conteúdo */
+        align-items: center; /* Centraliza o conteúdo */
+        display: flex; /* Adicionado para permitir o uso de flexbox */
     }
     
     .modal-content {
@@ -126,8 +129,8 @@
         display: block;
         width: auto;
         height: auto;
-        max-width: 80%; 
-        max-height: 80%;
+        max-width: 90%; /* Ajustado para ocupar até 90% da largura da tela */
+        max-height: 90%; /* Ajustado para ocupar até 90% da altura da tela */
     }
     
     .close {
@@ -235,5 +238,19 @@
 <!-- JavaScript Carousel -->
 <script src="{% static 'js/carousel.js' %}"></script>
 <script src="{% static 'js/modal.js' %}"></script>
+
+<script>
+    function openModal(imageUrl) {
+        const modal = document.getElementById("imageModal");
+        const modalImage = document.getElementById("modalImage");
+        modal.style.display = "flex"; // Muda para "flex" para centralizar o conteúdo
+        modalImage.src = imageUrl;
+    }
+
+    function closeModal() {
+        const modal = document.getElementById("imageModal");
+        modal.style.display = "none";
+    }
+</script>
 
 {% endblock %}
