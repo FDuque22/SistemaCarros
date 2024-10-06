@@ -7,7 +7,7 @@
         background-color: #e3e1e1;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
-        overflow: cover;
+        overflow: hidden; /* Alterado de cover para hidden para evitar transbordamento */
         text-align: center;
         transition: all 0.3s ease;
         max-width: 500px;
@@ -23,7 +23,7 @@
     }
 
     .car-card img {
-        width: 120%;
+        width: 100%; /* Ajuste de 120% para 100% para evitar transbordamento */
         height: 320px;
         object-fit: cover;
     }
@@ -139,6 +139,27 @@
         font-weight: bold;
         cursor: pointer;
     }
+
+    /* Media Queries para Responsividade */
+    @media (max-width: 600px) {
+        .car-card {
+            max-width: 100%; /* Permite que o cartão ocupe 100% da largura da tela em dispositivos pequenos */
+            margin: 10px; /* Ajusta a margem */
+        }
+
+        .car-card img {
+            height: auto; /* Ajusta a altura da imagem para auto */
+        }
+
+        .buttons-container {
+            flex-direction: column; /* Coloca os botões em coluna */
+            align-items: center; /* Centraliza os botões */
+        }
+
+        .btn {
+            margin: 5px 0; /* Ajusta a margem dos botões em coluna */
+        }
+    }
 </style>
 
 <div class="car-card">
@@ -170,15 +191,15 @@
             {% endif %}
 
             {% if object.photo5 %}
-            <a onclick="openModal('{{ object.photo5.url }}'); return false;">
-                <img src="{{ object.photo5.url }}" class="carousel-item" alt="Car Photo 5">
-            </a>
+                <a onclick="openModal('{{ object.photo5.url }}'); return false;">
+                    <img src="{{ object.photo5.url }}" class="carousel-item" alt="Car Photo 5">
+                </a>
             {% endif %}
 
             {% if object.photo6 %}
-            <a onclick="openModal('{{ object.photo6.url }}'); return false;">
-                <img src="{{ object.photo6.url }}" class="carousel-item" alt="Car Photo 6">
-            </a>
+                <a onclick="openModal('{{ object.photo6.url }}'); return false;">
+                    <img src="{{ object.photo6.url }}" class="carousel-item" alt="Car Photo 6">
+                </a>
             {% endif %}
 
         </div>
@@ -189,18 +210,12 @@
     </div>
     <h2>{{ object.brand }} {{ object.model }}</h2>
     <p><strong>Ano: </strong> {{ object.factory_year }}/{{ object.model_year }}</p>
-    <!-- <p><strong>Placa:</strong> {{ object.plate }}</p> -->
     <p><strong>Combustivel:</strong> {{ object.fuel }}</p>
     <p><strong>Câmbio:</strong> {{ object.exchange }}</p>
     <p><strong>KM:</strong> {{ car.km|floatformat:"2g" }}</p>
     <p><strong>Preço:</strong> R$ {{ car.value|floatformat:"2g" }}</p>
     <p><strong>Vendedor:</strong> {{ object.seller }}</p>
     <p><strong>Contato:</strong> {{ object.contact }}</p>
-    
-    <!-- CASO DESEJA MANTER A BIO
-    {% if object.bio %}
-      <p><strong>Descrição:</strong> {{ object.bio }}</p>
-    {% endif %}-->
 </div>
 
 <!-- Modal para Imagem Grande -->
