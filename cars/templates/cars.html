@@ -144,7 +144,7 @@
                     <p class="no-photo1">FOTO NÃO DISPONIVEL</p>
                 {% endif %}
                 <h2>{{ car.brand }} {{ car.model }}</h2>
-                <p>{{ object.factory_year }}/{{ object.model_year }} - R$ {{ car.value|floatformat:"2g" }}</p>
+                <p>{{ car.factory_year }} - R$ {{ car.value|floatformat:"2g" }}</p>
             </div>
         </a>
         {% endfor %}
