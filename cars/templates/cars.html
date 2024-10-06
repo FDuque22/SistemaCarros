@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load static %} <!-- Carregar as tags estáticas -->
 
 {% block content %}
 
@@ -65,6 +64,25 @@
     @media (max-width: 768px) {
         .car-grid {
             grid-template-columns: 1fr; /* Altera para 1 coluna no celular */
+        }
+        
+        .navbar {
+            display: block; /* Mostra o menu no celular */
+        }
+
+        .navbar ul {
+            display: none; /* Escondido por padrão */
+        }
+
+        .navbar.active ul {
+            display: block; /* Mostra o menu quando o estado 'active' está aplicado */
+        }
+    }
+
+    /* Esconde o menu em telas maiores */
+    @media (min-width: 769px) {
+        .navbar {
+            display: none; /* Oculta o menu em telas maiores */
         }
     }
 
@@ -144,11 +162,6 @@
         background-color: #0096c7; /* Cor de fundo para a lista do menu */
         padding: 20px; /* Espaçamento interno */
         border-radius: 8px; /* Bordas arredondadas */
-        display: none; /* Escondido por padrão */
-    }
-
-    .navbar.active ul {
-        display: block; /* Mostra o menu quando o estado 'active' está aplicado */
     }
 </style>
 
