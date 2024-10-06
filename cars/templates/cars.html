@@ -1,8 +1,8 @@
+cars.html
+
 {% extends "base.html" %}
-{% load static %}
 
 {% block content %}
-
 <style>
     .car-grid {
         display: grid;
@@ -20,12 +20,6 @@
         overflow: hidden;
         text-align: center;
         transition: all 0.3s ease;
-        display: flex; /* Define o display flex para centralizar */
-        flex-direction: column; /* Coloca os elementos em coluna */
-        justify-content: center; /* Centraliza verticalmente */
-        align-items: center; /* Centraliza horizontalmente */
-        font-size: 20px; /* Define o tamanho da fonte */
-        height: 100%; /* Garante que o card ocupe toda a altura */
     }
 
     .car-card:hover {
@@ -40,6 +34,12 @@
         object-fit: cover;
     }
 
+    .car-card h3 {
+        font-size: 20px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+
     .car-card h2 {
         font-size: 1.5rem;
         margin: 10px;
@@ -50,21 +50,9 @@
         margin-bottom: 10px;
     }
 
-    /* Alterações para o hover */
-    .car-card h2, 
-    .car-card p {
-        color: #000; /* Texto preto padrão */
-        transition: color 0.3s ease; /* Suaviza a mudança de cor */
-    }
-
-    .car-card:hover h2, 
-    .car-card:hover p {
-        color: #0096c7; /* Texto fica azul no hover */
-    }
-
     @media (max-width: 768px) {
         .car-grid {
-            grid-template-columns: 1fr; /* Altera para 1 coluna no celular */
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 
@@ -113,7 +101,7 @@
     }
 
     a:hover {
-        color: #0096c7;
+        color: #0096c7
     }
 
     /* Estilos para a seção de ofertas em destaque */
@@ -125,13 +113,13 @@
     .highlight-section h2 {
         font-size: 24px;
         color: #333;
-        margin-bottom: 5px;
+        margin-bottom: 5px; /* Reduzindo o espaço abaixo do título */
     }
 
     .highlight-section p {
         font-size: 14px;
         color: #888;
-        margin-top: 0;
+        margin-top: 0; /* Removendo o espaço acima do parágrafo */
     }
 </style>
 
@@ -142,8 +130,8 @@
 
 <!-- Seção de Ofertas em Destaque -->
 <div class="highlight-section">
-    <h2>OFERTAS DISPONIVEIS</h2>
-    <p>CARROS REVISADOS COM GARANTIAS</p>
+    <h2>OFERTAS EM DESTAQUES</h2>
+    <p>CARROS REVISADOS E COM GARANTIAS</p>
 </div>
 
 <div class="car-grid">
@@ -154,7 +142,7 @@
                 {% if car.photo1 %}
                     <img src="{{ car.photo1.url }}" alt="{{ car.model }} - {{ car.brand }}">
                 {% else %}
-                    <p class="no-photo1">FOTO NÃO DISPONÍVEL</p>
+                    <p class="no-photo1">FOTO NÃO DISPONIVEL</p>
                 {% endif %}
                 <h2>{{ car.brand }} {{ car.model }}</h2>
                 <p>{{ car.factory_year }} - R$ {{ car.value|floatformat:"2g" }}</p>
@@ -165,5 +153,4 @@
     <p class="no-results">Nenhum carro encontrado.</p>
     {% endif %}
 </div>
-
 {% endblock %}

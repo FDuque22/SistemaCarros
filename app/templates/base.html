@@ -1,3 +1,5 @@
+base.html
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,8 +7,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{% endblock %}</title>
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     body {
       font-family: 'Open Sans', sans-serif;
@@ -19,46 +19,53 @@
     header {
       background-color: #0096c7;
       color: #fff;
-      padding: 10px 0;
-    }
-
-    nav {
-      display: flex;
-      justify-content: center; /* Centraliza o menu */
-      height: 40px; /* Diminui a altura do menu */
-    }
-
-    .navbar-nav {
-      display: flex;
-      justify-content: flex-start; /* Alinha os itens à esquerda */
-      align-items: center; /* Garante o alinhamento vertical */
-      margin-left: 10%; /* Ajusta a posição à esquerda */
-    }
-
-    .navbar-nav li {
-      margin-right: 15px;
-    }
-
-    .navbar-nav a,
-    .navbar-nav li {
-      color: #fff !important;
-      font-size: 16px;
-      text-decoration: none;
-      padding: 10px;
-      transition: all 0.3s ease;
-      border-radius: 5px;
-    }
-
-    .navbar-nav a:hover {
-      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-      transform: translateY(-3px); /* Efeito de elevação */
-      background-color: #32bbe8;
+      text-align: center;
     }
 
     footer {
       background-color: #333;
       color: #fff;
       padding: 40px 0;
+    }
+
+    nav {
+      background-color: #0096c7;
+      color: #fff;
+      height: 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 15px;
+      transition: all 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      background-color: #32bbe8;
+    }
+
+    nav ul li.active a {
+      background-color: #666;
+    }
+
+    nav ul li.active a:hover {
+      background-color: #999;
     }
 
     .footer-container {
@@ -69,12 +76,17 @@
       color: #ccc;
     }
 
+    .footer-section {
+      flex: 1;
+      padding: 0 20px;
+    }
+
     .footer-section h4 {
       font-size: 18px;
       color: #fff;
-      border-bottom: 2px solid #898989;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
+      border-bottom: 2px solid #898989; /* Linha abaixo do h4 */
+      padding-bottom: 10px; /* Espaço entre o texto e a linha */
+      margin-bottom: 15px; /* Espaço após o h4 */
     }
 
     .footer-section p {
@@ -82,103 +94,69 @@
       line-height: 1.6;
     }
 
-    @media (max-width: 768px) {
-      .footer-container {
-        flex-direction: column;
-        text-align: center;
-      }
+    .footer-section p a {
+      color: #ccc;
+      text-decoration: none;
     }
 
-    /* Estilo do menu responsivo */
-    .navbar {
-      background-color: #0096c7; /* Cor de fundo do menu */
-      position: relative; /* Para que o menu se posicione corretamente */
-      z-index: 1000; /* Para garantir que o menu fique acima de outros elementos */
+    .footer-section p a:hover {
+      text-decoration: underline;
     }
 
-    .navbar ul {
-      background-color: #0096c7; /* Cor de fundo para a lista do menu */
-      padding: 20px; /* Espaçamento interno */
-      border-radius: 8px; /* Bordas arredondadas */
-    }
-
-    @media (max-width: 768px) {
-      .navbar {
-        display: block; /* Mostra o menu no celular */
-      }
-
-      .navbar ul {
-        display: none; /* Escondido por padrão */
-      }
-
-      .navbar.active ul {
-        display: block; /* Mostra o menu quando o estado 'active' está aplicado */
-      }
-    }
-
-    /* Esconde o menu em telas maiores */
-    @media (min-width: 769px) {
-      .navbar {
-        display: none; /* Oculta o menu em telas maiores */
-      }
-    }
   </style>
 </head>
 
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-light">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          {% if user.is_authenticated %}
-          <li class="nav-item">Olá, {{ user.username }}</li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'new_car' %}">Cadastrar Carro</a></li>
-          {% endif %}
-          {% if not user.is_authenticated %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Cadastrar-se</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-          {% endif %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'cars_list' %}">Carros</a></li>
-          {% if user.is_authenticated %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sair</a></li>
-          {% endif %}
-        </ul>
-      </div>
+    <nav>
+      <ul>
+        {% if user.is_authenticated %}
+          <li>Olá, {{ user.username }}</li>
+          <li><a href="{% url 'new_car' %}">Cadastrar Carro</a></li>
+        {% endif %}
+        {% if not user.is_authenticated %}
+          <li><a href="{% url 'register' %}">Cadastra-se</a></li>
+          <li><a href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+
+        <li><a href="{% url 'cars_list' %}">Carros</a></li>
+        
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'logout' %}">Sair</a></li>
+        {% endif %}
+      </ul>
     </nav>
   </header>
 
-  <main class="container">
+  <main>
     {% block content %}
     {% endblock %}
   </main>
 
   <footer>
-    <div class="container">
-      <div class="row footer-container">
-        <div class="col-md-4 footer-section">
-          <h4>QUEM SOMOS</h4>
-          <p>Especialistas na comercialização de veículos...</p>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h4>QUEM SOMOS</h4>
+            <p>Somos especialistas na comercialização de veículos novos e usados, 
+              tanto nacionais quanto importados. Com toda certeza, você não apenas 
+              gostará de nossa oferta, mas também encontrará o carro ideal conosco. 
+              Todos os nossos veículos passam por uma rigorosa inspeção, garantindo 
+              aos nossos clientes total tranquilidade no momento da compra. Não perca tempo! 
+              Adquira seu carro com quem realmente entende do assunto. Nossa equipe de vendedores 
+              estará pronta para atendê-lo com satisfação.</p>
         </div>
-        <div class="col-md-4 footer-section">
-          <h4>CONTATO</h4>
-          <p>(21) 99999-9999</p>
+        <div class="footer-section">
+            <h4>CONTATO</h4>
+            <p>(21) 99999-9999</p>
+            <p>(21) 99999-9999</p>
         </div>
-        <div class="col-md-4 footer-section">
-          <h4>ENDEREÇO</h4>
-          <p>Av. Rio Grande 3587 - Taquara - Rio de Janeiro - RJ</p>
+        <div class="footer-section">
+            <h4>ENDEREÇO</h4>
+            <p>Av. Rio Grande 3587 - Taquara - Rio de Janeiro - RJ</p>
         </div>
-      </div>
     </div>
     <p style="text-align: center;">&copy; 2023 FelipeDuque Carros</p>
   </footer>
-
-  <!-- Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="{% static 'js/menu.js' %}"></script> <!-- Link para o JavaScript -->
 </body>
 
 </html>
