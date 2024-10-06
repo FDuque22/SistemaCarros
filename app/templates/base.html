@@ -19,45 +19,46 @@
     header {
       background-color: #0096c7;
       color: #fff;
-      text-align: center;
       padding: 10px 0;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center; /* Centraliza o menu */
+      height: 40px; /* Diminui a altura do menu */
+    }
+
+    .navbar-nav {
+      display: flex;
+      justify-content: flex-start; /* Alinha os itens à esquerda */
+      align-items: center; /* Garante o alinhamento vertical */
+      margin-left: 10%; /* Ajusta a posição à esquerda */
+    }
+
+    .navbar-nav li {
+      margin-right: 15px;
+    }
+
+    .navbar-nav a,
+    .navbar-nav li {
+      color: #fff !important;
+      font-size: 16px;
+      text-decoration: none;
+      padding: 10px;
+      transition: all 0.3s ease;
+      border-radius: 5px;
+    }
+
+    .navbar-nav a:hover {
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(-3px); /* Efeito de elevação */
+      background-color: #32bbe8;
     }
 
     footer {
       background-color: #333;
       color: #fff;
       padding: 40px 0;
-    }
-
-    nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-    }
-
-    nav ul li {
-      margin: 0 10px;
-    }
-
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 16px;
-      padding: 10px;
-      transition: all 0.3s ease;
-    }
-
-    nav ul li a:hover {
-      background-color: #32bbe8;
-    }
-
-    nav ul li.active a {
-      background-color: #666;
-    }
-
-    nav ul li.active a:hover {
-      background-color: #999;
     }
 
     .footer-container {
@@ -93,14 +94,13 @@
 <body>
   <header>
     <nav class="navbar navbar-expand-lg navbar-light">
-      <a class="navbar-brand" href="#">Logo</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav">
           {% if user.is_authenticated %}
-          <li class="nav-item">Olá, {{ user.username }}</li>
+          <li class="nav-item">Olá, {{ user.username }}</li> <!-- Garantido alinhamento com outros itens -->
           <li class="nav-item"><a class="nav-link" href="{% url 'new_car' %}">Cadastrar Carro</a></li>
           {% endif %}
           {% if not user.is_authenticated %}
