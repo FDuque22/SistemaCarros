@@ -7,14 +7,13 @@
         background-color: #e3e1e1;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
-        overflow: hidden;
+        overflow: hidden; /* Alterado de cover para hidden para evitar transbordamento */
         text-align: center;
         transition: all 0.3s ease;
         max-width: 500px;
         margin: 20px auto 0;
         margin-bottom: 20px;
         padding: 5px;
-        height: 400px; /* Define uma altura fixa para o cartão */
     }
 
     .car-card:hover {
@@ -24,9 +23,9 @@
     }
 
     .car-card img {
-        width: 100%; /* A imagem ocupa 100% da largura da div */
-        height: 100%; /* A imagem ocupa 100% da altura da div */
-        object-fit: cover; /* Corta a imagem para cobrir a div sem distorção */
+        width: 100%; /* Ajuste de 120% para 100% para evitar transbordamento */
+        height: 320px;
+        object-fit: cover;
     }
     
     .car-card h2 {
@@ -146,7 +145,6 @@
         .car-card {
             max-width: 100%; /* Permite que o cartão ocupe 100% da largura da tela em dispositivos pequenos */
             margin: 10px; /* Ajusta a margem */
-            height: auto; /* Remove altura fixa em telas pequenas */
         }
 
         .car-card img {
