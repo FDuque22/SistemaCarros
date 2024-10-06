@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{% endblock %}</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
     body {
       font-family: 'Open Sans', sans-serif;
@@ -18,21 +20,13 @@
       background-color: #0096c7;
       color: #fff;
       text-align: center;
+      padding: 10px 0;
     }
 
     footer {
       background-color: #333;
       color: #fff;
       padding: 40px 0;
-    }
-
-    nav {
-      background-color: #0096c7;
-      color: #fff;
-      height: 50px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
 
     nav ul {
@@ -50,7 +44,7 @@
       color: #fff;
       text-decoration: none;
       font-size: 16px;
-      padding: 15px;
+      padding: 10px;
       transition: all 0.3s ease;
     }
 
@@ -74,17 +68,12 @@
       color: #ccc;
     }
 
-    .footer-section {
-      flex: 1;
-      padding: 0 20px;
-    }
-
     .footer-section h4 {
       font-size: 18px;
       color: #fff;
-      border-bottom: 2px solid #898989; /* Linha abaixo do h4 */
-      padding-bottom: 10px; /* Espaço entre o texto e a linha */
-      margin-bottom: 15px; /* Espaço após o h4 */
+      border-bottom: 2px solid #898989;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
     }
 
     .footer-section p {
@@ -92,69 +81,69 @@
       line-height: 1.6;
     }
 
-    .footer-section p a {
-      color: #ccc;
-      text-decoration: none;
+    @media (max-width: 768px) {
+      .footer-container {
+        flex-direction: column;
+        text-align: center;
+      }
     }
-
-    .footer-section p a:hover {
-      text-decoration: underline;
-    }
-
   </style>
 </head>
 
 <body>
   <header>
-    <nav>
-      <ul>
-        {% if user.is_authenticated %}
-          <li>Olá, {{ user.username }}</li>
-          <li><a href="{% url 'new_car' %}">Cadastrar Carro</a></li>
-        {% endif %}
-        {% if not user.is_authenticated %}
-          <li><a href="{% url 'register' %}">Cadastra-se</a></li>
-          <li><a href="{% url 'login' %}">Login</a></li>
-        {% endif %}
-
-        <li><a href="{% url 'cars_list' %}">Carros</a></li>
-        
-        {% if user.is_authenticated %}
-          <li><a href="{% url 'logout' %}">Sair</a></li>
-        {% endif %}
-      </ul>
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand" href="#">Logo</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          {% if user.is_authenticated %}
+          <li class="nav-item">Olá, {{ user.username }}</li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'new_car' %}">Cadastrar Carro</a></li>
+          {% endif %}
+          {% if not user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Cadastrar-se</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+          {% endif %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'cars_list' %}">Carros</a></li>
+          {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sair</a></li>
+          {% endif %}
+        </ul>
+      </div>
     </nav>
   </header>
 
-  <main>
+  <main class="container">
     {% block content %}
     {% endblock %}
   </main>
 
   <footer>
-    <div class="footer-container">
-        <div class="footer-section">
-            <h4>QUEM SOMOS</h4>
-            <p>Somos especialistas na comercialização de veículos novos e usados, 
-              tanto nacionais quanto importados. Com toda certeza, você não apenas 
-              gostará de nossa oferta, mas também encontrará o carro ideal conosco. 
-              Todos os nossos veículos passam por uma rigorosa inspeção, garantindo 
-              aos nossos clientes total tranquilidade no momento da compra. Não perca tempo! 
-              Adquira seu carro com quem realmente entende do assunto. Nossa equipe de vendedores 
-              estará pronta para atendê-lo com satisfação.</p>
+    <div class="container">
+      <div class="row footer-container">
+        <div class="col-md-4 footer-section">
+          <h4>QUEM SOMOS</h4>
+          <p>Especialistas na comercialização de veículos...</p>
         </div>
-        <div class="footer-section">
-            <h4>CONTATO</h4>
-            <p>(21) 99999-9999</p>
-            <p>(21) 99999-9999</p>
+        <div class="col-md-4 footer-section">
+          <h4>CONTATO</h4>
+          <p>(21) 99999-9999</p>
         </div>
-        <div class="footer-section">
-            <h4>ENDEREÇO</h4>
-            <p>Av. Rio Grande 3587 - Taquara - Rio de Janeiro - RJ</p>
+        <div class="col-md-4 footer-section">
+          <h4>ENDEREÇO</h4>
+          <p>Av. Rio Grande 3587 - Taquara - Rio de Janeiro - RJ</p>
         </div>
+      </div>
     </div>
     <p style="text-align: center;">&copy; 2023 FelipeDuque Carros</p>
   </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
