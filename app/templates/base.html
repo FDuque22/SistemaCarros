@@ -31,7 +31,7 @@
       color: #fff;
       height: 50px;
       display: flex;
-      justify-content: space-between;
+      justify-content: center; /* Alinha os itens no centro */
       align-items: center;
       flex-wrap: wrap; /* Permite que os itens se movam para a linha seguinte se necessário */
     }
@@ -107,13 +107,13 @@
 
     @media (max-width: 768px) {
       nav ul {
-        flex-direction: column; /* Muda para uma coluna em telas menores */
-        align-items: center; /* Centraliza os itens */
+        flex-direction: row; /* Muda para uma linha em telas menores */
+        justify-content: center; /* Centraliza os itens */
         padding: 0; /* Remove o padding padrão */
       }
 
       nav ul li {
-        margin: 5px 0; /* Ajusta a margem entre os itens */
+        margin: 5px; /* Ajusta a margem entre os itens */
       }
 
       .footer-container {
