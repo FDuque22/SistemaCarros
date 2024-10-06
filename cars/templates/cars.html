@@ -132,6 +132,23 @@
         color: #888;
         margin-top: 0;
     }
+
+    .navbar {
+        background-color: #0096c7; /* Cor de fundo do menu */
+        position: relative; /* Para que o menu se posicione corretamente */
+        z-index: 1000; /* Para garantir que o menu fique acima de outros elementos */
+    }
+
+    .navbar ul {
+        background-color: #0096c7; /* Cor de fundo para a lista do menu */
+        padding: 20px; /* Espaçamento interno */
+        border-radius: 8px; /* Bordas arredondadas */
+        display: none; /* Escondido por padrão */
+    }
+
+    .navbar.active ul {
+        display: block; /* Mostra o menu quando o estado 'active' está aplicado */
+    }
 </style>
 
 <form method="GET" action="{% url 'cars_list' %}">
@@ -143,6 +160,17 @@
 <div class="highlight-section">
     <h2>OFERTAS DISPONIVEIS</h2>
     <p>CARROS REVISADOS COM GARANTIAS</p>
+</div>
+
+<div class="navbar">
+    <button class="menu-toggle">Menu</button>
+    <ul>
+        <li class="nav-item"><a href="#">Home</a></li>
+        <li class="nav-item"><a href="#">Sobre</a></li>
+        <li class="nav-item"><a href="#">Serviços</a></li>
+        <li class="nav-item"><a href="#">Contato</a></li>
+        <li class="nav-item">Olá, {{ user.username }}</li>
+    </ul>
 </div>
 
 <div class="car-grid">
@@ -164,4 +192,6 @@
     <p class="no-results">Nenhum carro encontrado.</p>
     {% endif %}
 </div>
+
+<script src="{% static 'js/menu.js' %}"></script> <!-- Link para o JavaScript -->
 {% endblock %}
