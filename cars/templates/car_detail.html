@@ -110,7 +110,7 @@
 
     /* Estilos do Modal Abrir Foto */
     .modal {
-        display: none;
+        display: none; /* O modal está escondido por padrão */
         position: fixed;
         z-index: 1;
         left: 0;
@@ -194,15 +194,15 @@
             {% endif %}
 
             {% if object.photo5 %}
-            <a onclick="openModal('{{ object.photo5.url }}'); return false;">
-                <img src="{{ object.photo5.url }}" class="carousel-item" alt="Car Photo 5">
-            </a>
+                <a onclick="openModal('{{ object.photo5.url }}'); return false;">
+                    <img src="{{ object.photo5.url }}" class="carousel-item" alt="Car Photo 5">
+                </a>
             {% endif %}
 
             {% if object.photo6 %}
-            <a onclick="openModal('{{ object.photo6.url }}'); return false;">
-                <img src="{{ object.photo6.url }}" class="carousel-item" alt="Car Photo 6">
-            </a>
+                <a onclick="openModal('{{ object.photo6.url }}'); return false;">
+                    <img src="{{ object.photo6.url }}" class="carousel-item" alt="Car Photo 6">
+                </a>
             {% endif %}
 
         </div>
