@@ -8,7 +8,7 @@ def register_view(request):
         user_form = UserCreationForm(request.POST)
         if user_form.is_valid():
             user_form.save()
-            messages.success(request, "Registro realizado com sucesso!"<br>"Faça o Login!")
+            messages.success(request, "Registro realizado com sucesso!")
             return redirect('login')
     else:
         user_form = UserCreationForm()
