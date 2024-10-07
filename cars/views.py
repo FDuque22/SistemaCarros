@@ -12,7 +12,7 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 class CarsView(View):
    
    def get(self, request):
-        cars = Car.objects.filter(active=True).order_by('brand__name')
+        cars = Car.objects.filter(active=True).order_by('brand__name', 'model')
         search = request.GET.get('search') #Verifica se mandou busca, se não, mostra todos
 
         if search:
@@ -49,7 +49,7 @@ class CarDeleteView(DeleteView):
     template_name = 'car_delete.html'
     success_url = '/cars/'
 
-    
+
     def post(self, request, *args, **kwargs):
         car = self.get_object()
         car.active = False  # Marque o carro como inativo
