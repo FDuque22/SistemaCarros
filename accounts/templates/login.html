@@ -95,6 +95,15 @@
     <h2>ACESSE SUA CONTA</h2>
     {% csrf_token %}
     
+    <!-- Exibir mensagens de erro -->
+    {% if messages %}
+        <div class="error-message">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
     <div class="form-group">
         <label for="{{ login_form.username.id_for_label }}">{{ login_form.username.label }}</label>
         {{ login_form.username }}
