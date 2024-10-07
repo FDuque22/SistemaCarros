@@ -14,7 +14,7 @@ class CarsView(View):
         search = request.GET.get('search') #Verifica se mandou busca, se não, mostra todos
 
         if search:
-            cars = Car.objects.filter(model__icontains=search) #Se houve busca, mande o filtro
+            cars = Car.objects.filter(model__icontains=search) #Se houve busca, mande o filtro.
         return render(
             request, 
             'cars.html', 
