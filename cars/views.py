@@ -48,3 +48,14 @@ class CarDeleteView(DeleteView):
     model = Car
     template_name = 'car_delete.html'
     success_url = '/cars/'
+
+    
+    def post(self, request, *args, **kwargs):
+        car = self.get_object()
+        car.active = False  # Marque o carro como inativo
+        car.save()
+        return redirect(self.success_url)
+
+    def get_object(self):
+        # Obter o carro que será marcado como inativo
+        return Car.objects.get(pk=self.kwargs['pk'])
