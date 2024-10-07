@@ -8,7 +8,7 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
         overflow: hidden; /* Alterado de cover para hidden para evitar transbordamento */
-        text-align: left; /* Mudado para left para alinhar à esquerda */
+        text-align: center;
         transition: all 0.3s ease;
         max-width: 500px;
         margin: 20px auto 0;
@@ -36,14 +36,6 @@
     .car-card p {
         font-size: 1rem;
         margin-bottom: 10px;
-    }
-
-    .optional-features {
-        background-color: #f8f8f8;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        margin-top: 15px;
     }
 
     .buttons-container {
@@ -224,16 +216,6 @@
     <p><strong>Preço:</strong> R$ {{ car.value|floatformat:"2g" }}</p>
     <p><strong>Vendedor:</strong> {{ object.seller }}</p>
     <p><strong>Contato:</strong> {{ object.contact }}</p>
-    
-    <!-- Novo bloco de opcionais -->
-    <div class="optional-features">
-        <h3>Opcionais:</h3>
-        <ul>
-            {% for optional in object.optionals.all %}
-                <li>{{ optional }}</li>
-            {% endfor %}
-        </ul>
-    </div>
 </div>
 
 <!-- Modal para Imagem Grande -->
