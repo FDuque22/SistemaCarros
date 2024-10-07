@@ -1,13 +1,14 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-
+from django.contrib import messages  # Para mostrar mensagens de erro
 
 def register_view(request):
     if request.method == "POST":
         user_form = UserCreationForm(request.POST)
         if user_form.is_valid():
             user_form.save()
+            messages.success(request, "Registro realizado com sucesso! Você pode fazer login.")
             return redirect('login')
     else:
         user_form = UserCreationForm()
@@ -15,13 +16,14 @@ def register_view(request):
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('cars_list')
+            return redirect('cars_list')  # Redirecionar para a lista de carros
         else:
+            messages.error(request, "Usuário ou senha inválidos.")  # Mensagem de erro
             login_form = AuthenticationForm()
     else:
         login_form = AuthenticationForm()
@@ -29,4 +31,5 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('cars_list')
+    messages.success(request, "Você foi desconectado com sucesso.")  # Mensagem de sucesso
+    return redirect('cars_list')  # Redirecionar para a lista de carros
