@@ -11,16 +11,22 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
 class CarsView(View):
    
-   def get(self, request):
+    def get(self, request):
         cars = Car.objects.filter(active=True).order_by('brand__name')
-        search = request.GET.get('search') #Verifica se mandou busca, se não, mostra todos
+        search = request.GET.get('search')  # Verifica se mandou busca, se não, mostra todos
 
         if search:
-            # Faz a busca pelo modelo OU pelo nome da marca
-            cars = Car.objects.filter(
-                active=True,  # Mantém o filtro para carros ativos
-                models.Q(model__icontains=search) | models.Q(brand__name__icontains=search)
+            cars_by_model = Car.objects.filter(model__icontains=search, active=True)
+            cars_by_brand = Car.objects.filter(brand__name__icontains=search, active=True)
+            # Combine os dois QuerySets
+            cars = cars_by_model | cars_by_brand
+        
+        return render(
+            request, 
+            'cars.html', 
+            {'cars': cars}
         )
+
    
 class CarDetailView(DetailView):
     model = Car
