@@ -8,7 +8,7 @@ def register_view(request):
         user_form = UserCreationForm(request.POST)
         if user_form.is_valid():
             user_form.save()
-            messages.success(request, "Registro realizado com sucesso! Você pode fazer login.")
+            messages.success(request, "Registro realizado com sucesso!<br>Faça o Login!")
             return redirect('login')
     else:
         user_form = UserCreationForm()
@@ -23,7 +23,7 @@ def login_view(request):
             login(request, user)
             return redirect('cars_list')  # Redirecionar para a lista de carros
         else:
-            messages.error(request, "Usuário ou senha inválidos.")  # Mensagem de erro
+            messages.error(request, "Usuário ou senha inválidos!")  # Mensagem de erro
             login_form = AuthenticationForm()
     else:
         login_form = AuthenticationForm()
@@ -31,5 +31,5 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    messages.success(request, "Você foi desconectado com sucesso.")  # Mensagem de sucesso
+    messages.success(request, "Você foi desconectado com sucesso!")  # Mensagem de sucesso
     return redirect('login')  # Redirecionar para a lista de carros
