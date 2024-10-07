@@ -1,6 +1,7 @@
 function togglePassword() {
-    const passwordField = document.querySelector('input[type="password"]');
+    const passwordField = document.getElementById('password-field'); // Atualizado para referenciar o campo de senha
     const checkbox = document.getElementById('show-password');
+
     // Alterna o tipo do campo de senha
     if (checkbox.checked) {
         passwordField.type = 'text'; // Altera o tipo do campo para texto
