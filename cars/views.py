@@ -10,11 +10,11 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 class CarsView(View):
    
    def get(self, request):
-        cars = Car.objects.filter(active=True).order_by('brand__name', 'model')
+        cars = Car.objects.filter(active=True).order_by('brand__name')
         search = request.GET.get('search') #Verifica se mandou busca, se não, mostra todos
 
         if search:
-            cars = Car.objects.filter(model__icontains=search) #Se houve busca, mande o filtro.
+            cars = Car.objects.filter(model__icontains=search) #Se houve busca, mande o filtro
         return render(
             request, 
             'cars.html', 
