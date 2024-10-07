@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load static %}  <!-- Adicione esta linha -->
+{% load static %}
 
 {% block content %}
 <style>
@@ -102,7 +102,7 @@
         <tr>
             <td>{{ login_form.password.label }}</td>
             <td>
-                <input type="password" id="password-field" name="password" value="{{ login_form.password.value }}">
+                <input type="password" id="password-field" name="password" value="" autocomplete="off">
                 <input type="checkbox" id="show-password" onclick="togglePassword()"> Mostrar senha
             </td>
         </tr>
