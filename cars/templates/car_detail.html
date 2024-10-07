@@ -13,18 +13,14 @@
         margin: 20px auto 0;
         margin-bottom: 20px;
         padding: 5px;
-        display: flex; /* Adicionado para usar flexbox */
-        justify-content: space-between; /* Para distribuir o espaço entre os textos e opcionais */
+        display: flex; /* Permite layout flexível */
+        justify-content: space-between; /* Espaça os elementos */
     }
 
-    .car-details { /* Estilo para os detalhes do carro */
-        flex: 1; /* Permite que essa parte ocupe o espaço restante */
-        text-align: left; /* Alinha o texto à esquerda */
-    }
-
-    .car-options { /* Estilo para os opcionais do carro */
-        margin-left: 20px; /* Espaço entre os detalhes e os opcionais */
-        text-align: right; /* Alinha o texto à direita */
+    .car-card:hover {
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        transform: translateY(-2px);
     }
 
     .car-card img {
@@ -32,10 +28,26 @@
         height: 380px;
         object-fit: cover;
     }
+    
+    .car-info {
+        flex: 1; /* Permite que essa seção ocupe o espaço disponível */
+        padding-right: 10px; /* Espaço à direita */
+        text-align: left; /* Alinha o texto à esquerda */
+    }
 
-    .car-card h2 {
+    .car-info h2 {
         font-size: 1.5rem;
         margin: 5px;
+    }
+
+    .car-info p {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .car-options {
+        width: 200px; /* Defina uma largura fixa para a seção de opcionais */
+        padding-left: 10px; /* Espaço à esquerda */
     }
 
     .buttons-container {
@@ -45,8 +57,126 @@
         margin-bottom: 20px;
     }
 
-    /* Restante do CSS permanece o mesmo */
+    .btn {
+        display: inline-block;
+        background-color: #0096c7;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+        margin: 0 10px;
+    }
 
+    .btn:hover {
+        background-color: #108eb8;
+    }
+
+    .btn-danger {
+        background-color: #d9534f;
+        text-decoration: none !important;
+    }
+
+    .btn-danger:hover {
+        background-color: #d2221c;
+    }
+
+    /* Carousel Fotos */
+    .carousel {
+        position: relative;
+        max-width: 100%;
+        margin: auto;
+        overflow: hidden;
+    }
+
+    .carousel-images {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .carousel-item:not(.active) {
+        opacity: 0;
+        display: none;
+    }
+
+    .prev, .next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0,0,0,0.5);
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .prev {
+        left: 10px;
+    }
+
+    .next {
+        right: 10px;
+    }
+
+    /* Estilos do Modal Abrir Foto */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 80%; 
+        max-height: 80%;
+    }
+    
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    /* Media Queries para Responsividade */
+    @media (max-width: 600px) {
+        .car-card {
+            max-width: 100%;
+            margin: 10px;
+            flex-direction: column; /* Para empilhar elementos em telas menores */
+        }
+
+        .car-options {
+            width: auto; /* Permite que a largura dos opcionais seja automática em telas menores */
+        }
+
+        .car-card img {
+            height: auto; 
+        }
+
+        .buttons-container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn {
+            margin: 5px 0; 
+        }
+    }
 </style>
 
 <div class="car-card">
@@ -83,11 +213,12 @@
                 </a>
             {% endif %}
         </div>
+
         <button class="prev" onclick="prevSlide()">&#10094;</button> 
         <button class="next" onclick="nextSlide()">&#10095;</button>
     </div>
-
-    <div class="car-details"> <!-- Div para os detalhes do carro -->
+    
+    <div class="car-info">
         <h2>{{ object.brand }} {{ object.model }}</h2>
         <p><strong>Ano: </strong> {{ object.factory_year }}/{{ object.model_year }}</p>
         <p><strong>Combustível:</strong> {{ object.fuel }}</p>
@@ -98,13 +229,13 @@
         <p><strong>Contato:</strong> {{ object.contact }}</p>
     </div>
 
-    <div class="car-options"> <!-- Div para os opcionais do carro -->
-        <p><strong>Opcionais:</strong></p>
-        <ul>
-            {% for optional in object.options.all %}
-                <li>{{ optional }}</li>
-            {% endfor %}
-        </ul>
+    <div class="car-options">
+        <h3>Opcionais</h3>
+        {% for optional in object.options.all %}
+            <p>{{ optional }}</p>
+        {% empty %}
+            <p>Nenhum opcional disponível.</p>
+        {% endfor %}
     </div>
 </div>
 
@@ -115,11 +246,11 @@
 </div>
 
 {% if user.is_authenticated %}
-    <div class="buttons-container">
-        <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-primary">Editar</a>
-        <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a>
-        <button class="btn" id="sendProposalBtn">Enviar Proposta</button>
-    </div>
+  <div class="buttons-container">
+    <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-primary">Editar</a>
+    <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a>
+    <button class="btn" id="sendProposalBtn">Enviar Proposta</button> <!-- Botão de Envio de Proposta -->
+  </div>
 {% endif %}
 
 <!-- JavaScript Carousel -->
