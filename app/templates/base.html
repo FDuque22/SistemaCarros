@@ -15,16 +15,9 @@
     }
 
     header {
-      background-color: #ffffff;
-      color: #000;
+      background-color: #0096c7;
+      color: #fff;
       text-align: center;
-      padding: 20px 0;
-    }
-
-    .header-logo {
-      float: left;
-      padding-left: 20px;
-      height: 40px; /* Ajuste conforme o tamanho da logo */
     }
 
     footer {
@@ -34,15 +27,13 @@
     }
 
     nav {
-      background-color: #ffffff; /* Cor branca */
-      color: #000;
+      background-color: #0096c7;
+      color: #fff;
       height: 50px;
       display: flex;
-      justify-content: space-between; /* Alinha os itens no centro e à esquerda */
+      justify-content: center; /* Alinha os itens no centro */
       align-items: center;
-      flex-wrap: wrap;
-      padding: 0 20px;
-      position: relative;
+      flex-wrap: wrap; /* Permite que os itens se movam para a linha seguinte se necessário */
     }
 
     nav ul {
@@ -50,56 +41,31 @@
       margin: 0;
       padding: 0;
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: wrap; /* Permite que a lista de itens se ajuste em telas menores */
     }
 
     nav ul li {
-      margin: 0;
-      padding: 0 5px;
-    }
-
-    nav ul li:first-child {
-      padding-left: 0; /* Ajuste para o primeiro item */
+      margin: 0 10px;
     }
 
     nav ul li a {
-      color: #000; /* Cor preta */
+      color: #fff;
       text-decoration: none;
       font-size: 16px;
-      padding: 15px 25px;
-      background-color: #fff; /* Fundo branco */
-      border: 1px solid #000; /* Borda preta */
-      border-radius: 4px; /* Bordas arredondadas */
-      display: inline-block; /* Para que o tamanho do botão seja ajustável */
+      padding: 15px;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para um efeito de elevação */
     }
 
     nav ul li a:hover {
-      background-color: #f0f0f0; /* Cor de fundo ao passar o mouse */
-      color: #000;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais forte ao passar o mouse */
-      transform: translateY(-2px); /* Efeito de elevação */
+      background-color: #32bbe8;
     }
 
     nav ul li.active a {
-      background-color: #d9d9d9; /* Cor de fundo para o item ativo */
+      background-color: #666;
     }
 
     nav ul li.active a:hover {
-      background-color: #b3b3b3; /* Cor de fundo para o item ativo ao passar o mouse */
-    }
-
-    .hours-bar {
-      background-color: #FFA500; /* Laranja */
-      color: #fff;
-      text-align: left;
-      padding: 5px 20px;
-      font-size: 14px;
-      font-weight: 600;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background-color: #999;
     }
 
     .footer-container {
@@ -108,21 +74,21 @@
       max-width: 1200px;
       margin: 0 auto;
       color: #ccc;
-      flex-wrap: wrap;
+      flex-wrap: wrap; /* Permite que as seções do rodapé se ajustem em telas menores */
     }
 
     .footer-section {
       flex: 1;
       padding: 0 20px;
-      min-width: 200px;
+      min-width: 200px; /* Define uma largura mínima para as seções do rodapé */
     }
 
     .footer-section h4 {
       font-size: 18px;
       color: #fff;
-      border-bottom: 2px solid #898989;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
+      border-bottom: 2px solid #898989; /* Linha abaixo do h4 */
+      padding-bottom: 10px; /* Espaço entre o texto e a linha */
+      margin-bottom: 15px; /* Espaço após o h4 */
     }
 
     .footer-section p {
@@ -141,34 +107,23 @@
 
     @media (max-width: 768px) {
       nav ul {
-        flex-direction: row;
-        justify-content: center;
-        padding: 0;
+        flex-direction: row; /* Muda para uma linha em telas menores */
+        justify-content: center; /* Centraliza os itens */
+        padding: 0; /* Remove o padding padrão */
       }
 
       nav ul li {
-        margin: 5px;
+        margin: 5px; /* Ajusta a margem entre os itens */
       }
 
       .footer-container {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: column; /* Muda o layout do rodapé para uma coluna em telas menores */
+        align-items: center; /* Centraliza os itens do rodapé */
       }
 
       .footer-section {
-        margin-bottom: 20px;
-        text-align: center;
-      }
-
-      .hours-bar {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .header-logo {
-        float: none;
-        margin-bottom: 10px;
-        height: 30px;
+        margin-bottom: 20px; /* Espaço entre as seções do rodapé */
+        text-align: center; /* Centraliza o texto nas seções do rodapé */
       }
     }
   </style>
@@ -176,7 +131,6 @@
 
 <body>
   <header>
-    <img src="logo.png" alt="Logo da Empresa" class="header-logo"> <!-- Substitua logo.png pela sua logo -->
     <nav>
       <ul>
         {% if user.is_authenticated %}
@@ -196,11 +150,6 @@
       </ul>
     </nav>
   </header>
-
-  <div class="hours-bar">
-    <span>Horário de Funcionamento: 09:00 - 18:00</span>
-    <span>Segunda a Sexta-feira</span>
-  </div>
 
   <main>
     {% block content %}
