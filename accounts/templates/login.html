@@ -78,6 +78,13 @@
     .forgot-password a:hover {
         text-decoration: underline;
     }
+
+    /* Estilo para mensagem de erro */
+    .error-message {
+        color: red;
+        text-align: center;
+        margin-top: 10px;
+    }
 </style>
 
 <!-- Formulário de login -->
@@ -92,15 +99,36 @@
         </tr>
         <tr>
             <td>{{ login_form.password.label }}</td>
-            <td>{{ login_form.password }}</td>
+            <td>
+                {{ login_form.password }}
+                <input type="checkbox" id="show-password" onclick="togglePassword()"> Mostrar senha
+            </td>
         </tr>
     </table>
 
     <input type="submit" value="Entrar">
 
+    {% if form.non_field_errors %}
+        <div class="error-message">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
     <div class="forgot-password">
         <a href="#">Esqueci minha senha</a>
     </div>
 </form>
+
+<script>
+    function togglePassword() {
+        const passwordField = document.querySelector('input[type="password"]');
+        const checkbox = document.getElementById('show-password');
+        if (checkbox.checked) {
+            passwordField.type = 'text'; // Altera o tipo do campo para texto
+        } else {
+            passwordField.type = 'password'; // Altera o tipo de volta para senha
+        }
+    }
+</script>
 
 {% endblock %}
