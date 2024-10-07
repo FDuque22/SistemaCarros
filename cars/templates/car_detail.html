@@ -7,14 +7,13 @@
         background-color: #e3e1e1;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
-        overflow: hidden;
+        overflow: hidden; /* Alterado de cover para hidden para evitar transbordamento */
+        text-align: left; /* Mudado para left para alinhar à esquerda */
         transition: all 0.3s ease;
         max-width: 500px;
         margin: 20px auto 0;
         margin-bottom: 20px;
         padding: 5px;
-        display: flex; /* Permite layout flexível */
-        justify-content: space-between; /* Espaça os elementos */
     }
 
     .car-card:hover {
@@ -24,30 +23,27 @@
     }
 
     .car-card img {
-        width: 100%;
+        width: 100%; /* Ajuste de 120% para 100% para evitar transbordamento */
         height: 380px;
         object-fit: cover;
     }
     
-    .car-info {
-        flex: 1; /* Permite que essa seção ocupe o espaço disponível */
-        padding-right: 10px; /* Espaço à direita */
-        text-align: left; /* Alinha o texto à esquerda */
-    }
-
-    .car-info h2 {
+    .car-card h2 {
         font-size: 1.5rem;
         margin: 5px;
     }
 
-    .car-info p {
+    .car-card p {
         font-size: 1rem;
         margin-bottom: 10px;
     }
 
-    .car-options {
-        width: 200px; /* Defina uma largura fixa para a seção de opcionais */
-        padding-left: 10px; /* Espaço à esquerda */
+    .optional-features {
+        background-color: #f8f8f8;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 15px;
     }
 
     .buttons-container {
@@ -155,26 +151,21 @@
     /* Media Queries para Responsividade */
     @media (max-width: 600px) {
         .car-card {
-            max-width: 100%;
-            margin: 10px;
-            flex-direction: column; /* Para empilhar elementos em telas menores */
-        }
-
-        .car-options {
-            width: auto; /* Permite que a largura dos opcionais seja automática em telas menores */
+            max-width: 100%; /* Permite que o cartão ocupe 100% da largura da tela em dispositivos pequenos */
+            margin: 10px; /* Ajusta a margem */
         }
 
         .car-card img {
-            height: auto; 
+            height: auto; /* Ajusta a altura da imagem para auto */
         }
 
         .buttons-container {
-            flex-direction: column;
-            align-items: center;
+            flex-direction: column; /* Coloca os botões em coluna */
+            align-items: center; /* Centraliza os botões */
         }
 
         .btn {
-            margin: 5px 0; 
+            margin: 5px 0; /* Ajusta a margem dos botões em coluna */
         }
     }
 </style>
@@ -182,60 +173,66 @@
 <div class="car-card">
     <div class="carousel">
         <div class="carousel-images">
+
             {% if object.photo1 %}
                 <a onclick="openModal('{{ object.photo1.url }}'); return false;">
                     <img src="{{ object.photo1.url }}" class="carousel-item active" alt="Car Photo 1">
                 </a>
             {% endif %}
+
             {% if object.photo2 %}
                 <a onclick="openModal('{{ object.photo2.url }}'); return false;">
                     <img src="{{ object.photo2.url }}" class="carousel-item" alt="Car Photo 2">
                 </a>
             {% endif %}
+
             {% if object.photo3 %}
                 <a onclick="openModal('{{ object.photo3.url }}'); return false;">
                     <img src="{{ object.photo3.url }}" class="carousel-item" alt="Car Photo 3">
                 </a>
             {% endif %}
+
             {% if object.photo4 %}
                 <a onclick="openModal('{{ object.photo4.url }}'); return false;">
                     <img src="{{ object.photo4.url }}" class="carousel-item" alt="Car Photo 4">
                 </a>
             {% endif %}
+
             {% if object.photo5 %}
                 <a onclick="openModal('{{ object.photo5.url }}'); return false;">
                     <img src="{{ object.photo5.url }}" class="carousel-item" alt="Car Photo 5">
                 </a>
             {% endif %}
+
             {% if object.photo6 %}
                 <a onclick="openModal('{{ object.photo6.url }}'); return false;">
                     <img src="{{ object.photo6.url }}" class="carousel-item" alt="Car Photo 6">
                 </a>
             {% endif %}
+
         </div>
 
         <button class="prev" onclick="prevSlide()">&#10094;</button> 
         <button class="next" onclick="nextSlide()">&#10095;</button>
-    </div>
-    
-    <div class="car-info">
-        <h2>{{ object.brand }} {{ object.model }}</h2>
-        <p><strong>Ano: </strong> {{ object.factory_year }}/{{ object.model_year }}</p>
-        <p><strong>Combustível:</strong> {{ object.fuel }}</p>
-        <p><strong>Câmbio:</strong> {{ object.exchange }}</p>
-        <p><strong>KM:</strong> {{ car.km|floatformat:"2g" }}</p>
-        <p><strong>Preço:</strong> R$ {{ car.value|floatformat:"2g" }}</p>
-        <p><strong>Vendedor:</strong> {{ object.seller }}</p>
-        <p><strong>Contato:</strong> {{ object.contact }}</p>
-    </div>
 
-    <div class="car-options">
-        <h3>Opcionais</h3>
-        {% for optional in object.options.all %}
-            <p>{{ optional }}</p>
-        {% empty %}
-            <p>Nenhum opcional disponível.</p>
-        {% endfor %}
+    </div>
+    <h2>{{ object.brand }} {{ object.model }}</h2>
+    <p><strong>Ano: </strong> {{ object.factory_year }}/{{ object.model_year }}</p>
+    <p><strong>Combustivel:</strong> {{ object.fuel }}</p>
+    <p><strong>Câmbio:</strong> {{ object.exchange }}</p>
+    <p><strong>KM:</strong> {{ car.km|floatformat:"2g" }}</p>
+    <p><strong>Preço:</strong> R$ {{ car.value|floatformat:"2g" }}</p>
+    <p><strong>Vendedor:</strong> {{ object.seller }}</p>
+    <p><strong>Contato:</strong> {{ object.contact }}</p>
+    
+    <!-- Novo bloco de opcionais -->
+    <div class="optional-features">
+        <h3>Opcionais:</h3>
+        <ul>
+            {% for optional in object.optionals.all %}
+                <li>{{ optional }}</li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 
@@ -247,7 +244,7 @@
 
 {% if user.is_authenticated %}
   <div class="buttons-container">
-    <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-primary">Editar</a>
+   <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-primary">Editar</a>
     <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a>
     <button class="btn" id="sendProposalBtn">Enviar Proposta</button> <!-- Botão de Envio de Proposta -->
   </div>
