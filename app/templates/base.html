@@ -15,7 +15,7 @@
     }
 
     header {
-      background-color: #808080; /* Cor cinza */
+      background-color: #ffffff; /* Cor branca */
       color: #000;
       text-align: center;
       padding: 20px 0;
@@ -34,7 +34,7 @@
     }
 
     nav {
-      background-color: #808080; /* Cor cinza */
+      background-color: #ffffff; /* Cor branca */
       color: #000;
       height: 50px;
       display: flex;
@@ -42,6 +42,7 @@
       align-items: center;
       flex-wrap: wrap;
       padding: 0 20px; /* Adiciona padding lateral */
+      border-bottom: 1px solid #ccc; /* Linha fina embaixo do menu */
     }
 
     nav ul {
@@ -53,7 +54,13 @@
     }
 
     nav ul li {
-      margin: 0 10px;
+      margin: 0;
+      padding: 0 5px;
+      border-left: 1px solid #ccc; /* Linha fina separando os botões */
+    }
+
+    nav ul li:first-child {
+      border-left: none; /* Remove a borda da primeira posição */
     }
 
     nav ul li a {
@@ -62,19 +69,20 @@
       font-size: 16px;
       padding: 15px;
       transition: all 0.3s ease;
+      display: block; /* Garante que o link ocupe o bloco */
     }
 
     nav ul li a:hover {
-      background-color: #666; /* Cor cinza escuro */
-      color: #fff; /* Mudança de cor para branco ao passar o mouse */
+      background-color: #f0f0f0; /* Cor de fundo ao passar o mouse */
+      color: #000;
     }
 
     nav ul li.active a {
-      background-color: #666;
+      background-color: #d9d9d9; /* Cor de fundo para o item ativo */
     }
 
     nav ul li.active a:hover {
-      background-color: #999;
+      background-color: #b3b3b3; /* Cor de fundo para o item ativo ao passar o mouse */
     }
 
     .hours-bar {
