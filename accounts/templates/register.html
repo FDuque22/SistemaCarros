@@ -73,15 +73,6 @@
         background-color: #0056b3;
     }
 
-    /* Estilos para a mensagem de sucesso ou erro */
-    .form-group.success {
-        color: green;
-    }
-
-    .form-group.error {
-        color: red;
-    }
-
 </style>
 
 <!-- Formulário de cadastro -->
@@ -90,7 +81,6 @@
     {% csrf_token %}
 
     <div class="form-group">
-        {{ user_form.username.errors }}
         <label>Usuário: </label>
         {{ user_form.username }}
         <div class="error">
@@ -101,7 +91,6 @@
     </div>
 
     <div class="form-group">
-        {{ user_form.password1.errors }}
         <label>Senha: </label>
         {{ user_form.password1 }}
         <div class="error">
@@ -112,7 +101,6 @@
     </div>
 
     <div class="form-group">
-        {{ user_form.password2.errors }}
         <label>Confirmação de Senha: </label>
         {{ user_form.password2 }}
         <div class="error">
@@ -126,6 +114,13 @@
         <input type="submit" value="Cadastrar">
     </div>
 
+    {% if user_form.non_field_errors %}
+        <div class="error">
+            {% for error in user_form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
 </form>
 
 {% endblock %}
