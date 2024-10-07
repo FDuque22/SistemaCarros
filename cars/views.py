@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
+
+
 class CarsView(View):
    
    def get(self, request):
@@ -42,17 +44,7 @@ class CarUpdateView(UpdateView):
         return reverse_lazy('car_detail', kwargs={'pk': self.object.pk})
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class CarDeleteView(View):
+class CarDeleteView(DeleteView):
     model = Car
     template_name = 'car_delete.html'
-    success_url = reverse_lazy('cars')
-
-    def post(self, request, *args, **kwargs):
-        car = self.get_object()
-        car.active = False  # Marque o carro como inativo
-        car.save()
-        return redirect(self.success_url)
-
-    def get_object(self):
-        # Obter o carro que será marcado como inativo
-        return Car.objects.get(pk=self.kwargs['pk'])
+    success_url = '/cars/'
