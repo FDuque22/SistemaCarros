@@ -29,7 +29,7 @@
     nav {
       background-color: #0096c7;
       color: #fff;
-      height: 50px;
+      height: 60px;
       display: flex;
       justify-content: center; /* Alinha os itens no centro */
       align-items: center;
@@ -49,23 +49,27 @@
     }
 
     nav ul li a {
+      background-color: #32bbe8; /* Cor de fundo do botão */
       color: #fff;
       text-decoration: none;
       font-size: 16px;
-      padding: 15px;
+      padding: 10px 20px; /* Ajuste o padding para parecer um botão */
+      border-radius: 25px; /* Bordas arredondadas */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
       transition: all 0.3s ease;
+      display: inline-block; /* Permite que o padding funcione corretamente */
     }
 
     nav ul li a:hover {
-      background-color: #32bbe8;
+      background-color: #007cba; /* Cor de fundo ao passar o mouse */
     }
 
     nav ul li.active a {
-      background-color: #666;
+      background-color: #666; /* Cor para item ativo */
     }
 
     nav ul li.active a:hover {
-      background-color: #999;
+      background-color: #999; /* Cor ao passar o mouse no item ativo */
     }
 
     .footer-container {
