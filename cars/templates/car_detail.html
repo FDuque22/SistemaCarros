@@ -1,245 +1,239 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block content %}
-        /* Resetando margens e paddings */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+<style>
+    .car-card {
+        background-color: #e3e1e1;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        overflow: hidden; /* Alterado de cover para hidden para evitar transbordamento */
+        text-align: center;
+        transition: all 0.3s ease;
+        max-width: 500px;
+        margin: 20px auto 0;
+        margin-bottom: 20px;
+        padding: 5px;
+    }
+
+    .car-card:hover {
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .car-card img {
+        width: 100%; /* Ajuste de 120% para 100% para evitar transbordamento */
+        height: 380px;
+        object-fit: cover;
+    }
+    
+    .car-card h2 {
+        font-size: 1.5rem;
+        margin: 5px;
+    }
+
+    .car-card p {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .buttons-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        display: inline-block;
+        background-color: #0096c7;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+        margin: 0 10px;
+    }
+
+    .btn:hover {
+        background-color: #108eb8;
+    }
+
+    .btn-danger {
+        background-color: #d9534f;
+        text-decoration: none !important;
+    }
+
+    .btn-danger:hover {
+        background-color: #d2221c;
+    }
+
+    /* Carousel Fotos */
+    .carousel {
+        position: relative;
+        max-width: 100%;
+        margin: auto;
+        overflow: hidden;
+    }
+
+    .carousel-images {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .carousel-item:not(.active) {
+        opacity: 0;
+        display: none;
+    }
+
+    .prev, .next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0,0,0,0.5);
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .prev {
+        left: 10px;
+    }
+
+    .next {
+        right: 10px;
+    }
+
+    /* Estilos do Modal Abrir Foto */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 80%; 
+        max-height: 80%;
+    }
+    
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    /* Media Queries para Responsividade */
+    @media (max-width: 600px) {
+        .car-card {
+            max-width: 100%; /* Permite que o cartão ocupe 100% da largura da tela em dispositivos pequenos */
+            margin: 10px; /* Ajusta a margem */
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            padding: 20px;
+        .car-card img {
+            height: auto; /* Ajusta a altura da imagem para auto */
         }
 
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: auto;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+        .buttons-container {
+            flex-direction: column; /* Coloca os botões em coluna */
+            align-items: center; /* Centraliza os botões */
         }
 
-        .car-details {
-            flex: 1;
-            margin-right: 20px;
+        .btn {
+            margin: 5px 0; /* Ajusta a margem dos botões em coluna */
         }
+    }
+</style>
 
-        .carousel {
-            position: relative;
-            max-width: 600px;
-            margin-bottom: 20px;
-        }
+<div class="car-card">
+    <div class="carousel">
+        <div class="carousel-images">
 
-        .carousel-images img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
+            {% if object.photo1 %}
+                <a onclick="openModal('{{ object.photo1.url }}'); return false;">
+                    <img src="{{ object.photo1.url }}" class="carousel-item active" alt="Car Photo 1">
+                </a>
+            {% endif %}
 
-        .carousel button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 50%;
-        }
+            {% if object.photo2 %}
+                <a onclick="openModal('{{ object.photo2.url }}'); return false;">
+                    <img src="{{ object.photo2.url }}" class="carousel-item" alt="Car Photo 2">
+                </a>
+            {% endif %}
 
-        .prev {
-            left: 10px;
-        }
+            {% if object.photo3 %}
+                <a onclick="openModal('{{ object.photo3.url }}'); return false;">
+                    <img src="{{ object.photo3.url }}" class="carousel-item" alt="Car Photo 3">
+                </a>
+            {% endif %}
 
-        .next {
-            right: 10px;
-        }
+            {% if object.photo4 %}
+                <a onclick="openModal('{{ object.photo4.url }}'); return false;">
+                    <img src="{{ object.photo4.url }}" class="carousel-item" alt="Car Photo 4">
+                </a>
+            {% endif %}
 
-        .car-specifications ul {
-            list-style-type: none;
-            padding: 0;
-            margin-bottom: 20px;
-        }
+            {% if object.photo5 %}
+                <a onclick="openModal('{{ object.photo5.url }}'); return false;">
+                    <img src="{{ object.photo5.url }}" class="carousel-item" alt="Car Photo 5">
+                </a>
+            {% endif %}
 
-        .car-specifications h3 {
-            margin-bottom: 10px;
-            color: #333;
-        }
+            {% if object.photo6 %}
+                <a onclick="openModal('{{ object.photo6.url }}'); return false;">
+                    <img src="{{ object.photo6.url }}" class="carousel-item" alt="Car Photo 6">
+                </a>
+            {% endif %}
 
-        .car-info {
-            margin-bottom: 20px;
-        }
-
-        .car-info h2 {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .car-info p {
-            font-size: 18px;
-            color: #555;
-            margin-bottom: 10px;
-        }
-
-        .car-info .price {
-            font-size: 26px;
-            color: #0096c7;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        /* Estilos do formulário de proposta */
-        .proposal-form {
-            width: 30%;
-            background-color: #f9f9f9;
-            padding: 20px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-
-        .proposal-form h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .proposal-form label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .proposal-form input, .proposal-form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .proposal-form button {
-            width: 100%;
-            padding: 10px;
-            background-color: #0096c7;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .proposal-form button:hover {
-            background-color: #108eb8;
-        }
-
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .carousel-images {
-                height: 300px;
-            }
-
-            .proposal-form {
-                width: 100%;
-            }
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="car-details">
-        <!-- Galeria de Imagens -->
-        <div class="carousel">
-            <div class="carousel-images">
-                {% if object.photo1 %}
-                    <a onclick="openModal('{{ object.photo1.url }}'); return false;">
-                        <img id="main-image" src="{{ object.photo1.url }}" alt="Foto Principal do Carro">
-                    </a>
-                {% endif %}
-            </div>
-            <button class="prev" onclick="prevSlide()">&#10094;</button>
-            <button class="next" onclick="nextSlide()">&#10095;</button>
         </div>
 
-        <!-- Detalhes do Carro -->
-        <div class="car-info">
-            <h2>{{ object.brand }} {{ object.model }}</h2>
-            <p><strong>Ano:</strong> {{ object.factory_year }}/{{ object.model_year }}</p>
-            <p><strong>Combustível:</strong> {{ object.fuel }}</p>
-            <p><strong>Câmbio:</strong> {{ object.exchange }}</p>
-            <p><strong>KM:</strong> {{ car.km|floatformat:"2g" }}</p>
-            <p><strong>Preço:</strong> R$ {{ car.value|floatformat:"2g" }}</p>
-            <p><strong>Vendedor:</strong> {{ object.seller }}</p>
-            <p><strong>Contato:</strong> {{ object.contact }}</p>
-        </div>
+        <button class="prev" onclick="prevSlide()">&#10094;</button> 
+        <button class="next" onclick="nextSlide()">&#10095;</button>
 
-        <!-- Especificações e opcionais -->
-        <div class="car-specifications">
-            <h3>Características</h3>
-            <ul>
-                <li>Chave Reserva</li>
-                <li>IPVA Pago</li>
-                <li>Licenciado</li>
-                <li>Manual</li>
-            </ul>
-            <h3>Opcionais</h3>
-            <ul>
-                <li>Ar condicionado</li>
-                <li>Bancos de Couro</li>
-                <li>Travas Elétricas</li>
-                <!-- Adicione mais opcionais conforme necessário -->
-            </ul>
-        </div>
     </div>
-
-    <!-- Formulário de Proposta -->
-    <div class="proposal-form">
-        <h2>Envie sua Proposta</h2>
-        <form>
-            <label for="name">Nome:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="phone">Telefone:</label>
-            <input type="tel" id="phone" name="phone" required>
-            <label for="message">Mensagem:</label>
-            <textarea id="message" name="message"></textarea>
-            <input type="checkbox" id="offers" name="offers">
-            <label for="offers">Aceito receber ofertas e promoções</label>
-            <button type="submit" class="btn">Enviar Proposta</button>
-        </form>
-    </div>
+    <h2>{{ object.brand }} {{ object.model }}</h2>
+    <p><strong>Ano: </strong> {{ object.factory_year }}/{{ object.model_year }}</p>
+    <p><strong>Combustivel:</strong> {{ object.fuel }}</p>
+    <p><strong>Câmbio:</strong> {{ object.exchange }}</p>
+    <p><strong>KM:</strong> {{ car.km|floatformat:"2g" }}</p>
+    <p><strong>Preço:</strong> R$ {{ car.value|floatformat:"2g" }}</p>
+    <p><strong>Vendedor:</strong> {{ object.seller }}</p>
+    <p><strong>Contato:</strong> {{ object.contact }}</p>
 </div>
 
-<script>
-    let slideIndex = 0;
+<!-- Modal para Imagem Grande -->
+<div id="imageModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+</div>
 
-    function prevSlide() {
-        // Lógica para slide anterior (caso tenha várias imagens)
-    }
+{% if user.is_authenticated %}
+  <div class="buttons-container">
+   <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-primary">Editar</a>
+    <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a>
+    <button class="btn" id="sendProposalBtn">Enviar Proposta</button> <!-- Botão de Envio de Proposta -->
+  </div>
+{% endif %}
 
-    function nextSlide() {
-        // Lógica para próximo slide (caso tenha várias imagens)
-    }
-
-    function openModal(imageSrc) {
-        const mainImage = document.getElementById('main-image');
-        mainImage.src = imageSrc;
-    }
-</script>
-
-</body>
-</html>
+<!-- JavaScript Carousel -->
+<script src="{% static 'js/carousel.js' %}"></script>
+<script src="{% static 'js/modal.js' %}"></script>
 
 {% endblock %}
