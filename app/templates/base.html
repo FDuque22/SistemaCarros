@@ -42,7 +42,7 @@
       align-items: center;
       flex-wrap: wrap;
       padding: 0 20px; /* Adiciona padding lateral */
-      border-bottom: 1px solid #ccc; /* Linha fina embaixo do menu */
+      position: relative;
     }
 
     nav ul {
@@ -56,7 +56,7 @@
     nav ul li {
       margin: 0;
       padding: 0 5px;
-      border-left: 1px solid #ccc; /* Linha fina separando os botões */
+      border-left: 1px solid #000; /* Linha preta separando os botões */
     }
 
     nav ul li:first-child {
@@ -95,6 +95,18 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    /* Nova linha preta que vai do início do bloco até o bloco laranja */
+    nav:after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: #000;
+      position: absolute;
+      bottom: 0;
+      left: 0;
     }
 
     .footer-container {
