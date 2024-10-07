@@ -1,23 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Carro</title>
+    <style>
+        /* Resetando margens e paddings */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .car-details {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .carousel {
+            position: relative;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        .carousel-images img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .carousel button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        .car-specifications ul {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .car-specifications h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .car-info {
+            margin-bottom: 20px;
+        }
+
+        .car-info h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .car-info p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .car-info .price {
+            font-size: 26px;
+            color: #0096c7;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Estilos do formulário de proposta */
+        .proposal-form {
+            width: 30%;
+            background-color: #f9f9f9;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .proposal-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .proposal-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .proposal-form input, .proposal-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .proposal-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0096c7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .proposal-form button:hover {
+            background-color: #108eb8;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .carousel-images {
+                height: 300px;
+            }
+
+            .proposal-form {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
 <div class="container">
     <div class="car-details">
-        <!-- Carrousel de fotos do carro -->
-        <div class="car-card">
-            <div class="carousel">
-                <div class="carousel-images">
-                    {% if object.photo1 %}
-                        <a onclick="openModal('{{ object.photo1.url }}'); return false;">
-                            <img src="{{ object.photo1.url }}" class="carousel-item active" alt="Car Photo 1">
-                        </a>
-                    {% endif %}
-                    <!-- Repita para as outras fotos -->
-                </div>
-                <button class="prev" onclick="prevSlide()">&#10094;</button>
-                <button class="next" onclick="nextSlide()">&#10095;</button>
+        <!-- Galeria de Imagens -->
+        <div class="carousel">
+            <div class="carousel-images">
+                {% if object.photo1 %}
+                    <a onclick="openModal('{{ object.photo1.url }}'); return false;">
+                        <img id="main-image" src="{{ object.photo1.url }}" alt="Foto Principal do Carro">
+                    </a>
+                {% endif %}
             </div>
-            <!-- Informações do carro -->
+            <button class="prev" onclick="prevSlide()">&#10094;</button>
+            <button class="next" onclick="nextSlide()">&#10095;</button>
+        </div>
+
+        <!-- Detalhes do Carro -->
+        <div class="car-info">
             <h2>{{ object.brand }} {{ object.model }}</h2>
-            <p><strong>Ano: </strong> {{ object.factory_year }}/{{ object.model_year }}</p>
-            <p><strong>Combustivel:</strong> {{ object.fuel }}</p>
+            <p><strong>Ano:</strong> {{ object.factory_year }}/{{ object.model_year }}</p>
+            <p><strong>Combustível:</strong> {{ object.fuel }}</p>
             <p><strong>Câmbio:</strong> {{ object.exchange }}</p>
             <p><strong>KM:</strong> {{ car.km|floatformat:"2g" }}</p>
             <p><strong>Preço:</strong> R$ {{ car.value|floatformat:"2g" }}</p>
@@ -25,7 +188,7 @@
             <p><strong>Contato:</strong> {{ object.contact }}</p>
         </div>
 
-        <!-- Seção de características e opcionais -->
+        <!-- Especificações e opcionais -->
         <div class="car-specifications">
             <h3>Características</h3>
             <ul>
@@ -44,7 +207,7 @@
         </div>
     </div>
 
-    <!-- Formulário de envio de proposta -->
+    <!-- Formulário de Proposta -->
     <div class="proposal-form">
         <h2>Envie sua Proposta</h2>
         <form>
@@ -63,61 +226,22 @@
     </div>
 </div>
 
-<!-- Estilos adicionais -->
-<style>
-    .container {
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
-        padding: 20px;
+<script>
+    let slideIndex = 0;
+
+    function prevSlide() {
+        // Lógica para slide anterior (caso tenha várias imagens)
     }
 
-    .car-details {
-        flex: 1;
+    function nextSlide() {
+        // Lógica para próximo slide (caso tenha várias imagens)
     }
 
-    .car-specifications ul {
-        list-style-type: none;
-        padding: 0;
+    function openModal(imageSrc) {
+        const mainImage = document.getElementById('main-image');
+        mainImage.src = imageSrc;
     }
+</script>
 
-    .proposal-form {
-        width: 30%;
-        background-color: #f9f9f9;
-        padding: 20px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-    }
-
-    .proposal-form h2 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .proposal-form label {
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .proposal-form input, .proposal-form textarea {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-    .proposal-form button {
-        width: 100%;
-        padding: 10px;
-        background-color: #0096c7;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .proposal-form button:hover {
-        background-color: #108eb8;
-    }
-</style>
+</body>
+</html>
