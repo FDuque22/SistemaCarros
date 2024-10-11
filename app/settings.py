@@ -85,7 +85,7 @@ DATABASES = {
 
 # Configurações de E-mail
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.live.com'  # Servidor SMTP para Hotmail
+EMAIL_HOST = 'smtp.office365.com'  # Servidor SMTP para Hotmail
 EMAIL_PORT = 587               # Porta para TLS
 EMAIL_USE_TLS = True           # Usar TLS
 EMAIL_HOST_USER = 'fjmultimarcassite@outlook.com'  # Seu email do Hotmail
