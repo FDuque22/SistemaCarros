@@ -6,6 +6,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 
@@ -64,3 +66,24 @@ class CarDeleteView(DeleteView):
     def get_object(self):
         # Obter o carro que será marcado como inativo
         return Car.objects.get(pk=self.kwargs['pk'])
+    
+def car_interest(request, pk):
+    car = Car.objects.get(pk=pk)
+
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+
+        # Enviar e-mail para o superusuário
+        send_mail(
+            'Novo Interesse em um Carro',
+            f'Nome: {name}\nE-mail: {email}\nTelefone: {phone}\n\nInteressado no carro: {car.brand} {car.model}',
+            settings.DEFAULT_FROM_EMAIL,
+            ['lipeduque22@gmail.com'],
+            fail_silently=False,
+        )
+
+        return redirect('success_page')  # Redirecione para uma página de sucesso ou de volta para os detalhes do carro
+
+    return render(request, 'car_interest.html', {'car': car})

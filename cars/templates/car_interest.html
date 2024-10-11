@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Tenho Interesse - {{ car.brand }} {{ car.model }}{% endblock %}
+
+{% block content %}
+<h2>Tenho Interesse no {{ car.brand }} {{ car.model }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <label for="name">Nome:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="phone">Número de Contato:</label>
+    <input type="tel" id="phone" name="phone" required>
+
+    <button type="submit">Enviar</button>
+</form>
+{% endblock %}
