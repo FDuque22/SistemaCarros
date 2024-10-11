@@ -31,16 +31,13 @@
 
     .navbar {
       justify-content: center; /* Centraliza o conteúdo horizontalmente */
-    }
-
-    .navbar-nav .nav-link {
-      color: #fff !important; /* Muda a cor do texto dos botões para branco sem transparência */
+      background-color: #0096c7; /* Adiciona fundo ao navbar */
       opacity: 1; /* Remove a transparência */
     }
 
-    .navbar-nav .nav-link.active {
-      background-color: rgba(255, 255, 255, 0.2); /* Destaque para a página ativa */
-      border-radius: 5px; /* Adiciona um leve arredondamento */
+    .navbar-nav .nav-link {
+      color: #fff; /* Muda a cor do texto dos botões para branco */
+      opacity: 1; /* Remove a transparência dos links */
     }
 
     .footer-section h4 {
@@ -95,24 +92,14 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             {% if user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link {% if request.path == url 'new_car' %}active{% endif %}" href="{% url 'new_car' %}">Cadastrar Carro</a>
-              </li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'new_car' %}">Cadastrar Carro</a></li>
             {% else %}
-              <li class="nav-item">
-                <a class="nav-link {% if request.path == url 'register' %}active{% endif %}" href="{% url 'register' %}">Cadastra-se</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {% if request.path == url 'login' %}active{% endif %}" href="{% url 'login' %}">Login</a>
-              </li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Cadastra-se</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
             {% endif %}
-            <li class="nav-item">
-              <a class="nav-link {% if request.path == url 'cars_list' %}active{% endif %}" href="{% url 'cars_list' %}">Carros</a>
-            </li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'cars_list' %}">Carros</a></li>
             {% if user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link {% if request.path == url 'logout' %}active{% endif %}" href="{% url 'logout' %}">Sair</a>
-              </li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sair</a></li>
             {% endif %}
           </ul>
         </div>
