@@ -31,9 +31,9 @@
       color: #fff;
       height: 50px;
       display: flex;
-      justify-content: center; /* Alinha os itens no centro */
+      justify-content: center;
       align-items: center;
-      flex-wrap: wrap; /* Permite que os itens se movam para a linha seguinte se necessário */
+      flex-wrap: wrap;
     }
 
     nav ul {
@@ -41,7 +41,7 @@
       margin: 0;
       padding: 0;
       display: flex;
-      flex-wrap: wrap; /* Permite que a lista de itens se ajuste em telas menores */
+      flex-wrap: wrap;
     }
 
     nav ul li {
@@ -74,21 +74,21 @@
       max-width: 1200px;
       margin: 0 auto;
       color: #ccc;
-      flex-wrap: wrap; /* Permite que as seções do rodapé se ajustem em telas menores */
+      flex-wrap: wrap;
     }
 
     .footer-section {
       flex: 1;
       padding: 0 20px;
-      min-width: 200px; /* Define uma largura mínima para as seções do rodapé */
+      min-width: 200px;
     }
 
     .footer-section h4 {
       font-size: 18px;
       color: #fff;
-      border-bottom: 2px solid #898989; /* Linha abaixo do h4 */
-      padding-bottom: 10px; /* Espaço entre o texto e a linha */
-      margin-bottom: 15px; /* Espaço após o h4 */
+      border-bottom: 2px solid #898989;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
     }
 
     .footer-section p {
@@ -107,23 +107,23 @@
 
     @media (max-width: 768px) {
       nav ul {
-        flex-direction: row; /* Muda para uma linha em telas menores */
-        justify-content: center; /* Centraliza os itens */
-        padding: 0; /* Remove o padding padrão */
+        flex-direction: row;
+        justify-content: center;
+        padding: 0;
       }
 
       nav ul li {
-        margin: 5px; /* Ajusta a margem entre os itens */
+        margin: 5px;
       }
 
       .footer-container {
-        flex-direction: column; /* Muda o layout do rodapé para uma coluna em telas menores */
-        align-items: center; /* Centraliza os itens do rodapé */
+        flex-direction: column;
+        align-items: center;
       }
 
       .footer-section {
-        margin-bottom: 20px; /* Espaço entre as seções do rodapé */
-        text-align: center; /* Centraliza o texto nas seções do rodapé */
+        margin-bottom: 20px;
+        text-align: center;
       }
     }
   </style>
@@ -136,17 +136,18 @@
         {% if user.is_authenticated %}
           <li>Olá, {{ user.username }}</li>
           <li><a href="{% url 'new_car' %}">Cadastrar Carro</a></li>
-        {% endif %}
-        {% if not user.is_authenticated %}
+          <li>
+            <!-- Ícone de conta para acessar perfil -->
+            <a href="{% url 'profile' %}">
+              <img src="{% static 'images/account-icon.png' %}" alt="Conta" style="width: 20px; height: 20px;">
+            </a>
+          </li>
+          <li><a href="{% url 'logout' %}">Sair</a></li>
+        {% else %}
           <li><a href="{% url 'register' %}">Cadastra-se</a></li>
           <li><a href="{% url 'login' %}">Login</a></li>
         {% endif %}
-
         <li><a href="{% url 'cars_list' %}">Carros</a></li>
-        
-        {% if user.is_authenticated %}
-          <li><a href="{% url 'logout' %}">Sair</a></li>
-        {% endif %}
       </ul>
     </nav>
   </header>
@@ -158,25 +159,19 @@
 
   <footer>
     <div class="footer-container">
-        <div class="footer-section">
-            <h4>QUEM SOMOS</h4>
-            <p>Somos especialistas na comercialização de veículos novos e usados, 
-              tanto nacionais quanto importados. Com toda certeza, você não apenas 
-              gostará de nossa oferta, mas também encontrará o carro ideal conosco. 
-              Todos os nossos veículos passam por uma rigorosa inspeção, garantindo 
-              aos nossos clientes total tranquilidade no momento da compra. Não perca tempo! 
-              Adquira seu carro com quem realmente entende do assunto. Nossa equipe de vendedores 
-              estará pronta para atendê-lo com satisfação.</p>
-        </div>
-        <div class="footer-section">
-            <h4>CONTATO</h4>
-            <p>(21) 99999-9999</p>
-            <p>(21) 99999-9999</p>
-        </div>
-        <div class="footer-section">
-            <h4>ENDEREÇO</h4>
-            <p>Av. Rio Grande 3587 - Taquara - Rio de Janeiro - RJ</p>
-        </div>
+      <div class="footer-section">
+        <h4>QUEM SOMOS</h4>
+        <p>Somos especialistas na comercialização de veículos novos e usados, tanto nacionais quanto importados...</p>
+      </div>
+      <div class="footer-section">
+        <h4>CONTATO</h4>
+        <p>(21) 99999-9999</p>
+        <p>(21) 99999-9999</p>
+      </div>
+      <div class="footer-section">
+        <h4>ENDEREÇO</h4>
+        <p>Av. Rio Grande 3587 - Taquara - Rio de Janeiro - RJ</p>
+      </div>
     </div>
     <p style="text-align: center;">&copy; 2023 FelipeDuque Carros</p>
   </footer>
