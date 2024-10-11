@@ -80,7 +80,7 @@ def car_interest(request, pk):
             'Novo Interesse em um Carro',
             f'Nome: {name}\nE-mail: {email}\nTelefone: {phone}\n\nInteressado no carro: {car.brand} {car.model}',
             settings.DEFAULT_FROM_EMAIL,
-            ['lipeduque22@gmail.com'],
+            ['fjmultimarcassite@outlook.com'],
             fail_silently=False,
         )
 
