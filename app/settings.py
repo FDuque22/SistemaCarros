@@ -89,7 +89,7 @@ EMAIL_HOST = 'smtp.office365.com'  # Servidor SMTP para Hotmail
 EMAIL_PORT = 587               # Porta para TLS
 EMAIL_USE_TLS = True           # Usar TLS
 EMAIL_HOST_USER = 'fjmultimarcassite@outlook.com'  # Seu email do Hotmail
-EMAIL_HOST_PASSWORD = 'testesistema123'  # Sua senha do Hotmail
+EMAIL_HOST_PASSWORD = 'tobhvtfnehuwiual'  # Sua senha do Hotmail
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
