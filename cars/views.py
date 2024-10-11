@@ -31,6 +31,7 @@ class CarsView(View):
 class CarDetailView(DetailView):
     model = Car
     template_name = 'car_detail.html'
+    slug_field = 'model'
    
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class NewCarCreateView(CreateView):
