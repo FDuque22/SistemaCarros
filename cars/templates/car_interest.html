@@ -7,7 +7,7 @@
 {% block content %}
 <div class="interest-container">
     <h2>Tenho Interesse no {{ car.brand }} {{ car.model }}</h2>
-    <form id="interestForm" class="interest-form">
+    <form method="post" class="interest-form">
         {% csrf_token %}
         <div class="form-group">
             <label for="name">Nome:</label>
@@ -24,7 +24,7 @@
             <input type="tel" id="phone" name="phone" required>
         </div>
 
-        <button type="submit" id="submitBtn" class="btn-submit">Enviar</button>
+        <button type="button" class="btn-submit">Enviar</button>
     </form>
 </div>
 
@@ -86,15 +86,5 @@
         }
     }
 </style>
-
-<script>
-    document.getElementById('interestForm').addEventListener('submit', function(e) {
-        e.preventDefault();  // Evita o envio do formulário
-
-        // Aqui você pode adicionar qualquer lógica que deseja executar ao clicar no botão.
-        // Por exemplo, você pode mostrar uma mensagem para o usuário.
-        alert('O formulário não será enviado.');  // Exibe uma mensagem ao usuário
-    });
-</script>
 
 {% endblock %}
