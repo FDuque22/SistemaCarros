@@ -27,6 +27,10 @@
       padding: 40px 0;
     }
 
+    .navbar-nav .nav-link {
+      color: #fff; /* Muda a cor do texto dos botões para branco */
+    }
+
     .footer-section h4 {
       font-size: 18px;
       color: #fff;
@@ -53,24 +57,30 @@
 
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0096c7;">
-      <div class="container d-flex justify-content-center">
-        <ul class="navbar-nav d-flex align-items-center">
-          {% if user.is_authenticated %}
-            <li class="nav-item">
-              <span class="nav-link">Olá, {{ user.username }}</span>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'new_car' %}">Cadastrar Carro</a></li>
-          {% endif %}
-          {% if not user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Cadastra-se</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-          {% endif %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'cars_list' %}">Carros</a></li>
-          {% if user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sair</a></li>
-          {% endif %}
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">Carros</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <span class="nav-link">Olá, {{ user.username }}</span>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'new_car' %}">Cadastrar Carro</a></li>
+            {% endif %}
+            {% if not user.is_authenticated %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Cadastra-se</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+            {% endif %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'cars_list' %}">Carros</a></li>
+            {% if user.is_authenticated %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sair</a></li>
+            {% endif %}
+          </ul>
+        </div>
       </div>
     </nav>
   </header>
