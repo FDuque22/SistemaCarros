@@ -7,7 +7,7 @@
 {% block content %}
 <div class="interest-container">
     <h2>Tenho Interesse no {{ car.brand }} {{ car.model }}</h2>
-    <form method="post" class="interest-form">
+    <form method="post" class="interest-form" onsubmit="return false;">
         {% csrf_token %}
         <div class="form-group">
             <label for="name">Nome:</label>
@@ -24,7 +24,7 @@
             <input type="tel" id="phone" name="phone" required>
         </div>
 
-        <button type="button" class="btn-submit">Enviar</button>
+        <button type="submit" class="btn-submit">Enviar</button>
     </form>
 </div>
 
