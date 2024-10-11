@@ -229,8 +229,8 @@
 
 {% if user.is_authenticated %}
   <div class="buttons-container">
-    <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-primary">Editar</a>
-    <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a>
+   <!-- <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-primary">Editar</a>
+    <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a> -->
     <a href="{% url 'car_interest' pk=object.pk %}" class="btn">Tenho Interesse</a>
   </div>
 {% endif %}
