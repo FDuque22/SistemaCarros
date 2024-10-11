@@ -29,6 +29,10 @@
       padding: 40px 0;
     }
 
+    .navbar {
+      justify-content: center; /* Centraliza o conteúdo horizontalmente */
+    }
+
     .navbar-nav .nav-link {
       color: #fff; /* Muda a cor do texto dos botões para branco */
     }
@@ -54,21 +58,37 @@
     .footer-section p a:hover {
       text-decoration: underline;
     }
+
+    @media (min-width: 992px) {
+      /* Ajusta a altura do navbar para centralizar verticalmente */
+      .navbar {
+        height: 70px; /* Altura fixa para o navbar */
+      }
+
+      .navbar-nav {
+        align-items: center; /* Centraliza os itens verticalmente */
+      }
+
+      .navbar-nav .nav-item {
+        margin: 0 15px; /* Adiciona espaço entre os itens do menu */
+      }
+    }
   </style>
 </head>
 
 <body>
   <header>
+    {% if user.is_authenticated %}
+      <div>Olá, {{ user.username }}</div> <!-- Mensagem fora do menu -->
+    {% endif %}
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container">
-        {% if user.is_authenticated %}
-          <div>Olá, {{ user.username }}</div> <!-- Mensagem fora do menu -->
-        {% endif %}
+        <a class="navbar-brand" href="#">Carros</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav">
             {% if user.is_authenticated %}
               <li class="nav-item"><a class="nav-link" href="{% url 'new_car' %}">Cadastrar Carro</a></li>
             {% else %}
