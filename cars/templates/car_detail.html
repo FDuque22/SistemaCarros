@@ -11,7 +11,7 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
         overflow: hidden; /* Alterado de cover para hidden para evitar transbordamento */
-        text-align: center;
+        text-align: left; /* Mudei para left para alinhar o texto à esquerda */
         transition: all 0.3s ease;
         max-width: 500px;
         margin: 20px auto 0;
@@ -39,6 +39,7 @@
     .car-card p {
         font-size: 1rem;
         margin-bottom: 10px;
+        text-align: left; /* Garante que o texto dos parágrafos fique alinhado à esquerda */
     }
 
     .buttons-container {
@@ -213,7 +214,7 @@
     </div>
     <h2><strong>{{ object.brand }} {{ object.model }}</strong></h2>
     <p><strong>Ano: </strong> {{ object.factory_year }}/{{ object.model_year }}</p>
-    <p><strong>Combustivel:</strong> {{ object.fuel }}</p>
+    <p><strong>Combustível:</strong> {{ object.fuel }}</p>
     <p><strong>Câmbio:</strong> {{ object.exchange }}</p>
     <p><strong>KM:</strong> {{ car.km|floatformat:"2g" }}</p>
     <p><strong>Preço:</strong> R$ {{ car.value|floatformat:"2g" }}</p>
