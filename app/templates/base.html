@@ -59,12 +59,11 @@
 
 <body>
   <header>
-    {% if user.is_authenticated %}
-      <div>Olá, {{ user.username }}</div> <!-- Mensagem fora do menu -->
-    {% endif %}
     <nav class="navbar navbar-expand-lg navbar-dark">
       <div class="container">
-        <a class="navbar-brand" href="#">Carros</a>
+        {% if user.is_authenticated %}
+          <div>Olá, {{ user.username }}</div> <!-- Mensagem fora do menu -->
+        {% endif %}
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
