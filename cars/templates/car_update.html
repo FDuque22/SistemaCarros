@@ -62,26 +62,6 @@
       transition: background-color 0.3s ease-in-out;
     }
 
-    .buttons-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-
-    .btn {
-      display: inline-block;
-      background-color: #0096c7;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease-in-out;
-      margin: 0 10px;
-    }
-
     .btn:hover {
       background-color: #108eb8;
     }
@@ -106,10 +86,10 @@
     }
 
   </style>
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" class="form">
     {% csrf_token %}
     <h1>Editar Carro</h1>
-    <table>
+    <table class="table">
       {{ form.as_table }}
     </table>
     <div>
