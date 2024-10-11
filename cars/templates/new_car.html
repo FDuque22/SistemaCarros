@@ -3,243 +3,238 @@
 {% block title %}Cadastrar Carro{% endblock %}
 
 {% block content %}
-    <style>
-        h2 {
-            font-size: 30px;
-            color: #333;
-            text-align: left;
-            margin-left: 200px;
-        }
+<style>
+    h2 {
+        font-size: 30px;
+        color: #333;
+        text-align: left;
+        margin-left: 20px; /* Ajustado para ser responsivo */
+    }
 
-        .text-Cabecalho {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 10px;
-            margin-left: 200px;
-            margin-top: 5px;    
-        }
+    .text-Cabecalho {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 10px;
+        margin-left: 20px; /* Ajustado para ser responsivo */
+        margin-top: 5px;    
+    }
 
-        form {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f8f8f8;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+    form {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f8f8f8;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-        .form-section {
-            margin-bottom: 30px;
-        }
+    .form-section {
+        margin-bottom: 30px;
+    }
 
-        h3 {
-            font-size: 18px;
-            color: #333;
-            text-align: center;  
-            position: relative;  
-            margin-bottom: 15px; 
-            padding-bottom: 10px; 
-        }
+    h3 {
+        font-size: 18px;
+        color: #333;
+        text-align: center;  
+        position: relative;  
+        margin-bottom: 15px; 
+        padding-bottom: 10px; 
+    }
 
-        h3::after {
-            content: '';  
-            position: absolute;
-            bottom: -5px;  
-            left: 50%;  
-            width: 50%;  
-            height: 2px;  
-            background-color: #898989;  
-            transform: translateX(-50%); 
-        }
+    h3::after {
+        content: '';  
+        position: absolute;
+        bottom: -5px;  
+        left: 50%;  
+        width: 50%;  
+        height: 2px;  
+        background-color: #898989;  
+        transform: translateX(-50%); 
+    }
 
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
 
-        .form-group {
-            flex: 1;
-            min-width: 250px;
-        }
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
+    input[type="file"] {
+        padding: 3px;
+    }
 
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        text-align: center;
+        display: block;
+        margin: 0 auto;
+    }
 
-        input[type="file"] {
-            padding: 3px;
-        }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
 
-        .btn-primary {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 4px;
-            text-align: center;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        /* Estilos para telas menores */
-        @media (max-width: 768px) {
-            h2 {
-                margin-left: 20px; /* Ajusta a margem para telas menores */
-            }
-
-            .text-Cabecalho {
-                margin-left: 20px; /* Ajusta a margem para telas menores */
-            }
-
-            .form-group {
-                flex: 1 0 100%; /* Faz com que cada grupo ocupe 100% da largura */
-                margin-bottom: 15px; /* Adiciona um espaço entre os campos */
-            }
-
-            .form-row {
-                flex-direction: column; /* Alinha os elementos em coluna */
-            }
-        }
-    </style>
-
-    <h2>ANUNCIE SEU CARRO</h2>
-    <p class="text-Cabecalho">
-        Oferecemos uma solução completa para vender seu carro.
-    </p>
-    <p class="text-Cabecalho">
-        - Todos os Campos são OBRIGATÓRIOS;
-    </p>
-    <p class="text-Cabecalho">
-        - Todos os anúncios são revisados antes de publicar.
-    </p>
-    <br>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <div class="form-section">
-            <h3>DADOS DO VEÍCULO</h3>
-            <br>
-            <div class="form-row">
+<h2>ANUNCIE SEU CARRO</h2>
+<p class="text-Cabecalho">
+    Oferecemos uma solução completa para vender seu carro.
+</p>
+<p class="text-Cabecalho">
+    - Todos os Campos são OBRIGATÓRIOS;
+</p>
+<p class="text-Cabecalho">
+    - Todos os anúncios são revisados antes de publicar.
+</p>
+<br>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="form-section">
+        <h3>DADOS DO VEÍCULO</h3>
+        <br>
+        <div class="row">
+            <div class="col-md-6 mb-3"> <!-- 2 grupos por linha em telas grandes -->
                 <div class="form-group">
-                    <label for="model" >Marca: </label>
+                    <label for="model">Marca: </label>
                     {{ form.marca }}
                 </div>
-                
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
-                    <label for="model" >Modelo: </label>
+                    <label for="model">Modelo: </label>
                     {{ form.model }}
                 </div>
-
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="km">KM do Veículo</label>
                     {{ form.km }}
                 </div>
-
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="fuel">Combustível: </label>
                     {{ form.fuel }}
                 </div>
-
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="factory_year">Ano de Fabricação</label>
                     {{ form.factory_year }}
                 </div>
-
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="model_year">Ano do Modelo</label>
                     {{ form.model_year }}
                 </div>
-
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="exchange">Cambio (AT/MT)</label>
                     {{ form.exchange }}
                 </div>
-
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="color">Cor (Documento)</label>
                     {{ form.color }}
                 </div>
-
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="value">Valor do Veículo</label>
                     {{ form.value }}
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="form-section">
-            <h3>DADOS PESSOAIS</h3>
-            <br>
-            <div class="form-row">
+    <div class="form-section">
+        <h3>DADOS PESSOAIS</h3>
+        <br>
+        <div class="row">
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="nseller">Seu Nome: </label>
                     {{ form.seller }}
                 </div>
-
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="email">Seu Email</label>
                     {{ form.email }}
                 </div>
-
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="phone">Telefone: </label>
                     {{ form.contact }}
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="form-section">
-            <h3>FOTOS DO VEÍCULO</h3>
-            <br>
-            <div class="form-row">
+    <div class="form-section">
+        <h3>FOTOS DO VEÍCULO</h3>
+        <br>
+        <div class="row">
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="photo1">Foto 1</label>
                     {{ form.photo1 }}
                 </div>
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="photo2">Foto 2</label>
                     {{ form.photo2 }}
                 </div>
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="photo3">Foto 3</label>
                     {{ form.photo3 }}
                 </div>
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="photo4">Foto 4</label>
                     {{ form.photo4 }}
                 </div>
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="photo5">Foto 5</label>
                     {{ form.photo5 }}
                 </div>
+            </div>
+            <div class="col-md-6 mb-3">
                 <div class="form-group">
                     <label for="photo6">Foto 6</label>
                     {{ form.photo6 }}
                 </div>
             </div>
         </div>
+    </div>
 
-        <br>
-        <input type="submit" value="Cadastrar" class="btn btn-primary">
-    </form>
     <br>
-    <br>
+    <input type="submit" value="Cadastrar" class="btn btn-primary">
+</form>
+<br>
+<br>
 {% endblock %}
