@@ -11,7 +11,7 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
         overflow: hidden; /* Alterado de cover para hidden para evitar transbordamento */
-        text-align: left; /* Mudei para left para alinhar o texto à esquerda */
+        text-align: center; /* Mantenha como center para centralizar a div */
         transition: all 0.3s ease;
         max-width: 500px;
         margin: 20px auto 0;
@@ -34,12 +34,17 @@
     .car-card h2 {
         font-size: 1.5rem;
         margin: 5px;
+        text-align: left; /* Alinha o texto do título à esquerda */
+        width: fit-content; /* Ajusta a largura do título ao conteúdo */
+        margin: 0 auto; /* Centraliza o título na div */
     }
 
     .car-card p {
         font-size: 1rem;
         margin-bottom: 10px;
         text-align: left; /* Garante que o texto dos parágrafos fique alinhado à esquerda */
+        width: fit-content; /* Ajusta a largura do parágrafo ao conteúdo */
+        margin: 0 auto; /* Centraliza o parágrafo na div */
     }
 
     .buttons-container {
