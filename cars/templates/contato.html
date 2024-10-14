@@ -37,7 +37,7 @@
 
         <div class="form-group">
             <label for="mensagem">Mensagem:</label>
-            {{ form.mensagem }}  <!-- Renderiza o campo Mensagem -->
+            {{ form.mensagem|add_class:"small-message" }}  <!-- Adiciona uma classe específica para o campo Mensagem -->
         </div>
 
         <button type="submit" class="btn-submit">Enviar</button>
@@ -69,6 +69,11 @@
         font-size: 16px; /* Tamanho da fonte */
         width: 100%; /* Campos ocupam toda a largura */
         box-sizing: border-box; /* Inclui padding na largura total */
+    }
+
+    textarea.small-message {
+        height: 100px; /* Altura menor para o campo de mensagem */
+        resize: vertical; /* Permite redimensionar apenas verticalmente */
     }
 
     .btn-submit {
