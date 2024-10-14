@@ -1,13 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from cars.models import Car, Interesse
-from cars.forms import CarModelForm, InteresseForm
+from cars.models import Car
+from cars.forms import CarModelForm
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
-from django.core.mail import send_mail
-from django.conf import settings
 
 
 class CarsView(View):
@@ -66,32 +64,3 @@ class CarDeleteView(DeleteView):
     def get_object(self):
         # Obter o carro que será marcado como inativo
         return get_object_or_404(Car, pk=self.kwargs['pk'])
-
-
-# View para capturar o interesse no carro
-class TenhoInteresseView(View):
-    def get(self, request, car_id):
-        car = get_object_or_404(Car, id=car_id)
-        form = InteresseForm()
-        return render(request, 'car_interest.html', {'form': form, 'car': car})
-
-    def post(self, request, car_id):
-        car = get_object_or_404(Car, id=car_id)
-        form = InteresseForm(request.POST)
-        
-        if form.is_valid():
-            interesse = form.save(commit=False)
-            interesse.carro = car
-            interesse.save()
-
-            # Opcional: enviar um e-mail notificando sobre o interesse
-            send_mail(
-                'Novo Interesse no Carro',
-                f'Novo interesse de {interesse.nome} no carro {car.model}.',
-                settings.DEFAULT_FROM_EMAIL,
-                [settings.DEFAULT_TO_EMAIL],  # Troque pelo e-mail do destinatário
-            )
-
-            return redirect('sucesso_interesse')
-
-        return render(request, 'car_interest.html', {'form': form, 'car': car})
