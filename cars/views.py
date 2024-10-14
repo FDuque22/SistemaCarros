@@ -74,9 +74,9 @@ class InterestFormView(View):
         form = InterestForm(request.POST)
         
         if form.is_valid():
-            interest = form.save(commit=False)  # Cria uma instância, mas não salva ainda
-            interest.car = car  # Adiciona a referência do carro
-            interest.save()  # Agora salva no banco de dados
-            return redirect('car_detail', pk=pk)  # Redireciona para a página de detalhes do carro
+            interest = form.save(commit=False) 
+            interest.car = car 
+            interest.save() 
+            return redirect('car_detail', pk=pk)  
 
         return render(request, 'car_interest.html', {'form': form, 'car': car})
