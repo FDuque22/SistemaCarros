@@ -1,5 +1,5 @@
 from django import forms
-from cars.models import Car, Interesse
+from cars.models import Car
 
 #Criação do formulário para o usuário cadastrar carros para venda
 class CarModelForm(forms.ModelForm):
