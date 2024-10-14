@@ -9,7 +9,7 @@ class CarModelForm(forms.ModelForm):
         fields = '__all__'
 
 # Criação do formulário de interesse
-class InterestForm(forms.Form):
+class InterestForm(forms.ModelForm):
     class Meta:
         model = CarInterest
         fields = ['name', 'email', 'telefone']
