@@ -17,7 +17,7 @@ class CarInterestAdmin(admin.ModelAdmin):
     search_fields = ('nome',)
 
 class ContatoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'email', 'contato', 'created_at')
+    list_display = ('nome', 'email', 'contato', 'mensagem')
     search_fields = ('nome',)
 
 # Registrando os modelos no painel de administração
