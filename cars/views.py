@@ -72,9 +72,11 @@ class InterestFormView(View):
     def post(self, request, pk):
         car = get_object_or_404(Car, id=pk)
         form = InterestForm(request.POST)
+        
         if form.is_valid():
-            interest = form.save(commit=False)  # Não salva ainda
+            interest = form.save(commit=False)  # Cria uma instância, mas não salva ainda
             interest.car = car  # Adiciona a referência do carro
             interest.save()  # Agora salva no banco de dados
-            return redirect('car_detail', pk=pk)
+            return redirect('car_detail', pk=pk)  # Redireciona para a página de detalhes do carro
+
         return render(request, 'car_interest.html', {'form': form, 'car': car})
