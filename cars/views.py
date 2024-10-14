@@ -82,14 +82,18 @@ class InterestFormView(View):
 
         return render(request, 'car_interest.html', {'form': form, 'car': car})
 
-def contato_view(request):
-    if request.method == 'POST':
+class ContatoView(View):
+    def get(self, request):
+        form = ContatoForm()
+        return render(request, 'contato.html', {'form': form})
+
+    def post(self, request):
         form = ContatoForm(request.POST)
+        
         if form.is_valid():
             form.save()  # Salva os dados no banco de dados
             messages.success(request, 'Sua mensagem foi enviada com sucesso!')
             return redirect('contato_geral')  # Redirecionar para a mesma página ou outra página
-    else:
-        form = ContatoForm()
 
-    return render(request, 'contato.html', {'form': form})
+        messages.error(request, 'Por favor, corrija os erros abaixo.')
+        return render(request, 'contato.html', {'form': form})
