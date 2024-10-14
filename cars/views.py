@@ -56,15 +56,13 @@ class CarDeleteView(DeleteView):
 
     def post(self, request, *args, **kwargs):
         car = self.get_object()
-        car.active = False  # Marque o carro como inativo
+        car.active = False 
         car.save()
         return redirect(self.success_url)
 
     def get_object(self):
-        # Obter o carro que será marcado como inativo
         return get_object_or_404(Car, pk=self.kwargs['pk'])
 
-# Nova view para processar o formulário de interesse
 class InterestFormView(View):
     def get(self, request, car_id):
         car = get_object_or_404(Car, pk=car_id)
@@ -76,11 +74,6 @@ class InterestFormView(View):
         car = get_object_or_404(Car, pk=car_id)
 
         if form.is_valid():
-            # Aqui você pode salvar os dados do formulário em um modelo que você criou para armazenar os interesses
-            # Exemplo:
-            # Interest.objects.create(car=car, **form.cleaned_data)
-
-            # Redirecionar após o sucesso
-            return redirect('car_list')  # Altere 'success_page' para a URL que você deseja redirecionar após o envio
+            return redirect('car_list')
 
         return render(request, 'car_interest.html', {'form': form, 'car': car})

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from cars.models import Car, Brand, CarInterest  # Não esqueça de importar CarInterest
+from cars.models import Car, Brand, CarInterest
 
 # Classe de administração para Brand
 class BrandAdmin(admin.ModelAdmin):
