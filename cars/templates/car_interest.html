@@ -7,7 +7,7 @@
 {% block content %}
 <div class="interest-container">
     <h2>Tenho Interesse no {{ car.brand }} {{ car.model }}</h2>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
             <label for="name">Nome:</label>
