@@ -74,13 +74,14 @@ class InterestFormView(View):
         car = get_object_or_404(Car, pk=car_id)
 
         if form.is_valid():
-            # Criação de uma nova instância de CarInterest
-            CarInterest.objects.create(
+            # Cria uma nova instância de CarInterest
+            interest = CarInterest(
                 nome=form.cleaned_data['nome'],
                 email=form.cleaned_data['email'],
                 telefone=form.cleaned_data['telefone'],
-                carro=car  # Supondo que você tenha um campo ForeignKey chamado 'carro' no modelo CarInterest
+                carro=car  # Associa o carro selecionado
             )
-            return redirect('car_list')  # Redireciona para a lista de carros após o envio
+            interest.save()  # Salva a instância no banco de dados
+            return redirect('car_list')  # Redireciona após o envio bem-sucedido
 
         return render(request, 'car_interest.html', {'form': form, 'car': car})
