@@ -7,7 +7,7 @@
 {% block content %}
 <div class="interest-container">
     <h2>Tenho Interesse no {{ car.brand }} {{ car.model }}</h2>
-    <form method="post" class="interest-form">
+    <form method="post" action="{% url 'car_interest' car.id %}">
         {% csrf_token %}
         <div class="form-group">
             <label for="name">Nome:</label>
