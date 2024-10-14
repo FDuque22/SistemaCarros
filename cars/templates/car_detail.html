@@ -158,8 +158,8 @@
 <div class="car-card">
     <div class="carousel">
         <div class="carousel-images">
-            {% for i in range(1, 7) %}
-                {% with photo=object|get_item:i %}
+            {% for i in "012345" %}
+                {% with photo=object|get_item:i|add:"1" %}
                     {% if photo %}
                         <a onclick="openModal('{{ photo.url }}'); return false;">
                             <img src="{{ photo.url }}" class="carousel-item{% if forloop.first %} active{% endif %}" alt="Car Photo {{ forloop.counter }}">
