@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
-
 class CarsView(View):
     def get(self, request):
         cars = Car.objects.filter(active=True).order_by('brand__name')
