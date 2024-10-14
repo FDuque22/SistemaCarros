@@ -12,8 +12,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; /* Use min-height para ocupar a altura total da tela */
         }
+
         .container {
             background-color: #fff;
             padding: 20px;
@@ -21,17 +22,21 @@
             border-radius: 8px;
             width: 400px;
             max-width: 100%;
+            box-sizing: border-box; /* Garantir que padding não afete a largura total */
         }
+
         h1 {
             text-align: center;
             margin-bottom: 20px;
             color: #333;
         }
+
         label {
             font-weight: bold;
             display: block;
             margin-bottom: 5px;
         }
+
         input, textarea {
             width: 100%;
             padding: 10px;
@@ -40,6 +45,7 @@
             border-radius: 4px;
             font-size: 14px;
         }
+
         button {
             background-color: #007bff;
             color: white;
@@ -50,9 +56,11 @@
             font-size: 16px;
             width: 100%;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         .messages {
             margin-bottom: 15px;
             color: green;
@@ -81,8 +89,8 @@
             <label for="{{ form.email.id_for_label }}">E-mail:</label>
             {{ form.email }}
 
-            <label for="{{ form.contato.id_for_label }}">Telefone:</label>
-            {{ form.contato }}
+            <label for="{{ form.telefone.id_for_label }}">Telefone:</label>
+            {{ form.telefone }}
 
             <label for="{{ form.mensagem.id_for_label }}">Mensagem:</label>
             {{ form.mensagem }}
