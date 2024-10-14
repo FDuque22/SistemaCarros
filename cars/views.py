@@ -63,3 +63,5 @@ class CarDeleteView(DeleteView):
     def get_object(self):
         # Obter o carro que será marcado como inativo
         return get_object_or_404(Car, pk=self.kwargs['pk'])
+    
+
