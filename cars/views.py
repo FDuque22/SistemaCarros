@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from cars.models import Car
-from cars.forms import CarModelForm, InterestForm  # Não esqueça de importar o InterestForm
+from cars.forms import CarModelForm, InterestForm 
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -74,6 +74,7 @@ class InterestFormView(View):
         car = get_object_or_404(Car, pk=car_id)
 
         if form.is_valid():
+
             return redirect('car_list')
 
         return render(request, 'car_interest.html', {'form': form, 'car': car})
