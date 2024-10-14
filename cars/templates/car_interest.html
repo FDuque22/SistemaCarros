@@ -1,14 +1,90 @@
 {% extends "base.html" %}
 
-{% block title %}Fale Conosco{% endblock %}
+{% block title %}Tenho Interesse - {{ car.brand }} {{ car.model }}{% endblock %}
+
+{% load static %}
 
 {% block content %}
-<div class="contact-container">
-    <h2>Fale Conosco</h2>
-    <form method="POST">
+<div class="interest-container">
+    <h2>Tenho Interesse no {{ car.brand }} {{ car.model }}</h2>
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}  <!-- Renderiza os campos do formulário -->
-        <button type="submit">Enviar</button>
+        <div class="form-group">
+            <label for="name">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Número de Contato:</label>
+            <input type="tel" id="telefone" name="telefone" required>
+        </div>
+
+        <button type="submit" class="btn-submit">Enviar</button>
     </form>
 </div>
+
+<style>
+    .interest-container {
+        max-width: 600px; /* Limite de largura para dispositivos maiores */
+        margin: 20px auto; /* Centraliza o formulário na tela */
+        padding: 20px; /* Adiciona padding interno */
+        background-color: #f9f9f9; /* Fundo claro */
+        border-radius: 8px; /* Cantos arredondados */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    }
+
+    .interest-form {
+        display: flex;
+        flex-direction: column; /* Organiza os elementos em coluna */
+    }
+
+    .form-group {
+        margin-bottom: 15px; /* Espaçamento entre os grupos de formulário */
+    }
+
+    label {
+        font-weight: bold; /* Destaque para os rótulos */
+    }
+
+    input {
+        padding: 10px; /* Espaçamento interno nos campos */
+        border: 1px solid #ccc; /* Borda leve */
+        border-radius: 4px; /* Cantos arredondados */
+        font-size: 16px; /* Tamanho da fonte */
+        width: 100%; /* Campos ocupam toda a largura */
+        box-sizing: border-box; /* Inclui padding na largura total */
+    }
+
+    .btn-submit {
+        background-color: #0096c7; /* Cor do botão */
+        color: white; /* Cor do texto do botão */
+        border: none; /* Remove borda padrão */
+        padding: 10px 20px; /* Espaçamento interno do botão */
+        font-size: 16px; /* Tamanho da fonte do botão */
+        border-radius: 4px; /* Cantos arredondados do botão */
+        cursor: pointer; /* Muda o cursor para pointer */
+        transition: background-color 0.3s; /* Animação para mudança de cor */
+    }
+
+    .btn-submit:hover {
+        background-color: #108eb8; /* Cor do botão ao passar o mouse */
+    }
+
+    /* Media Queries para Responsividade */
+    @media (max-width: 600px) {
+        .interest-container {
+            padding: 15px; /* Reduz o padding em telas pequenas */
+        }
+
+        .btn-submit {
+            width: 100%; /* Botão ocupa toda a largura em telas pequenas */
+        }
+    }
+</style>
+
 {% endblock %}

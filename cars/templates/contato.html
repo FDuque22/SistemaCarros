@@ -2,100 +2,13 @@
 
 {% block title %}Fale Conosco{% endblock %}
 
-{% load static %}
-
 {% block content %}
-<div class="interest-container">
+<div class="contact-container">
     <h2>Fale Conosco</h2>
-
-    <!-- Exibe mensagens de sucesso ou erro -->
-    {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-                <p>{{ message }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    <!-- Formulário de Contato -->
     <form method="POST">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nnome" required>
-        </div>
-
-        <div class="form-group">
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-
-        <div class="form-group">
-            <label for="telefone">Número de Contato:</label>
-            <input type="tel" id="contato" name="contato" required>
-        </div>
-
-        <div class="form-group">
-            <label for="mensagem">Mensagem:</label>
-            <textarea id="mensagem" name="mensagem" required></textarea>
-        </div>
-
-        <button type="submit" class="btn-submit">Enviar</button>
+        {{ form.as_p }}  <!-- Renderiza os campos do formulário -->
+        <button type="submit">Enviar</button>
     </form>
 </div>
-
-<style>
-    .interest-container {
-        max-width: 600px; /* Limite de largura para dispositivos maiores */
-        margin: 20px auto; /* Centraliza o formulário na tela */
-        padding: 20px; /* Adiciona padding interno */
-        background-color: #f9f9f9; /* Fundo claro */
-        border-radius: 8px; /* Cantos arredondados */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
-    }
-
-    .form-group {
-        margin-bottom: 15px; /* Espaçamento entre os grupos de formulário */
-    }
-
-    label {
-        font-weight: bold; /* Destaque para os rótulos */
-    }
-
-    input, textarea {
-        padding: 10px; /* Espaçamento interno nos campos */
-        border: 1px solid #ccc; /* Borda leve */
-        border-radius: 4px; /* Cantos arredondados */
-        font-size: 16px; /* Tamanho da fonte */
-        width: 100%; /* Campos ocupam toda a largura */
-        box-sizing: border-box; /* Inclui padding na largura total */
-    }
-
-    .btn-submit {
-        background-color: #0096c7; /* Cor do botão */
-        color: white; /* Cor do texto do botão */
-        border: none; /* Remove borda padrão */
-        padding: 10px 20px; /* Espaçamento interno do botão */
-        font-size: 16px; /* Tamanho da fonte do botão */
-        border-radius: 4px; /* Cantos arredondados do botão */
-        cursor: pointer; /* Muda o cursor para pointer */
-        transition: background-color 0.3s; /* Animação para mudança de cor */
-    }
-
-    .btn-submit:hover {
-        background-color: #108eb8; /* Cor do botão ao passar o mouse */
-    }
-
-    /* Media Queries para Responsividade */
-    @media (max-width: 600px) {
-        .interest-container {
-            padding: 15px; /* Reduz o padding em telas pequenas */
-        }
-
-        .btn-submit {
-            width: 100%; /* Botão ocupa toda a largura em telas pequenas */
-        }
-    }
-</style>
-
 {% endblock %}
