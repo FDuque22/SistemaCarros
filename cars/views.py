@@ -74,7 +74,7 @@ class InterestFormView(View):
         car = get_object_or_404(Car, pk=car_id)
 
         if form.is_valid():
-
+            form.save()
             return redirect('car_list')
 
         return render(request, 'car_interest.html', {'form': form, 'car': car})

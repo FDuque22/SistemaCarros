@@ -54,10 +54,10 @@ class CarInterest(models.Model):
     nome = models.CharField(max_length=100)
     email = models.EmailField(max_length=254)
     telefone = models.CharField(max_length=15)
-    created_at = models.DateTimeField(auto_now_add=True)  # Data de criação
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-created_at']  # Ordena por data de criação
+        ordering = ['-created_at']
 
     def __str__(self):
         return f'Interesse por {self.car.model} - {self.nome}'
