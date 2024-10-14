@@ -81,6 +81,6 @@ class InterestFormView(View):
             # Interest.objects.create(car=car, **form.cleaned_data)
 
             # Redirecionar após o sucesso
-            return redirect('success_page')  # Altere 'success_page' para a URL que você deseja redirecionar após o envio
+            return redirect('car_list')  # Altere 'success_page' para a URL que você deseja redirecionar após o envio
 
-        return render(request, 'interest_form.html', {'form': form, 'car': car})
+        return render(request, 'car_interest.html', {'form': form, 'car': car})
