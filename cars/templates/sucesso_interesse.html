@@ -1,0 +1,17 @@
+<!-- sucesso_interesse.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sucesso - Interesse no Carro</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- Link para o seu CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Seu interesse foi registrado!</h1>
+        <p>Obrigado por demonstrar interesse no carro. Em breve, nossa equipe entrará em contato com você.</p>
+        <a href="{% url 'cars_list' %}">Voltar para a lista de carros</a>
+    </div>
+</body>
+</html>

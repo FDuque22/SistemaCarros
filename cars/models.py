@@ -5,22 +5,22 @@ class Brand(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
 
-    def __str__(self):  #Vai retornar com a marca do carro
+    def __str__(self):  # Vai retornar com a marca do carro
         return self.name
-    
+
+
 class Car(models.Model):
-    id = models.AutoField(primary_key=True) #Primeiro Campo, ID Automoático
-    model = models.CharField(max_length=200)  #Modelo Do Carro, Campo de Texto, (200 Caracteres)
+    id = models.AutoField(primary_key=True)  # Primeiro Campo, ID Automático
+    model = models.CharField(max_length=200)  # Modelo Do Carro, Campo de Texto, (200 Caracteres)
     marca = models.CharField(max_length=200, blank=True, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.PROTECT, related_name='Car_Brand', blank=True, null=True)
     seller = models.CharField(max_length=200, blank=True, null=True)
     exchange = models.CharField(max_length=200, blank=True, null=True)
-    color = models.CharField(max_length=200, blank=True, null=True) 
-    #Marca do Carro - Chave Estrangeira(On - Não Deleta se tiver carro cadastrado - Nome da Relação)
-    factory_year = models.IntegerField(blank=True, null=True) #Ano de Fabricação do Carro (Campo Não Obrigatório)
-    model_year = models.IntegerField(blank=True, null=True) #Ano de Modelo do Carro (Campo Não Obrigatório)
+    color = models.CharField(max_length=200, blank=True, null=True)
+    factory_year = models.IntegerField(blank=True, null=True)  # Ano de Fabricação do Carro (Campo Não Obrigatório)
+    model_year = models.IntegerField(blank=True, null=True)  # Ano de Modelo do Carro (Campo Não Obrigatório)
     plate = models.CharField(max_length=20, blank=True, null=True)
-    value = models.FloatField(blank=True, null=True) #Valor do Carro, Ponto Flutuante (Campo Não Obrigatório)
+    value = models.FloatField(blank=True, null=True)  # Valor do Carro, Ponto Flutuante (Campo Não Obrigatório)
     fuel = models.CharField(max_length=20, blank=True, null=True)
     email = models.CharField(max_length=20, blank=True, null=True)
     km = models.CharField(max_length=20, blank=True, null=True)
@@ -34,18 +34,29 @@ class Car(models.Model):
     active = models.BooleanField(default=False)
     bio = models.TextField(blank=True, null=True)
 
-    def __str__(self):  #Vai retornar com o Modelo do Carro
+    def __str__(self):  # Vai retornar com o Modelo do Carro
         return self.model
-    
+
 
 class CarInventory(models.Model):
     cars_count = models.IntegerField()
     cars_value = models.FloatField()
-    created_at = models.DateTimeField(auto_now_add=True) #Qualquer registro que entrar, ele ja colocar a data.
+    created_at = models.DateTimeField(auto_now_add=True)  # Qualquer registro que entrar, ele já coloca a data.
 
-    class Meta: 
+    class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
         return f'{self.cars_count} - {self.cars_value}'
 
+
+# Novo modelo para registrar o interesse do usuário em um carro
+class Interesse(models.Model):
+    nome = models.CharField(max_length=100)
+    email = models.EmailField()
+    contato = models.CharField(max_length=20)
+    carro = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='interesses')
+    data_interesse = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Interesse de {self.nome} no {self.carro.model}'

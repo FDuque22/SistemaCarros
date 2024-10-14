@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
-from cars.models import Car, Brand
-from cars.forms import CarModelForm
+from django.shortcuts import render, redirect, get_object_or_404
+from cars.models import Car, Brand, Interesse
+from cars.forms import CarModelForm, InteresseForm
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -10,9 +10,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 
 
-
 class CarsView(View):
-   
     def get(self, request):
         cars = Car.objects.filter(active=True).order_by('brand__name')
         search = request.GET.get('search')  # Verifica se mandou busca, se não, mostra todos
@@ -56,7 +54,6 @@ class CarDeleteView(DeleteView):
     template_name = 'car_delete.html'
     success_url = '/cars/'
 
-
     def post(self, request, *args, **kwargs):
         car = self.get_object()
         car.active = False  # Marque o carro como inativo
@@ -66,24 +63,32 @@ class CarDeleteView(DeleteView):
     def get_object(self):
         # Obter o carro que será marcado como inativo
         return Car.objects.get(pk=self.kwargs['pk'])
-    
-def car_interest(request, pk):
-    car = Car.objects.get(pk=pk)
 
-    if request.method == "POST":
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
 
-        # Enviar e-mail para o superusuário
-        send_mail(
-            'Novo Interesse em um Carro',
-            f'Nome: {name}\nE-mail: {email}\nTelefone: {phone}\n\nInteressado no carro: {car.brand} {car.model}',
-            settings.DEFAULT_FROM_EMAIL,
-            ['fjmultimarcassite@outlook.com'],
-            fail_silently=False,
-        )
+# View para capturar o interesse no carro
+class TenhoInteresseView(View):
+    def get(self, request, car_id):
+        car = get_object_or_404(Car, id=car_id)
+        form = InteresseForm()
+        return render(request, 'car_interest.html', {'form': form, 'car': car})
 
-        return redirect('success_page')  # Redirecione para uma página de sucesso ou de volta para os detalhes do carro
+    def post(self, request, car_id):
+        car = get_object_or_404(Car, id=car_id)
+        form = InteresseForm(request.POST)
+        
+        if form.is_valid():
+            interesse = form.save(commit=False)
+            interesse.carro = car
+            interesse.save()
 
-    return render(request, 'car_interest.html', {'car': car})
+            # Opcional: enviar um e-mail notificando sobre o interesse
+            send_mail(
+                'Novo Interesse no Carro',
+                f'Novo interesse de {interesse.nome} no carro {car.model}.',
+                settings.DEFAULT_FROM_EMAIL,
+                [settings.DEFAULT_TO_EMAIL],  # Troque pelo e-mail do destinatário
+            )
+
+            return redirect('sucesso_interesse')
+
+        return render(request, 'car_interest.html', {'form': form, 'car': car})

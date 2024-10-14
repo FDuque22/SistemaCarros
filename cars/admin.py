@@ -13,3 +13,5 @@ class CarAdmin(admin.ModelAdmin):
 
 admin.site.register(Brand, BrandAdmin)
 admin.site.register(Car, CarAdmin) #Chama Para Habilitar no Painel Adm
+
+
