@@ -92,4 +92,4 @@ def contato_view(request):
     else:
         form = ContatoForm()
 
-    return render(request, 'contact.html', {'form': form})
+    return render(request, 'contato.html', {'form': form})
