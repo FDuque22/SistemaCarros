@@ -1,12 +1,18 @@
 from django import forms
 from cars.models import Car
 
-#Criação do formulário para o usuário cadastrar carros para venda
+# Criação do formulário para o usuário cadastrar carros para venda
 class CarModelForm(forms.ModelForm):
     class Meta:
         model = Car
         exclude = ("active",)
         fields = '__all__'
+
+# Criação do formulário de interesse
+class InterestForm(forms.Form):
+    nome = forms.CharField(max_length=100, label='Nome')
+    email = forms.EmailField(label='Email')
+    telefone = forms.CharField(max_length=15, label='Telefone')
 
 
     #def clean_value(self):   #Validação do Campo sempre será clean_CAMPO

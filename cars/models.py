@@ -47,3 +47,17 @@ class CarInventory(models.Model):
 
     def __str__(self):
         return f'{self.cars_count} - {self.cars_value}'
+
+
+class CarInterest(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='interests')
+    nome = models.CharField(max_length=100)
+    email = models.EmailField(max_length=254)
+    telefone = models.CharField(max_length=15)
+    created_at = models.DateTimeField(auto_now_add=True)  # Data de criação
+
+    class Meta:
+        ordering = ['-created_at']  # Ordena por data de criação
+
+    def __str__(self):
+        return f'Interesse por {self.car.model} - {self.nome}'

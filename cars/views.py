@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from cars.models import Car
-from cars.forms import CarModelForm
+from cars.forms import CarModelForm, InterestForm  # Não esqueça de importar o InterestForm
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -63,5 +63,24 @@ class CarDeleteView(DeleteView):
     def get_object(self):
         # Obter o carro que será marcado como inativo
         return get_object_or_404(Car, pk=self.kwargs['pk'])
-    
 
+# Nova view para processar o formulário de interesse
+class InterestFormView(View):
+    def get(self, request, car_id):
+        car = get_object_or_404(Car, pk=car_id)
+        form = InterestForm()
+        return render(request, 'interest_form.html', {'form': form, 'car': car})
+
+    def post(self, request, car_id):
+        form = InterestForm(request.POST)
+        car = get_object_or_404(Car, pk=car_id)
+
+        if form.is_valid():
+            # Aqui você pode salvar os dados do formulário em um modelo que você criou para armazenar os interesses
+            # Exemplo:
+            # Interest.objects.create(car=car, **form.cleaned_data)
+
+            # Redirecionar após o sucesso
+            return redirect('success_page')  # Altere 'success_page' para a URL que você deseja redirecionar após o envio
+
+        return render(request, 'interest_form.html', {'form': form, 'car': car})
