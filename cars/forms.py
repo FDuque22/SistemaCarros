@@ -17,7 +17,7 @@ class InterestForm(forms.ModelForm):
 class ContatoForm(forms.ModelForm):
     class Meta:
         model = Contato
-        fields = ['nome', 'email', 'telefone', 'mensagem']
+        fields = ['nome', 'email', 'contato', 'mensagem']
 
 
     #def clean_value(self):   #Validação do Campo sempre será clean_CAMPO

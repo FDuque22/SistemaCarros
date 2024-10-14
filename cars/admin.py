@@ -1,5 +1,5 @@
 from django.contrib import admin
-from cars.models import Car, Brand, CarInterest
+from cars.models import Car, Brand, CarInterest, Contato
 
 # Classe de administração para Brand
 class BrandAdmin(admin.ModelAdmin):
@@ -16,7 +16,13 @@ class CarInterestAdmin(admin.ModelAdmin):
     list_display = ('nome', 'email', 'telefone', 'car')
     search_fields = ('nome',)
 
+@admin.register(Contato)
+class ContatoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'email', 'contato', 'created_at')  # Campos que você quer mostrar na listagem
+    search_fields = ('nome', 'email')  # Campos que podem ser pesquisados
+
 # Registrando os modelos no painel de administração
 admin.site.register(Brand, BrandAdmin)
 admin.site.register(Car, CarAdmin)
 admin.site.register(CarInterest, CarInterestAdmin)
+admin.site.register(Contato, ContatoAdmin)
