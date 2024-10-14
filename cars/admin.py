@@ -14,7 +14,7 @@ class CarAdmin(admin.ModelAdmin):
 # Classe de administração para CarInterest
 class CarInterestAdmin(admin.ModelAdmin):
     list_display = ('nome', 'email', 'telefone', 'car')  # Campos a serem exibidos na lista
-    search_fields = ('nome', 'email', 'brand__name')  # Permite buscar interesses pelo nome, email e modelo do carro
+    search_fields = ('nome',)  # Permite buscar interesses pelo nome, email e modelo do carro
 
 # Registrando os modelos no painel de administração
 admin.site.register(Brand, BrandAdmin)

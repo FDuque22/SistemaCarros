@@ -64,19 +64,17 @@ class CarDeleteView(DeleteView):
         return get_object_or_404(Car, pk=self.kwargs['pk'])
 
 class InterestFormView(View):
-    def get(self, request, car_id):
-        car = get_object_or_404(Car, pk=car_id)
+    def get(self, request, pk):
+        car = get_object_or_404(Car, id=pk)
         form = InterestForm()
         return render(request, 'car_interest.html', {'form': form, 'car': car})
 
-    def post(self, request, car_id):
-        car = get_object_or_404(Car, pk=car_id)
+    def post(self, request, pk):
+        car = get_object_or_404(Car, id=pk)
         form = InterestForm(request.POST)
-
         if form.is_valid():
             interest = form.save(commit=False)  # Não salva ainda
-            interest.carro = car  # Adiciona a referência do carro
+            interest.car = car  # Adiciona a referência do carro
             interest.save()  # Agora salva no banco de dados
-            return redirect('car_list')
-
+            return redirect('car_detail', pk=pk)
         return render(request, 'car_interest.html', {'form': form, 'car': car})
