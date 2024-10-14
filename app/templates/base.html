@@ -96,7 +96,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="{% url 'cars_list' %}">Carros</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'cars_list' %}">Início</a></li>
             {% if user.is_authenticated %}
              <li class="nav-item"><a class="nav-link" href="{% url 'new_car' %}">Cadastrar Carro</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'contato_geral' %}">Contato</a></li>
