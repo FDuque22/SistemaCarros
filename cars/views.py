@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from cars.models import Car, CarInterest
+from cars.models import Car
 from cars.forms import CarModelForm, InterestForm 
 from django.views import View
 from django.urls import reverse_lazy
@@ -70,18 +70,13 @@ class InterestFormView(View):
         return render(request, 'car_interest.html', {'form': form, 'car': car})
 
     def post(self, request, car_id):
-        form = InterestForm(request.POST)
         car = get_object_or_404(Car, pk=car_id)
+        form = InterestForm(request.POST)
 
         if form.is_valid():
-            # Cria uma nova instância de CarInterest
-            interest = CarInterest(
-                nome=form.cleaned_data['nome'],
-                email=form.cleaned_data['email'],
-                telefone=form.cleaned_data['telefone'],
-                carro=car  # Associa o carro selecionado
-            )
-            interest.save()  # Salva a instância no banco de dados
-            return redirect('car_list')  # Redireciona após o envio bem-sucedido
+            interest = form.save(commit=False)  # Não salva ainda
+            interest.carro = car  # Adiciona a referência do carro
+            interest.save()  # Agora salva no banco de dados
+            return redirect('car_list')
 
         return render(request, 'car_interest.html', {'form': form, 'car': car})
