@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from cars.models import Car, Brand, Interesse
+from cars.models import Car, Interesse
 from cars.forms import CarModelForm, InteresseForm
 from django.views import View
 from django.urls import reverse_lazy
@@ -27,17 +27,19 @@ class CarsView(View):
             {'cars': cars}
         )
 
-   
+
 class CarDetailView(DetailView):
     model = Car
     template_name = 'car_detail.html'
-   
+
+
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class NewCarCreateView(CreateView):
     model = Car
     form_class = CarModelForm
     template_name = 'new_car.html'
     success_url = '/cars/'
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class CarUpdateView(UpdateView):
@@ -47,6 +49,7 @@ class CarUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('car_detail', kwargs={'pk': self.object.pk})
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class CarDeleteView(DeleteView):
@@ -62,7 +65,7 @@ class CarDeleteView(DeleteView):
 
     def get_object(self):
         # Obter o carro que será marcado como inativo
-        return Car.objects.get(pk=self.kwargs['pk'])
+        return get_object_or_404(Car, pk=self.kwargs['pk'])
 
 
 # View para capturar o interesse no carro
