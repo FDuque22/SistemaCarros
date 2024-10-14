@@ -60,4 +60,4 @@ class CarInterest(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'Interesse por {self.name} - {self.car.model}'
+        return f'Interesse por {self.nome} - {self.car.model}'
