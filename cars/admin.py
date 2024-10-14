@@ -1,5 +1,5 @@
 from django.contrib import admin
-from cars.models import Car, Brand, CarInterest  # Importando os modelos necessários
+from cars.models import Car, Brand
 
 # Classe de administração para Brand
 class BrandAdmin(admin.ModelAdmin):
@@ -19,4 +19,3 @@ class CarInterestAdmin(admin.ModelAdmin):
 # Registrando os modelos no painel de administração
 admin.site.register(Brand, BrandAdmin)
 admin.site.register(Car, CarAdmin)
-admin.site.register(CarInterest, CarInterestAdmin)  # Registrando o modelo CarInterest
