@@ -47,13 +47,3 @@ class CarInventory(models.Model):
 
     def __str__(self):
         return f'{self.cars_count} - {self.cars_value}'
-
-
-class CarInterest(models.Model):
-    nome = models.CharField(max_length=100)  # Nome do interessado
-    email = models.EmailField(max_length=254)  # Email do interessado
-    telefone = models.CharField(max_length=15)  # Telefone do interessado
-    carro = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='interests')  # Carro de interesse
-
-    def __str__(self):
-        return f'Interesse de {self.nome} no carro {self.carro.model}'
