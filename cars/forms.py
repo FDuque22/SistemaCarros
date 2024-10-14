@@ -12,7 +12,7 @@ class CarModelForm(forms.ModelForm):
 class InterestForm(forms.ModelForm):
     class Meta:
         model = CarInterest
-        fields = ['name', 'email', 'telefone']
+        fields = ['nome', 'email', 'telefone']
 
 
     #def clean_value(self):   #Validação do Campo sempre será clean_CAMPO
