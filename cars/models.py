@@ -61,3 +61,15 @@ class CarInterest(models.Model):
 
     def __str__(self):
         return f'Interesse por {self.nome} - {self.car.model}'
+    
+class Contato(models.Model):
+    nome = models.CharField(max_length=100)
+    email = models.EmailField(max_length=254)
+    telefone = models.CharField(max_length=15)
+    mensagem = models.CharField(max_length=1000)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'Interesse por {self.nome}'

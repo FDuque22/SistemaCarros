@@ -1,5 +1,5 @@
 from django import forms
-from cars.models import Car, CarInterest
+from cars.models import Car, CarInterest, Contato
 
 # Criação do formulário para o usuário cadastrar carros para venda
 class CarModelForm(forms.ModelForm):
@@ -13,6 +13,11 @@ class InterestForm(forms.ModelForm):
     class Meta:
         model = CarInterest
         fields = ['nome', 'email', 'telefone']
+
+class ContatoForm(forms.ModelForm):
+    class Meta:
+        model = Contato
+        fields = ['nome', 'email', 'telefone', 'mensagem']
 
 
     #def clean_value(self):   #Validação do Campo sempre será clean_CAMPO

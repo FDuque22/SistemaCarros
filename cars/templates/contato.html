@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}FJ - Multimarcas{% endblock %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 400px;
+            max-width: 100%;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .messages {
+            margin-bottom: 15px;
+            color: green;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fale Conosco</h1>
+
+        <!-- Exibe mensagens de sucesso ou erro -->
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Formulário de Contato -->
+        <form method="POST">
+            {% csrf_token %}
+            <label for="id_name">Nome:</label>
+            {{ form.name }}
+
+            <label for="id_email">E-mail:</label>
+            {{ form.email }}
+
+            <label for="id_phone">Telefone:</label>
+            {{ form.phone }}
+
+            <label for="id_message">Mensagem:</label>
+            {{ form.message }}
+
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</body>
+</html>

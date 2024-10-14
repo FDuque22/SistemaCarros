@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from cars.models import Car
-from cars.forms import CarModelForm, InterestForm 
+from cars.forms import CarModelForm, InterestForm, ContatoForm
 from django.views import View
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.contrib import messages
 
 class CarsView(View):
     def get(self, request):
@@ -80,3 +81,16 @@ class InterestFormView(View):
             return redirect('car_detail', pk=pk)  
 
         return render(request, 'car_interest.html', {'form': form, 'car': car})
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContatoForm(request.POST)
+        if form.is_valid():
+            # Salvar ou processar os dados do formulário aqui
+            # Você pode salvar no banco de dados ou enviar um e-mail
+            messages.success(request, 'Sua mensagem foi enviada com sucesso!')
+            return redirect('contact')  # redirecionar para a página de contato ou outra página
+    else:
+        form = ContatoForm()
+
+    return render(request, 'contact.html', {'form': form})
