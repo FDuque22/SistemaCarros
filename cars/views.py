@@ -82,7 +82,7 @@ class InterestFormView(View):
 
         return render(request, 'car_interest.html', {'form': form, 'car': car})
 
-def contact_view(request):
+def ContatoView(request):
     if request.method == 'POST':
         form = ContatoForm(request.POST)
         if form.is_valid():
