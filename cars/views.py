@@ -69,7 +69,7 @@ class InterestFormView(View):
     def get(self, request, car_id):
         car = get_object_or_404(Car, pk=car_id)
         form = InterestForm()
-        return render(request, 'interest_form.html', {'form': form, 'car': car})
+        return render(request, 'car_interest.html', {'form': form, 'car': car})
 
     def post(self, request, car_id):
         form = InterestForm(request.POST)
