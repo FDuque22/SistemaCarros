@@ -59,8 +59,7 @@
             text-align: center;
         }
     </style>
-</head>
-<body>
+
     <div class="container">
         <h1>Fale Conosco</h1>
 
@@ -76,21 +75,19 @@
         <!-- Formulário de Contato -->
         <form method="POST">
             {% csrf_token %}
-            <label for="id_name">Nome:</label>
-            {{ form.name }}
+            <label for="{{ form.nome.id_for_label }}">Nome:</label>
+            {{ form.nome }}
 
-            <label for="id_email">E-mail:</label>
+            <label for="{{ form.email.id_for_label }}">E-mail:</label>
             {{ form.email }}
 
-            <label for="id_phone">Telefone:</label>
-            {{ form.phone }}
+            <label for="{{ form.contato.id_for_label }}">Telefone:</label>
+            {{ form.contato }}
 
-            <label for="id_message">Mensagem:</label>
-            {{ form.message }}
+            <label for="{{ form.mensagem.id_for_label }}">Mensagem:</label>
+            {{ form.mensagem }}
 
             <button type="submit">Enviar</button>
         </form>
     </div>
-</body>
-</html>
 {% endblock %}
