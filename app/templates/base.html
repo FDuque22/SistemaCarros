@@ -110,6 +110,32 @@
         max-width: 200px; /* Tamanho reduzido da logo em mobile */
       }
     }
+
+    /* Estilo para o botão do WhatsApp */
+    .whatsapp-button {
+      position: fixed;
+      bottom: 20px; /* Distância do fundo da tela */
+      right: 20px; /* Distância da direita da tela */
+      background-color: #25D366; /* Cor do fundo do botão */
+      border-radius: 50%; /* Botão redondo */
+      width: 60px; /* Largura do botão */
+      height: 60px; /* Altura do botão */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Sombra do botão */
+      z-index: 1000; /* Para garantir que o botão fique acima de outros elementos */
+      transition: background-color 0.3s; /* Efeito de transição para a cor de fundo */
+    }
+
+    .whatsapp-button:hover {
+      background-color: #128C7E; /* Cor do fundo ao passar o mouse */
+    }
+
+    .whatsapp-button img {
+      width: 30px; /* Largura do ícone do WhatsApp */
+      height: 30px; /* Altura do ícone do WhatsApp */
+    }
   </style>
 </head>
 
@@ -197,8 +223,15 @@
     <p class="text-center">&copy; 2024 FJ Multimarcas</p>
   </footer>
 
+  <!-- Botão do WhatsApp -->
+  <a href="https://api.whatsapp.com/send?phone=5521964243121&text=Olá!%20Estou%20interessado%20em%20saber%20mais%20sobre%20os%20veículos." target="_blank" class="whatsapp-button">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+  </a>
+
+  <!-- jQuery e Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
