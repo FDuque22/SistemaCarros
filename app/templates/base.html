@@ -7,6 +7,8 @@
   <title>{% block title %}{% endblock %}</title>
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css" rel="stylesheet">
   <style>
     body {
       font-family: 'Open Sans', sans-serif;
@@ -35,14 +37,22 @@
     }
 
     .navbar-nav .nav-link {
-      color: #000; /* Cor preta para o texto */
+      color: #000;
       text-shadow: none;
       transition: color 0.3s ease, transform 0.3s ease;
     }
 
     .navbar-nav .nav-link:hover {
-      color: #333; /* Cor cinza escuro ao passar o mouse */
+      color: #333;
       transform: translateY(-3px);
+    }
+
+    .navbar-toggler {
+      border-color: rgba(0, 0, 0, 0.1); /* Cor da borda do ícone */
+    }
+
+    .navbar-toggler-icon {
+      color: #000; /* Cor do ícone do menu */
     }
 
     .footer-section h4 {
