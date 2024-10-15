@@ -128,7 +128,12 @@
                 </a>
               </li>
             {% else %}
-              <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Cadastra-se</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'register' %}">
+                <img src="{% static 'visual/Registro.png' %}" alt="Cadastra-se" style="width: 20px; height: 20px; margin-right: 5px;">
+                Cadastra-se
+              </a>
+            </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'login' %}">
                   <img src="{% static 'visual/Login.png' %}" alt="Login" style="width: 20px; height: 20px; margin-right: 5px;">
@@ -137,7 +142,11 @@
               </li>
             {% endif %}
             {% if user.is_authenticated %}
-              <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Sair</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">
+                <img src="{% static 'visual/Sair.png' %}" alt="Sair" style="width: 20px; height: 20px; margin-right: 5px;">
+                Sair
+              </a>
             {% endif %}
           </ul>
         </div>
