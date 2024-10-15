@@ -115,7 +115,12 @@
               </a>
             </li>
             {% if user.is_authenticated %}
-              <li class="nav-item"><a class="nav-link" href="{% url 'new_car' %}">Cadastrar Carro</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'new_car' %}">
+                <img src="{% static 'visual/Cadastro.png' %}" alt="Cadastro" style="width: 20px; height: 20px; margin-right: 5px;">
+                Cadastro
+              </a>
+            </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'contato_geral' %}">
                   <img src="{% static 'visual/envelope.png' %}" alt="Contato" style="width: 20px; height: 20px; margin-right: 5px;">
