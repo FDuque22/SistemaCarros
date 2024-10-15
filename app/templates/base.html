@@ -99,9 +99,15 @@
     }
 
     .logo {
-      max-width: 300px;
+      max-width: 300px; /* Tamanho padrão da logo */
       height: auto;
       margin: 0 auto;
+    }
+
+    @media (max-width: 576px) { /* Tamanho máximo para dispositivos móveis */
+      .logo {
+        max-width: 200px; /* Tamanho reduzido da logo em mobile */
+      }
     }
   </style>
 </head>
