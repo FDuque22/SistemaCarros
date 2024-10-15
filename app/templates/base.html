@@ -108,7 +108,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="{% url 'cars_list' %}">Início</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'cars_list' %}">
+                <img src="{% static 'visual/Home.png' %}" alt="Início" style="width: 20px; height: 20px; margin-right: 5px;">
+                Início
+              </a>
+            </li>
             {% if user.is_authenticated %}
               <li class="nav-item"><a class="nav-link" href="{% url 'new_car' %}">Cadastrar Carro</a></li>
               <li class="nav-item">
