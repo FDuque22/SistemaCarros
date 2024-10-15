@@ -104,7 +104,12 @@
             <li class="nav-item"><a class="nav-link" href="{% url 'cars_list' %}">Início</a></li>
             {% if user.is_authenticated %}
               <li class="nav-item"><a class="nav-link" href="{% url 'new_car' %}">Cadastrar Carro</a></li>
-              <li class="nav-item"><a class="nav-link" href="{% url 'contato_geral' %}">Contato</a></li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'contato_geral' %}">
+                  <img src="{% static 'visual/envelope.png' %}" alt="Contato" style="width: 20px; height: 20px; margin-right: 5px;">
+                  Contato
+                </a>
+              </li>
             {% else %}
               <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Cadastra-se</a></li>
               <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
