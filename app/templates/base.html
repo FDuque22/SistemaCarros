@@ -34,10 +34,19 @@
       background-color: #FFA500;
     }
 
+    .navbar-nav {
+      display: flex; /* Usar flexbox para alinhar os itens */
+      flex-direction: column; /* Empilhar verticalmente */
+      align-items: center; /* Centralizar os itens */
+      text-align: center; /* Centralizar o texto */
+      padding: 10px 0; /* Espaçamento no menu */
+    }
+
     .navbar-nav .nav-link {
       color: #000;
       text-shadow: none;
       transition: color 0.3s ease, transform 0.3s ease;
+      width: 100%; /* Garantir que o link ocupe 100% da largura */
     }
 
     .navbar-nav .nav-link:hover {
@@ -81,7 +90,7 @@
       }
 
       .navbar-nav {
-        align-items: center;
+        flex-direction: row; /* Muda a direção para linha em telas grandes */
       }
 
       .navbar-nav .nav-item {
@@ -147,6 +156,7 @@
                 <img src="{% static 'visual/Sair.png' %}" alt="Sair" style="width: 20px; height: 20px; margin-right: 5px;">
                 Sair
               </a>
+            </li>
             {% endif %}
           </ul>
         </div>
