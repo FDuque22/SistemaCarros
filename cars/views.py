@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.contrib import messages
-from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
+#from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 
 # Classe para a visualização de carros
 class CarsView(View):
@@ -101,17 +101,3 @@ class ContatoView(View):
 
         messages.error(request, 'Por favor, corrija os erros abaixo.')
         return render(request, 'contato.html', {'form': form})
-
-# Classe para o perfil do usuário
-@login_required  # Garante que apenas usuários autenticados possam acessar
-def meu_perfil_view(request):
-    return render(request, 'perfil.html')
-
-# Classe personalizada para alteração de senha
-class CustomPasswordChangeView(PasswordChangeView):
-    template_name = 'registration/alterar_senha.html'
-    success_url = reverse_lazy('password_change_done')
-
-# Classe para a confirmação de alteração de senha
-class CustomPasswordChangeDoneView(PasswordChangeDoneView):
-    template_name = 'registration/senha_alterada.html'

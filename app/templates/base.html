@@ -177,18 +177,6 @@
                   Contato
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'profile' %}">
-                  <img src="{% static 'visual/Profile.png' %}" alt="Perfil" style="width: 20px; height: 20px; margin-right: 5px;">
-                  Perfil
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'password_change' %}">
-                  <img src="{% static 'visual/Password.png' %}" alt="Alterar Senha" style="width: 20px; height: 20px; margin-right: 5px;">
-                  Alterar Senha
-                </a>
-              </li>
             {% else %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'register' %}">
@@ -226,37 +214,41 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 footer-section">
-                <h4>Sobre Nós</h4>
-                <p>Texto sobre a empresa ou projeto.</p>
-                <p>Exemplo: Oferecemos os melhores serviços de revenda de carros, com garantia de qualidade.</p>
+                <h4>QUEM SOMOS</h4>
+                <p>Somos especialistas na comercialização de veículos novos e usados, tanto nacionais quanto importados...</p>
             </div>
             <div class="col-md-4 footer-section">
-                <h4>Links Úteis</h4>
-                <p><a href="{% url 'cars_list' %}">Início</a></p>
-                <p><a href="{% url 'contato_geral' %}">Contato</a></p>
-                <p><a href="{% url 'profile' %}">Perfil</a></p>
-                <p><a href="{% url 'password_change' %}">Alterar Senha</a></p>
+                <h4>CONTATO</h4>
+                <p>Felipe - (21) 99999-9999 / Júlia - (21) 99999-9999</p>
             </div>
             <div class="col-md-4 footer-section">
-                <h4>Redes Sociais</h4>
-                <p>
-                    <a href="#" target="_blank"><img src="{% static 'visual/facebook.png' %}" alt="Facebook" width="30"></a>
-                    <a href="#" target="_blank"><img src="{% static 'visual/instagram.png' %}" alt="Instagram" width="30"></a>
-                    <a href="#" target="_blank"><img src="{% static 'visual/twitter.png' %}" alt="Twitter" width="30"></a>
-                </p>
+                <h4>ENDEREÇO</h4>
+                <p>Estrada do Rio Grande 3587 - Taquara - Rio de Janeiro - RJ</p>
             </div>
         </div>
     </div>
-  </footer>
+    <br>
+    <p class="text-center">&copy; 2024 FJ Multimarcas</p>
 
-  <!-- WhatsApp Button -->
-  <a href="https://api.whatsapp.com/send?phone=5521999999999&text=Ol%C3%A1%20" class="whatsapp-button" target="_blank">
-    <img src="{% static 'visual/whatsapp.png' %}" alt="WhatsApp">
+    <!-- Links de redes sociais -->
+    <div class="text-center">
+        <a href="https://www.facebook.com/seu-perfil" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" style="width: 30px; height: 30px; margin: 0 10px;">
+        </a>
+        <a href="https://www.instagram.com/seu-perfil" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width: 30px; height: 30px; margin: 0 10px;">
+        </a>
+    </div>
+</footer>
+
+  <!-- Botão do WhatsApp -->
+  <a href="https://api.whatsapp.com/send?phone=5521964243121&text=Olá!%20Estou%20interessado%20em%20saber%20mais%20sobre%20os%20veículos." target="_blank" class="whatsapp-button">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
   </a>
 
-  <!-- jQuery and Bootstrap JS -->
+  <!-- jQuery e Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
