@@ -193,15 +193,15 @@
             {% endif %}
             {% if user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}">
-                <img src="{% static 'visual/Sair.png' %}" alt="Sair" style="width: 20px; height: 20px; margin-right: 5px;">
-                Sair
+              <a class="nav-link" href="{% url 'meu_perfil' %}">
+                <img src="{% static 'visual/Login.png' %}" alt="Meu Perfil" style="width: 20px; height: 20px; margin-right: 5px;">
+                Meu Perfil
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'meu_perfil' %}">
-                <img src="{% static 'visual/Cadastro.png' %}" alt="Meu Perfil" style="width: 20px; height: 20px; margin-right: 5px;">
-                Meu Perfil
+              <a class="nav-link" href="{% url 'logout' %}">
+                <img src="{% static 'visual/Sair.png' %}" alt="Sair" style="width: 20px; height: 20px; margin-right: 5px;">
+                Sair
               </a>
             </li>
             {% endif %}
