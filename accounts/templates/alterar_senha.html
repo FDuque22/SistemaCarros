@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title %}Altere Sua Senha{% endblock %}
+
 {% block content %}
 <style>
     .password-change-container {
@@ -23,12 +25,26 @@
     .form-control {
         border-radius: 5px;
         padding: 10px;
+        border: 1px solid #ccc; /* Bordas padrão */
+        transition: border-color 0.3s; /* Transição suave na cor da borda */
+    }
+
+    .form-control:focus {
+        border-color: #FFA500; /* Cor laranja ao focar */
+        box-shadow: 0 0 5px rgba(255, 165, 0, 0.5); /* Efeito de sombra suave */
     }
 
     .btn-primary {
+        background-color: #FFA500; /* Cor laranja do botão */
+        border: none; /* Remove a borda padrão */
         width: 100%;
         padding: 10px;
         border-radius: 5px;
+        transition: background-color 0.3s; /* Transição suave na cor do botão */
+    }
+
+    .btn-primary:hover {
+        background-color: #e59400; /* Tom mais escuro de laranja ao passar o mouse */
     }
 </style>
 
