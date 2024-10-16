@@ -227,12 +227,16 @@
     <img class="modal-content" id="modalImage">
 </div>
 
-<!-- {% if user.is_authenticated %} -->
-  <div class="buttons-container">
-   <!-- <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-primary">Editar</a>
-    <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a> -->
+<div class="buttons-container">
     <a href="{% url 'interest_form' pk=object.pk %}" class="btn btn-primary">Tenho Interesse</a>
-  </div>
+</div>
+
+  <!-- {% if user.is_authenticated %}
+  <div class="buttons-container">
+    <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-primary">Editar</a>
+    <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a>
+    <a href="{% url 'interest_form' pk=object.pk %}" class="btn btn-primary">Tenho Interesse</a>
+  </div> -->
 {% endif %}
 
 <!-- JavaScript Carousel -->
