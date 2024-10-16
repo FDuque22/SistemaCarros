@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h2>Senha Alterada com Sucesso!</h2>
+            <p>Sua senha foi alterada com sucesso.</p>
+            <a href="{% url 'meu_perfil' %}" class="btn btn-primary mt-3">Voltar ao Perfil</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
