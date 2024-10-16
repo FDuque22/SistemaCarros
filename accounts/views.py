@@ -23,12 +23,11 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('cars_list')  # Redirecionar para a lista de carros
+            return redirect('cars_list')  # Redirecionar após login
         else:
-            messages.error(request, "Usuário ou senha inválidos!")  # Mensagem de erro
-            login_form = AuthenticationForm()
-    else:
-        login_form = AuthenticationForm()
+            messages.error(request, "Usuário ou senha inválidos!")
+    
+    login_form = AuthenticationForm()
     return render(request, 'login.html', {'login_form': login_form})
 
 def logout_view(request):
