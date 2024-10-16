@@ -1,13 +1,55 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+    .password-change-container {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .password-change-header {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+    }
+</style>
+
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <h2>Alterar Senha</h2>
+        <div class="col-md-6 password-change-container">
+            <h2 class="password-change-header">Alterar Senha</h2>
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
+                <div class="form-group">
+                    <label for="id_old_password">Senha Antiga:</label>
+                    <input type="password" name="old_password" class="form-control" id="id_old_password" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_new_password1">Nova Senha:</label>
+                    <input type="password" name="new_password1" class="form-control" id="id_new_password1" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_new_password2">Confirme a Nova Senha:</label>
+                    <input type="password" name="new_password2" class="form-control" id="id_new_password2" required>
+                </div>
                 <button type="submit" class="btn btn-primary mt-3">Alterar Senha</button>
             </form>
         </div>
