@@ -38,7 +38,7 @@ def logout_view(request):
 
 @login_required
 def meu_perfil(request):
-    return render(request, 'meu_perfil.html')  # Template para Meu Perfil
+    return render(request, 'perfil.html')  # Template para Meu Perfil
 
 @login_required
 def alterar_senha(request):
