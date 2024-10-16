@@ -2,9 +2,8 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth import views as auth_views
 from cars.views import CarsView, NewCarCreateView, CarDetailView, CarUpdateView, CarDeleteView, InterestFormView, ContatoView
-from accounts.views import register_view, login_view, logout_view
+from accounts.views import register_view, login_view, logout_view, meu_perfil, alterar_senha  # Importando as views necessárias
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -13,7 +12,7 @@ urlpatterns = [
     path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
-    
+
     # Views de Carros
     path('cars/', CarsView.as_view(), name='cars_list'),
     path('', CarsView.as_view(), name='cars_list'),
@@ -23,5 +22,9 @@ urlpatterns = [
     path('car/<int:pk>/delete/', CarDeleteView.as_view(), name='car_delete'),
     path('car/<int:pk>/interest/', InterestFormView.as_view(), name='interest_form'),
     path('contato/', ContatoView.as_view(), name='contato_geral'),
-    
+
+    # URLs do app accounts
+    path('meu_perfil/', meu_perfil, name='meu_perfil'),  # URL para Meu Perfil
+    path('alterar_senha/', alterar_senha, name='alterar_senha'),  # URL para Alterar Senha
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

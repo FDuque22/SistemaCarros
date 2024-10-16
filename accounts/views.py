@@ -2,6 +2,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib import messages  # Para mostrar mensagens de erro
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.decorators import login_required
 
 def register_view(request):
     if request.method == "POST":
@@ -33,3 +35,20 @@ def logout_view(request):
     logout(request)
     messages.success(request, "Você foi desconectado com sucesso!")  # Mensagem de sucesso
     return redirect('login')  # Redirecionar para a lista de carros
+
+@login_required
+def meu_perfil(request):
+    return render(request, 'account/meu_perfil.html')  # Template para Meu Perfil
+
+@login_required
+def alterar_senha(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, 'Sua senha foi alterada com sucesso!')
+            return redirect('account:meu_perfil')  # Redireciona para Meu Perfil
+    else:
+        form = PasswordChangeForm(request.user)
+    
+    return render(request, 'account/alterar_senha.html', {'form': form})  # Template para Alterar Senha
