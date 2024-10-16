@@ -7,18 +7,16 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.contrib import messages
-#from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 
 # Classe para a visualização de carros
 class CarsView(View):
     def get(self, request):
         cars = Car.objects.filter(active=True).order_by('brand__name')
-        search = request.GET.get('search')  # Verifica se mandou busca, se não, mostra todos
+        search = request.GET.get('search')
 
         if search:
             cars_by_model = Car.objects.filter(model__icontains=search, active=True)
             cars_by_brand = Car.objects.filter(brand__name__icontains=search, active=True)
-            # Combine os dois QuerySets
             cars = cars_by_model | cars_by_brand
         
         return render(
@@ -95,9 +93,9 @@ class ContatoView(View):
         form = ContatoForm(request.POST)
         
         if form.is_valid():
-            form.save()  # Salva os dados no banco de dados
+            form.save()
             messages.success(request, 'Sua mensagem foi enviada com sucesso!')
-            return redirect('contato_geral')  # Redirecionar para a mesma página ou outra página
+            return redirect('contato_geral') 
 
         messages.error(request, 'Por favor, corrija os erros abaixo.')
         return render(request, 'contato.html', {'form': form})

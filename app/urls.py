@@ -23,11 +23,5 @@ urlpatterns = [
     path('car/<int:pk>/delete/', CarDeleteView.as_view(), name='car_delete'),
     path('car/<int:pk>/interest/', InterestFormView.as_view(), name='interest_form'),
     path('contato/', ContatoView.as_view(), name='contato_geral'),
-
-    # Perfil do usuário
-    #path('meu-perfil/', meu_perfil_view, name='meu_perfil'),
     
-    # Alterar senha
-    #path('alterar-senha/', auth_views.PasswordChangeView.as_view(template_name='registration/alterar_senha.html'), name='password_change'),
-    #path('senha-alterada/', auth_views.PasswordChangeDoneView.as_view(template_name='registration/senha_alterada.html'), name='password_change_done'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
