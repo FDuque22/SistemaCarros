@@ -12,7 +12,7 @@ urlpatterns = [
     path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
-    path('accounts/', include('django.contrib.auth.urls')),  # Adiciona as URLs de autenticação do Django
+    #path('accounts/', include('django.contrib.auth.urls')),  # Adiciona as URLs de autenticação do Django
 
     # Views de Carros
     path('cars/', CarsView.as_view(), name='cars_list'),
