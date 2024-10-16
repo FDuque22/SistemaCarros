@@ -1,8 +1,7 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm 
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
-from django.contrib import messages  # Para mostrar mensagens de erro
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 def register_view(request):
@@ -26,24 +25,8 @@ def login_view(request):
             return redirect('cars_list')  # Redirecionar para a lista de carros
         else:
             messages.error(request, "Usuário ou senha inválidos!")  # Mensagem de erro
-            login_form = AuthenticationForm()
-    else:
-        login_form = AuthenticationForm()
+    login_form = AuthenticationForm()  # Move esta linha para fora do else
     return render(request, 'login.html', {'login_form': login_form})
-
-def login_view(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('cars_list')  # Redirecionar após login
-        else:
-            messages.error(request, "Usuário ou senha inválidos!")
-            login_form = AuthenticationForm()
-    return render(request, 'login.html', {'login_form': login_form})
-
 
 def logout_view(request):
     logout(request)
@@ -60,6 +43,7 @@ def alterar_senha(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
+            update_session_auth_hash(request, user)  # Mantém o usuário autenticado após a mudança de senha
             messages.success(request, 'Sua senha foi alterada com sucesso!')
             return redirect('meu_perfil')  # Redireciona para Meu Perfil
     else:
