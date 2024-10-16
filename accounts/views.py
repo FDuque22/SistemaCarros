@@ -38,7 +38,7 @@ def logout_view(request):
 
 @login_required
 def meu_perfil(request):
-    return render(request, 'account/meu_perfil.html')  # Template para Meu Perfil
+    return render(request, 'meu_perfil.html')  # Template para Meu Perfil
 
 @login_required
 def alterar_senha(request):
@@ -47,8 +47,8 @@ def alterar_senha(request):
         if form.is_valid():
             user = form.save()
             messages.success(request, 'Sua senha foi alterada com sucesso!')
-            return redirect('account:meu_perfil')  # Redireciona para Meu Perfil
+            return redirect('meu_perfil')  # Redireciona para Meu Perfil
     else:
         form = PasswordChangeForm(request.user)
     
-    return render(request, 'account/alterar_senha.html', {'form': form})  # Template para Alterar Senha
+    return render(request, 'alterar_senha.html', {'form': form})  # Template para Alterar Senha
