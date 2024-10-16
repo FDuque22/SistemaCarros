@@ -48,21 +48,30 @@
         background-color: #dc3545;
     }
 
+    /* Remover aparência de link ao passar o mouse */
     .option-button:hover {
-        /* Efeito de cor mais escura */
         background-color: rgba(0, 123, 255, 0.8); /* Um pouco mais escuro para o botão primário */
         transform: translateY(-2px); /* Levanta o botão */
-        opacity: 0.9; /* Levemente mais opaco */
+        opacity: 0.9;
+        text-decoration: none; /* Garante que não haja sublinhado */
+        color: #fff; /* Mantém a cor do texto inalterada */
+        cursor: default; /* Evita que o mouse mude para a mão de link */
     }
 
     .option-button.secondary:hover {
-        background-color: rgba(108, 117, 125, 0.8); /* Um pouco mais escuro para o botão secundário */
+        background-color: rgba(108, 117, 125, 0.8);
         transform: translateY(-2px);
+        color: #fff;
+        text-decoration: none;
+        cursor: default;
     }
 
     .option-button.danger:hover {
-        background-color: rgba(220, 53, 69, 0.8); /* Um pouco mais escuro para o botão de perigo */
+        background-color: rgba(220, 53, 69, 0.8);
         transform: translateY(-2px);
+        color: #fff;
+        text-decoration: none;
+        cursor: default;
     }
 </style>
 
