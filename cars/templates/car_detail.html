@@ -226,16 +226,16 @@
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImage">
 </div>
-
+    <a href="{% url 'interest_form' pk=object.pk %}" class="btn btn-primary">Tenho Interesse</a>
 {% if user.is_authenticated %}
   <div class="buttons-container">
    <!-- <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-primary">Editar</a>
-    <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a> -->
+    <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a> 
     <a href="{% url 'interest_form' pk=object.pk %}" class="btn btn-primary">Tenho Interesse</a>
-  </div>
+  </div> -->
 {% endif %}
 
-<!-- JavaScript Carousel -->
+<!-- JavaScript Carousel -->    
 <script src="{% static 'js/carousel.js' %}"></script>
 <script src="{% static 'js/modal.js' %}"></script>
 
