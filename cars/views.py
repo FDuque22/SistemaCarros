@@ -7,7 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.contrib import messages
+from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 
+# Classe para a visualização de carros
 class CarsView(View):
     def get(self, request):
         cars = Car.objects.filter(active=True).order_by('brand__name')
@@ -25,12 +27,12 @@ class CarsView(View):
             {'cars': cars}
         )
 
-
+# Classe para detalhes de um carro
 class CarDetailView(DetailView):
     model = Car
     template_name = 'car_detail.html'
 
-
+# Classe para criação de novos carros
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class NewCarCreateView(CreateView):
     model = Car
@@ -38,7 +40,7 @@ class NewCarCreateView(CreateView):
     template_name = 'new_car.html'
     success_url = '/cars/'
 
-
+# Classe para atualização de carros
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class CarUpdateView(UpdateView):
     model = Car
@@ -48,7 +50,7 @@ class CarUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('car_detail', kwargs={'pk': self.object.pk})
 
-
+# Classe para deletar carros (marcando como inativo)
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class CarDeleteView(DeleteView):
     model = Car
@@ -64,6 +66,7 @@ class CarDeleteView(DeleteView):
     def get_object(self):
         return get_object_or_404(Car, pk=self.kwargs['pk'])
 
+# Classe para o formulário de interesse em um carro
 class InterestFormView(View):
     def get(self, request, pk):
         car = get_object_or_404(Car, id=pk)
@@ -82,6 +85,7 @@ class InterestFormView(View):
 
         return render(request, 'car_interest.html', {'form': form, 'car': car})
 
+# Classe para o contato
 class ContatoView(View):
     def get(self, request):
         form = ContatoForm()
@@ -97,3 +101,17 @@ class ContatoView(View):
 
         messages.error(request, 'Por favor, corrija os erros abaixo.')
         return render(request, 'contato.html', {'form': form})
+
+# Classe para o perfil do usuário
+@login_required  # Garante que apenas usuários autenticados possam acessar
+def meu_perfil_view(request):
+    return render(request, 'perfil.html')
+
+# Classe personalizada para alteração de senha
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'registration/alterar_senha.html'
+    success_url = reverse_lazy('password_change_done')
+
+# Classe para a confirmação de alteração de senha
+class CustomPasswordChangeDoneView(PasswordChangeDoneView):
+    template_name = 'registration/senha_alterada.html'

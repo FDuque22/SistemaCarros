@@ -2,15 +2,19 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 from cars.views import CarsView, NewCarCreateView, CarDetailView, CarUpdateView, CarDeleteView, InterestFormView, ContatoView
-from accounts.views import register_view, login_view, logout_view
-
+from accounts.views import register_view, login_view, logout_view, meu_perfil_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    # Autenticação
     path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
+    
+    # Views de Carros
     path('cars/', CarsView.as_view(), name='cars_list'),
     path('', CarsView.as_view(), name='cars_list'),
     path('new_car/', NewCarCreateView.as_view(), name='new_car'),
@@ -19,4 +23,11 @@ urlpatterns = [
     path('car/<int:pk>/delete/', CarDeleteView.as_view(), name='car_delete'),
     path('car/<int:pk>/interest/', InterestFormView.as_view(), name='interest_form'),
     path('contato/', ContatoView.as_view(), name='contato_geral'),
+
+    # Perfil do usuário
+    path('meu-perfil/', meu_perfil_view, name='meu_perfil'),
+    
+    # Alterar senha
+    path('alterar-senha/', auth_views.PasswordChangeView.as_view(template_name='registration/alterar_senha.html'), name='password_change'),
+    path('senha-alterada/', auth_views.PasswordChangeDoneView.as_view(template_name='registration/senha_alterada.html'), name='password_change_done'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
