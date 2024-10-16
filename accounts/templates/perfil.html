@@ -1,34 +1,71 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+    .profile-container {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-header {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .profile-info {
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .option-button {
+        display: block;
+        margin: 10px 0;
+        padding: 10px;
+        text-align: center;
+        border-radius: 5px;
+        color: #fff;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .option-button.primary {
+        background-color: #007bff;
+    }
+
+    .option-button.secondary {
+        background-color: #6c757d;
+    }
+
+    .option-button.danger {
+        background-color: #dc3545;
+    }
+
+    .option-button:hover {
+        opacity: 0.9;
+    }
+</style>
+
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-4">
-            <h2>Meu Perfil</h2>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <strong>Nome:</strong> {{ user.get_full_name }}
-                </li>
-                <li class="list-group-item">
-                    <strong>Email:</strong> {{ user.email }}
-                </li>
-            </ul>
+        <div class="col-md-4 profile-container">
+            <h2 class="profile-header">Meu Perfil</h2>
+            <div class="profile-info">
+                <p><strong>Nome:</strong> {{ user.name }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+            </div>
         </div>
 
-        <div class="col-md-8">
-            <h3 class="mt-4">Opções</h3>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <a href="{% url 'password_change' %}" class="btn btn-primary">Alterar Senha</a>
-                </li>
-                <li class="list-group-item">
-                    <!-- Exemplo de outra opção futura -->
-                    <a href="#" class="btn btn-secondary">Editar Informações</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="{% url 'logout' %}" class="btn btn-danger">Sair da Conta</a>
-                </li>
-            </ul>
+        <div class="col-md-8 profile-container">
+            <h3 class="profile-header">Opções</h3>
+            <a href="{% url 'alterar_senha' %}" class="option-button primary">Alterar Senha</a>
+            <a href="#" class="option-button secondary">Editar Informações</a>
+            <a href="{% url 'logout' %}" class="option-button danger">Sair da Conta</a>
         </div>
     </div>
 </div>
