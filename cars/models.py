@@ -9,11 +9,6 @@ class Brand(models.Model):
 
 
 class Car(models.Model):
-    VEHICLE_TYPE_CHOICES = [
-        ('car', 'Carro'),
-        ('moto', 'Moto'),
-    ]
-    
     id = models.AutoField(primary_key=True)  # ID automático
     model = models.CharField(max_length=200)  # Modelo do carro
     marca = models.CharField(max_length=200, blank=True, null=True)
@@ -37,12 +32,9 @@ class Car(models.Model):
     photo6 = models.ImageField(upload_to='cars/', blank=True, null=True)
     active = models.BooleanField(default=False)
     bio = models.TextField(blank=True, null=True)
-    
-    # Campo para definir se é um carro ou moto
-    vehicle_type = models.CharField(max_length=4, choices=VEHICLE_TYPE_CHOICES, default='car')
 
-    def __str__(self):  # Retorna o modelo do veículo
-        return f"{self.model} ({self.get_vehicle_type_display()})"
+    def __str__(self):  # Retorna o modelo do carro
+        return self.model
 
 
 class CarInventory(models.Model):
