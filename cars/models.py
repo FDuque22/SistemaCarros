@@ -6,6 +6,13 @@ class Brand(models.Model):
 
     def __str__(self):  # Retorna o nome da marca
         return self.name
+        
+class Car(models.Model):
+    CATEGORY_CHOICES = [
+        ('car', 'Carro'),
+        ('moto', 'Moto'),
+    ]
+    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, default='car')
 
 
 class Car(models.Model):

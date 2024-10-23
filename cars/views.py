@@ -11,20 +11,26 @@ from django.contrib import messages
 # Classe para a visualização de carros
 class CarsView(View):
     def get(self, request):
+        category = request.GET.get('category')  # Obtém a categoria do parâmetro da URL
         cars = Car.objects.filter(active=True).order_by('brand__name')
-        search = request.GET.get('search')
 
+        # Filtro de categoria
+        if category == 'car':
+            cars = cars.filter(category='car')
+        elif category == 'moto':
+            cars = cars.filter(category='moto')
+
+        search = request.GET.get('search')
         if search:
-            cars_by_model = Car.objects.filter(model__icontains=search, active=True)
-            cars_by_brand = Car.objects.filter(brand__name__icontains=search, active=True)
+            cars_by_model = cars.filter(model__icontains=search)
+            cars_by_brand = cars.filter(brand__name__icontains=search)
             cars = cars_by_model | cars_by_brand
-        
+
         return render(
             request, 
             'cars.html', 
             {'cars': cars}
         )
-
 # Classe para detalhes de um carro
 class CarDetailView(DetailView):
     model = Car
