@@ -86,7 +86,22 @@
     }
 
     a:hover {
-        color: #FFA500
+        color: #FFA500;
+    }
+
+    .btn-filter {
+        background-color: #FFA500;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 0 10px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .btn-filter:hover {
+        background-color: #cc8400;
     }
 
     /* Estilos para a seção de ofertas em destaque */
@@ -98,15 +113,22 @@
     .highlight-section h2 {
         font-size: 24px;
         color: #333;
-        margin-bottom: 5px; /* Reduzindo o espaço abaixo do título */
+        margin-bottom: 5px;
     }
 
     .highlight-section p {
         font-size: 14px;
         color: #888;
-        margin-top: 0; /* Removendo o espaço acima do parágrafo */
+        margin-top: 0;
     }
 </style>
+
+<!-- Botões de Filtro -->
+<div class="filter-buttons text-center mb-4">
+    <a href="{% url 'cars_list' %}" class="btn-filter">Tudo</a>
+    <a href="{% url 'cars_list' %}?category=car" class="btn-filter">Carros</a>
+    <a href="{% url 'cars_list' %}?category=moto" class="btn-filter">Motos</a>
+</div>
 
 <form method="GET" action="{% url 'cars_list' %}">
     <input type="text" name="search" placeholder="Buscar carro...">
