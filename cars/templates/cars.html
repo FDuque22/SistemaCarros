@@ -123,13 +123,6 @@
     }
 </style>
 
-<!-- Botões de Filtro -->
-<div class="filter-buttons text-center mb-4">
-    <a href="{% url 'cars_list' %}" class="btn-filter">Tudo</a>
-    <a href="{% url 'cars_list' %}?category=car" class="btn-filter">Carros</a>
-    <a href="{% url 'cars_list' %}?category=moto" class="btn-filter">Motos</a>
-</div>
-
 <form method="GET" action="{% url 'cars_list' %}">
     <input type="text" name="search" placeholder="Buscar carro...">
     <button type="submit">Buscar</button>
@@ -139,6 +132,13 @@
 <div class="highlight-section">
     <h2>OFERTAS EM DESTAQUES</h2>
     <p>CARROS REVISADOS E COM GARANTIAS</p>
+</div>
+
+<!-- Botões de Filtro -->
+<div class="filter-buttons text-center mb-4">
+    <a href="{% url 'cars_list' %}" class="btn-filter">Tudo</a>
+    <a href="{% url 'cars_list' %}?category=car" class="btn-filter">Carros</a>
+    <a href="{% url 'cars_list' %}?category=moto" class="btn-filter">Motos</a>
 </div>
 
 <div class="container">
