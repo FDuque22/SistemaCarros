@@ -1,246 +1,863 @@
 {% extends "base.html" %}
 
-{% block title %}{{ object.model }} - Detalhes{% endblock %}
+{% block title %}{{ object.marca|capfirst }} {{ object.model }} - Detalhes{% endblock %}
 
 {% load static %}
 
 {% block content %}
 <style>
-    .car-card {
-        background-color: #e3e1e1;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-        overflow: hidden; /* Alterado de cover para hidden para evitar transbordamento */
-        text-align: center;
-        transition: all 0.3s ease;
-        max-width: 500px;
-        margin: 20px auto 0;
-        margin-bottom: 20px;
-        padding: 5px;
+    /* Car Detail Main Container */
+    .cardetail-container { /* container principal da página de detalhe do carro */
+      max-width: 1400px; /* largura máxima para o conteúdo */
+      margin: 0 auto; /* centraliza horizontalmente */
+      padding: 0 1rem; /* espaçamento interno lateral */
+    }
+  
+    .cardetail-back-btn { /* botão/link para voltar */
+      display: inline-flex; /* exibe em linha com comportamento flex */
+      align-items: center; /* alinha verticalmente ao centro */
+      gap: 0.5rem; /* espaçamento entre ícone e texto */
+      color: var(--gradient-primary); /* cor do texto baseada na variável */
+      text-decoration: none; /* remove sublinhado */
+      font-weight: 500; /* peso médio do texto */
+      margin-bottom: 2rem; /* espaço abaixo */
+      transition: all var(--transition-fast); /* animação suave ao passar o mouse */
+    }
+  
+    .cardetail-back-btn:hover { /* efeito hover do botão voltar */
+      color: var(--primary-dark); /* muda a cor */
+      transform: translateX(-5px); /* desloca 5px para esquerda */
+      text-decoration: none; /* garante que não apareça sublinhado */
+    }
+  
+    /* Main Layout */
+    .cardetail-main-grid { /* grade principal da página */
+      display: grid; /* ativa o layout em grid */
+      grid-template-columns: 1fr 1fr; /* duas colunas iguais */
+      gap: 3rem; /* espaço entre colunas */
+      margin-bottom: 3rem; /* espaço abaixo */
+    }
+  
+    /* Image Gallery */
+    .cardetail-gallery-container { /* container da galeria */
+      position: relative; /* necessário para posicionar elementos absolutos dentro */
+    }
+  
+    .cardetail-main-image-container { /* container da imagem principal */
+      position: relative;
+      width: 100%; /* ocupa toda a largura disponível */
+      height: 400px; /* altura fixa */
+      border-radius: var(--radius-lg); /* bordas arredondadas */
+      overflow: hidden; /* corta qualquer parte da imagem que ultrapasse */
+      background: var(--bg-light); /* cor de fundo caso não tenha imagem */
+      box-shadow: var(--shadow-lg); /* sombra grande */
+      margin-bottom: 1rem; /* espaço abaixo */
+    }
+  
+    .cardetail-main-image { /* imagem principal */
+      width: 100%; /* ocupa toda a largura */
+      height: 100%; /* ocupa toda a altura */
+      object-fit: cover; /* mantém proporção e preenche */
+      cursor: pointer; /* cursor de clique */
+      transition: transform var(--transition-slow); /* animação lenta de transformação */
+    }
+  
+    .cardetail-main-image:hover { /* efeito ao passar o mouse */
+      transform: scale(1.02); /* aumenta levemente */
+    }
+  
+    .cardetail-gallery-nav { /* botões de navegação da galeria (prev/next) */
+      position: absolute;
+      top: 50%; /* centraliza verticalmente */
+      transform: translateY(-50%); /* ajusta para o centro exato */
+      background: rgba(0, 0, 0, 0.7); /* fundo preto semi-transparente */
+      color: white; /* cor do ícone */
+      border: none; /* remove borda */
+      width: 50px; height: 50px; /* tamanho circular */
+      border-radius: 50%; /* forma redonda */
+      cursor: pointer; /* cursor de clique */
+      transition: all var(--transition-normal); /* animação normal */
+      display: flex; align-items: center; justify-content: center; /* centraliza ícone */
+      font-size: 1.2rem; /* tamanho do ícone */
+    }
+  
+    .cardetail-gallery-nav:hover { /* efeito ao passar o mouse */
+      background: rgba(0, 0, 0, 0.9); /* escurece mais */
+      transform: translateY(-50%) scale(1.1); /* aumenta botão mantendo centralizado */
+    }
+  
+    .cardetail-gallery-prev { left: 1rem; } /* botão "anterior" à esquerda */
+    .cardetail-gallery-next { right: 1rem; } /* botão "próximo" à direita */
+  
+    .cardetail-thumbnail-grid { /* miniaturas da galeria */
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* colunas automáticas responsivas */
+      gap: 0.75rem; /* espaço entre miniaturas */
+    }
+  
+    .cardetail-thumbnail { /* imagem miniatura */
+      width: 100%;
+      height: 80px;
+      border-radius: var(--radius-md); /* cantos arredondados */
+      object-fit: cover; /* mantém proporção */
+      cursor: pointer; /* cursor de clique */
+      transition: all var(--transition-normal); /* animação suave */
+      border: 3px solid transparent; /* borda invisível (para hover ativo) */
+    }
+  
+    .cardetail-thumbnail:hover { /* efeito hover miniatura */
+      border-color: var(--gradient-primary); /* destaca borda */
+      transform: scale(1.05); /* aumenta levemente */
+    }
+  
+    .cardetail-thumbnail.active { /* miniatura selecionada */
+      border-color: var(--gradient-primary); /* borda colorida */
+      box-shadow: var(--shadow-colored); /* sombra com cor */
+    }
+  
+    .cardetail-no-photo { /* placeholder quando não há fotos */
+      display: flex; /* flexbox */
+      align-items: center; justify-content: center; /* centraliza conteúdo */
+      flex-direction: column; /* ícone acima do texto */
+      color: var(--text-muted); /* cor apagada */
+      gap: 1rem; /* espaço entre ícone e texto */
+    }
+  
+    .cardetail-no-photo i { /* ícone sem foto */
+      font-size: 4rem; /* tamanho grande */
+      opacity: 0.3; /* transparência */
     }
 
-    .car-card:hover {
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-        transform: translateY(-2px);
-    }
+  /* Car Information */
+.cardetail-info-container {
+  background: white; /* Fundo branco para destacar o bloco de informações */
+  border-radius: var(--radius-lg); /* Cantos arredondados usando a variável de tamanho */
+  padding: 2rem; /* Espaçamento interno de 2rem em todos os lados */
+  box-shadow: var(--shadow-md); /* Sombra média para dar efeito de elevação */
+  height: fit-content; /* Ajusta a altura para caber exatamente o conteúdo interno */
+}
 
-    .car-card img {
-        width: 100%; /* Ajuste de 120% para 100% para evitar transbordamento */
-        height: 380px;
-        object-fit: cover;
-    }
-    
-    .car-card h2 {
-        font-size: 1.5rem;
-        margin: 5px;
-    }
+.cardetail-header {
+  margin-bottom: 2rem; /* Espaço externo abaixo do cabeçalho */
+  padding-bottom: 1.5rem; /* Espaçamento interno na parte inferior do cabeçalho */
+  border-bottom: 2px solid var(--border-color); /* Linha divisória na parte inferior */
+}
 
-    .car-card p {
-        font-size: 1rem;
-        margin-bottom: 10px;
-    }
+.cardetail-title {
+  font-family: 'Poppins', sans-serif; /* Fonte principal para o título */
+  font-size: 2.5rem; /* Tamanho grande do texto para destaque */
+  font-weight: 700; /* Negrito */
+  color: #303030; /* Cor de texto escura */
+  margin-bottom: 0.5rem; /* Espaço abaixo do título */
+  line-height: 1.2; /* Espaçamento vertical entre linhas do título */
+}
 
-    .buttons-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
+.cardetail-subtitle {
+  color: var(--text-light); /* Texto mais claro, para subtítulo */
+  font-size: 1.1rem; /* Tamanho um pouco maior que padrão */
+  font-weight: 500; /* Seminegrito */
+}
 
-    .btn {
-        display: inline-block;
-        background-color: #FFA500;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        font-size: 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease-in-out;
-        margin: 0 10px;
-    }
+.cardetail-price {
+  font-family: 'Poppins', sans-serif; /* Mesma fonte usada no título */
+  font-size: 2rem; /* Texto grande para chamar atenção */
+  font-weight: 700; /* Negrito */
+  color: var(--gradient-primary); /* Cor principal do tema, destacando o preço */
+  margin-top: 1rem; /* Espaço acima do preço */
+}
 
-    .btn:hover {
-        background-color: #cc8400;
-    }
 
-    .btn-danger {
-        background-color: #d9534f;
-        text-decoration: none !important;
-    }
+  /* Specifications Grid */
+.cardetail-specs {
+  display: grid; /* Organiza os elementos em um layout de grade */
+  grid-template-columns: 1fr 1fr; /* Define duas colunas de tamanhos iguais */
+  gap: 1rem; /* Espaço entre os itens da grade */
+  margin-bottom: 2rem; /* Espaço externo abaixo da grade */
+}
 
-    .btn-danger:hover {
-        background-color: #d2221c;
-    }
+.cardetail-spec-item {
+  background: var(--bg-light); /* Fundo claro para destacar cada item */
+  padding: 1rem; /* Espaçamento interno */
+  border-radius: var(--radius-md); /* Cantos levemente arredondados */
+  border-left: 4px solid var(--gradient-primary); /* Barra lateral colorida para destaque */
+}
 
-    /* Carousel Fotos */
-    .carousel {
-        position: relative;
-        max-width: 100%;
-        margin: auto;
-        overflow: hidden;
-    }
+.cardetail-spec-label {
+  font-size: 0.8rem; /* Texto pequeno para o rótulo */
+  color: var(--text-muted); /* Cor de texto suave, sem chamar muita atenção */
+  text-transform: uppercase; /* Converte todo o texto para maiúsculas */
+  letter-spacing: 0.5px; /* Aumenta o espaçamento entre letras */
+  margin-bottom: 0.25rem; /* Espaço abaixo do rótulo */
+  font-weight: 600; /* Seminegrito para melhor leitura */
+}
 
-    .carousel-images {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-    }
+.cardetail-spec-value {
+  font-size: 1.1rem; /* Texto maior que o padrão para dar destaque */
+  color: var(--text-dark); /* Cor escura para leitura clara */
+  font-weight: 600; /* Seminegrito */
+  display: flex; /* Organiza ícone e texto na mesma linha */
+  align-items: center; /* Centraliza verticalmente ícone e texto */
+  gap: 0.5rem; /* Espaço entre o ícone e o valor */
+}
 
-    .carousel-item:not(.active) {
-        opacity: 0;
-        display: none;
-    }
+.cardetail-spec-icon {
+  color: var(--gradient-primary); /* Ícone na cor principal do tema */
+  font-size: 1rem; /* Tamanho padrão para ícone */
+}
 
-    .prev, .next {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: rgba(0,0,0,0.5);
-        color: white;
-        padding: 10px;
-        border: none;
-        cursor: pointer;
-    }
 
-    .prev {
-        left: 10px;
-    }
+  /* Contact Section */
+.cardetail-contact {
+  background: var(--gradient-primary); /* Fundo com gradiente primário do tema */
+  color: white; /* Texto branco para contraste */
+  padding: 1.5rem; /* Espaçamento interno */
+  border-radius: var(--radius-lg); /* Cantos arredondados */
+  margin-bottom: 2rem; /* Espaço inferior */
+}
 
-    .next {
-        right: 10px;
-    }
+.cardetail-contact h4 {
+  font-family: 'Poppins', sans-serif; /* Fonte moderna */
+  font-weight: 600; /* Seminegrito */
+  margin-bottom: 1rem; /* Espaço abaixo do título */
+  display: flex; /* Ícone e texto na mesma linha */
+  align-items: center; /* Centraliza verticalmente */
+  gap: 0.5rem; /* Espaço entre ícone e texto */
+}
 
-    /* Estilos do Modal Abrir Foto */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.8);
-    }
-    
-    .modal-content {
-        margin: auto;
-        display: block;
-        width: auto;
-        height: auto;
-        max-width: 80%; 
-        max-height: 80%;
-    }
-    
-    .close {
-        position: absolute;
-        top: 15px;
-        right: 35px;
-        color: white;
-        font-size: 40px;
-        font-weight: bold;
-        cursor: pointer;
-    }
+.cardetail-contact-info {
+  display: grid; /* Layout em grade */
+  grid-template-columns: 1fr 1fr; /* Duas colunas iguais */
+  gap: 1rem; /* Espaço entre os itens */
+}
 
-    /* Media Queries para Responsividade */
-    @media (max-width: 600px) {
-        .car-card {
-            max-width: 100%; /* Permite que o cartão ocupe 100% da largura da tela em dispositivos pequenos */
-            margin: 10px; /* Ajusta a margem */
-        }
+.cardetail-contact-item {
+  display: flex; /* Ícone e texto lado a lado */
+  align-items: center; /* Centralização vertical */
+  gap: 0.75rem; /* Espaço entre ícone e texto */
+  background: rgba(255, 255, 255, 0.1); /* Fundo translúcido */
+  padding: 0.75rem; /* Espaçamento interno */
+  border-radius: var(--radius-md); /* Cantos arredondados */
+  backdrop-filter: blur(10px); /* Efeito de desfoque no fundo */
+}
 
-        .car-card img {
-            height: auto; /* Ajusta a altura da imagem para auto */
-        }
+.cardetail-contact-item i {
+  font-size: 1.1rem; /* Ícone levemente maior */
+  opacity: 0.9; /* Ícone levemente translúcido */
+}
 
-        .buttons-container {
-            flex-direction: row; /* Mantém os botões em linha */
-            justify-content: center; /* Centraliza os botões */
-        }
+/* Action Buttons */
+.cardetail-actions {
+  display: flex; /* Botões lado a lado */
+  gap: 1rem; /* Espaço entre botões */
+  justify-content: center; /* Centraliza horizontalmente */
+  margin-top: 2rem; /* Espaço superior */
+  flex-wrap: wrap; /* Quebra de linha para telas menores */
+}
 
-        .btn {
-            margin: 0 5px; /* Ajusta a margem dos botões em linha */
-        }
-    }
+.cardetail-btn {
+  display: inline-flex; /* Texto e ícone lado a lado */
+  align-items: center; /* Centralização vertical */
+  gap: 0.75rem; /* Espaço entre ícone e texto */
+  padding: 1rem 2rem; /* Tamanho interno */
+  border-radius: var(--radius-md); /* Cantos arredondados */
+  font-weight: 600; /* Seminegrito */
+  font-size: 1rem; /* Tamanho padrão */
+  text-decoration: none; /* Remove sublinhado */
+  transition: all var(--transition-normal); /* Animações suaves */
+  cursor: pointer; /* Cursor de clique */
+  border: none; /* Remove borda padrão */
+  text-transform: uppercase; /* Texto todo maiúsculo */
+  letter-spacing: 0.5px; /* Espaçamento entre letras */
+}
+
+/* Botão principal */
+.cardetail-btn-primary {
+  background: var(--gradient-primary); /* Gradiente principal */
+  color: white; /* Texto branco */
+  box-shadow: var(--shadow-colored); /* Sombra colorida */
+}
+
+.cardetail-btn-primary:hover {
+  transform: translateY(-3px); /* Efeito de elevação */
+  box-shadow: var(--shadow-xl); /* Sombra maior no hover */
+  text-decoration: none; /* Sem sublinhado */
+  color: white; /* Mantém texto branco */
+}
+
+/* Botão do WhatsApp */
+.cardetail-btn-whatsapp {
+  background: var(--gradient-success); /* Gradiente verde */
+  color: white; /* Texto branco */
+  box-shadow: 0 8px 25px rgba(39, 174, 96, 0.2); /* Sombra suave verde */
+}
+
+.cardetail-btn-whatsapp:hover {
+  transform: translateY(-3px); /* Efeito de elevação */
+  box-shadow: 0 15px 40px rgba(39, 174, 96, 0.3); /* Sombra mais intensa */
+  text-decoration: none; /* Sem sublinhado */
+  color: white; /* Mantém texto branco */
+}
+
+/* Botão secundário */
+.cardetail-btn-secondary {
+  background: var(--bg-light); /* Fundo claro */
+  color: var(--text-dark); /* Texto escuro */
+  border: 2px solid var(--border-color); /* Borda fina */
+}
+
+.cardetail-btn-secondary:hover {
+  background: var(--text-dark); /* Fundo escuro */
+  color: white; /* Texto branco */
+  border-color: var(--text-dark); /* Borda escura */
+  text-decoration: none; /* Sem sublinhado */
+}
+
+
+ /* Modal Enhanced */
+.cardetail-modal {
+  display: none; /* Esconde o modal por padrão */
+  position: fixed; /* Fixa o modal na tela */
+  z-index: 10000; /* Garante que fique acima de tudo */
+  left: 0;
+  top: 0;
+  width: 100%; /* Cobre a tela inteira */
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95); /* Fundo preto semi-transparente */
+  backdrop-filter: blur(10px); /* Efeito de desfoque no fundo */
+}
+
+.cardetail-modal-content {
+  position: absolute; /* Centraliza via top/left */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Ajuste perfeito de centralização */
+  max-width: 90%; /* Limite de largura */
+  max-height: 90%; /* Limite de altura */
+  border-radius: var(--radius-lg); /* Cantos arredondados */
+  box-shadow: var(--shadow-xl); /* Sombra intensa */
+}
+
+.cardetail-modal-close {
+  position: absolute;
+  top: -50px; /* Coloca o botão acima do conteúdo */
+  right: 0;
+  color: white; /* Ícone branco */
+  font-size: 2rem; /* Tamanho grande para facilitar clique */
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1); /* Fundo translúcido */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* Botão redondo */
+  display: flex; /* Centraliza o "X" */
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-normal); /* Animações suaves */
+}
+
+.cardetail-modal-close:hover {
+  background: rgba(255, 255, 255, 0.2); /* Fundo mais claro no hover */
+  transform: scale(1.1); /* Leve aumento no tamanho */
+}
+
+/* Features Highlights */
+.cardetail-features {
+  background: white; /* Fundo branco */
+  border-radius: var(--radius-lg); /* Cantos arredondados */
+  padding: 2rem; /* Espaçamento interno */
+  box-shadow: var(--shadow-md); /* Sombra moderada */
+  margin-top: 2rem; /* Espaço acima */
+}
+
+.cardetail-features h4 {
+  font-family: 'Poppins', sans-serif; /* Fonte moderna */
+  font-weight: 600; /* Seminegrito */
+  margin-bottom: 1.5rem; /* Espaço inferior */
+  color: var(--text-dark); /* Texto escuro */
+  display: flex; /* Ícone e texto lado a lado */
+  align-items: center; /* Alinha verticalmente */
+  gap: 0.5rem; /* Espaço entre ícone e texto */
+}
+
+.cardetail-features-grid {
+  display: grid; /* Layout em grade */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Colunas flexíveis */
+  gap: 1rem; /* Espaço entre os cards */
+}
+
+.cardetail-feature-card {
+  background: var(--bg-light); /* Fundo claro */
+  padding: 1rem; /* Espaçamento interno */
+  border-radius: var(--radius-md); /* Cantos arredondados */
+  text-align: center; /* Centraliza texto e ícones */
+  transition: all var(--transition-normal); /* Animações suaves */
+}
+
+.cardetail-feature-card:hover {
+  background: var(--gradient-primary); /* Cor principal no hover */
+  color: white; /* Texto branco no hover */
+  transform: translateY(-3px); /* Efeito de elevação */
+  box-shadow: var(--shadow-md); /* Sombra moderada */
+}
+
+.cardetail-feature-icon {
+  font-size: 1.5rem; /* Ícone grande */
+  margin-bottom: 0.5rem; /* Espaço abaixo */
+  color: var(--gradient-primary); /* Cor principal */
+  transition: color var(--transition-normal); /* Animação suave na cor */
+}
+
+.cardetail-feature-card:hover .cardetail-feature-icon {
+  color: white; /* Ícone branco no hover */
+}
+
+
+  /* Gallery Counter */
+.cardetail-gallery-counter {
+  position: absolute; /* Fixa a posição sobre a imagem */
+  bottom: 1rem; /* Distância do rodapé */
+  right: 1rem; /* Distância da borda direita */
+  background: rgba(0, 0, 0, 0.7); /* Fundo preto semi-transparente */
+  color: white; /* Texto branco */
+  padding: 0.5rem 1rem; /* Espaçamento interno */
+  border-radius: var(--radius-md); /* Cantos arredondados */
+  font-size: 0.9rem; /* Texto pequeno */
+  font-weight: 500; /* Peso médio do texto */
+}
+
+/* ===================== Responsive Design ===================== */
+
+/* Até 992px (notebooks pequenos / tablets grandes) */
+@media (max-width: 992px) {
+  .cardetail-main-grid {
+    grid-template-columns: 1fr; /* Layout de uma coluna */
+    gap: 2rem; /* Espaçamento entre os elementos */
+  }
+
+  .cardetail-title {
+    font-size: 2rem; /* Título um pouco menor */
+  }
+
+  .cardetail-specs {
+    grid-template-columns: 1fr; /* Especificações em coluna única */
+  }
+
+  .cardetail-contact-info {
+    grid-template-columns: 1fr; /* Contatos em uma única coluna */
+  }
+}
+
+/* Até 768px (tablets e celulares grandes) */
+@media (max-width: 768px) {
+  .cardetail-main-image-container {
+    height: 300px; /* Reduz a altura da imagem principal */
+  }
+
+  .cardetail-title {
+    font-size: 1.75rem; /* Reduz título */
+  }
+
+  .cardetail-price {
+    font-size: 1.5rem; /* Preço menor */
+  }
+
+  .cardetail-actions {
+    flex-direction: column; /* Botões em coluna */
+  }
+
+  .cardetail-btn {
+    width: 100%; /* Botões ocupam toda a largura */
+    justify-content: center; /* Centraliza o conteúdo do botão */
+  }
+
+  .cardetail-features-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Cards menores */
+  }
+}
+
+/* Até 576px (celulares pequenos) */
+@media (max-width: 576px) {
+  .cardetail-container {
+    padding: 0 0.5rem; /* Menos padding nas laterais */
+  }
+
+  .cardetail-info-container {
+    padding: 1.5rem; /* Reduz espaço interno */
+  }
+
+  .cardetail-features {
+    padding: 1.5rem; /* Menos padding nas features */
+  }
+
+  .cardetail-thumbnail-grid {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* Thumbnails menores */
+  }
+
+  .cardetail-thumbnail {
+    height: 60px; /* Reduz altura das miniaturas */
+  }
+}
 </style>
 
-<div class="car-card">
-    <div class="carousel">
-        <div class="carousel-images">
+<div class="cardetail-container">
+  <!-- Back Button -->
+  <a href="{% url 'cars_list' %}" class="cardetail-back-btn">
+    <i class="fas fa-arrow-left"></i>
+    Voltar aos Veículos
+  </a>
 
-            {% if object.photo1 %}
-                <a onclick="openModal('{{ object.photo1.url }}'); return false;">
-                    <img src="{{ object.photo1.url }}" class="carousel-item active" alt="Car Photo 1">
-                </a>
-            {% endif %}
+  <!-- Main Content Grid -->
+  <div class="cardetail-main-grid">
+    <!-- Image Gallery -->
+    <div class="cardetail-gallery-container">
+      <div class="cardetail-main-image-container">
+        {% if object.photo1 %}
+          <img src="{{ object.photo1.url }}" 
+               alt="{{ object.brand }} {{ object.model }}" 
+               class="cardetail-main-image" 
+               onclick="openModal('{{ object.photo1.url }}')"
+               id="mainImage">
+          
+          <!-- Gallery Counter -->
+          <div class="cardetail-gallery-counter">
+            <span id="currentImage">1</span> / <span id="totalImages">1</span>
+          </div>
 
-            {% if object.photo2 %}
-                <a onclick="openModal('{{ object.photo2.url }}'); return false;">
-                    <img src="{{ object.photo2.url }}" class="carousel-item" alt="Car Photo 2">
-                </a>
-            {% endif %}
+          <!-- Navigation Arrows -->
+          {% if object.photo2 or object.photo3 or object.photo4 or object.photo5 or object.photo6 %}
+            <button class="cardetail-gallery-nav cardetail-gallery-prev" onclick="prevImage()">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="cardetail-gallery-nav cardetail-gallery-next" onclick="nextImage()">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          {% endif %}
+        {% else %}
+          <div class="cardetail-no-photo">
+            <i class="fas fa-car"></i>
+            <span>Fotos não disponíveis</span>
+          </div>
+        {% endif %}
+      </div>
 
-            {% if object.photo3 %}
-                <a onclick="openModal('{{ object.photo3.url }}'); return false;">
-                    <img src="{{ object.photo3.url }}" class="carousel-item" alt="Car Photo 3">
-                </a>
-            {% endif %}
+      <!-- Thumbnail Grid -->
+      {% if object.photo1 or object.photo2 or object.photo3 or object.photo4 or object.photo5 or object.photo6 %}
+        <div class="cardetail-thumbnail-grid">
+          {% if object.photo1 %}
+            <img src="{{ object.photo1.url }}" 
+                 alt="Foto 1" 
+                 class="cardetail-thumbnail active" 
+                 onclick="changeMainImage('{{ object.photo1.url }}', 0)">
+          {% endif %}
+          {% if object.photo2 %}
+            <img src="{{ object.photo2.url }}" 
+                 alt="Foto 2" 
+                 class="cardetail-thumbnail" 
+                 onclick="changeMainImage('{{ object.photo2.url }}', 1)">
+          {% endif %}
+          {% if object.photo3 %}
+            <img src="{{ object.photo3.url }}" 
+                 alt="Foto 3" 
+                 class="cardetail-thumbnail" 
+                 onclick="changeMainImage('{{ object.photo3.url }}', 2)">
+          {% endif %}
+          {% if object.photo4 %}
+            <img src="{{ object.photo4.url }}" 
+                 alt="Foto 4" 
+                 class="cardetail-thumbnail" 
+                 onclick="changeMainImage('{{ object.photo4.url }}', 3)">
+          {% endif %}
+          {% if object.photo5 %}
+            <img src="{{ object.photo5.url }}" 
+                 alt="Foto 5" 
+                 class="cardetail-thumbnail" 
+                 onclick="changeMainImage('{{ object.photo5.url }}', 4)">
+          {% endif %}
+          {% if object.photo6 %}
+            <img src="{{ object.photo6.url }}" 
+                 alt="Foto 6" 
+                 class="cardetail-thumbnail" 
+                 onclick="changeMainImage('{{ object.photo6.url }}', 5)">
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
 
-            {% if object.photo4 %}
-                <a onclick="openModal('{{ object.photo4.url }}'); return false;">
-                    <img src="{{ object.photo4.url }}" class="carousel-item" alt="Car Photo 4">
-                </a>
-            {% endif %}
+    <!-- Car Information -->
+    <div class="cardetail-info-container">
+      <!-- Header -->
+      <div class="cardetail-header">
+        <h1 class="cardetail-title">{{ object.marca|capfirst }} {{ object.model }}</h1>
+        <p class="cardetail-subtitle">{{ object.factory_year }}/{{ object.model_year }}</p>
+        <div class="cardetail-price">{{ car.formatted_value }}</div>
+      </div>
 
-            {% if object.photo5 %}
-                <a onclick="openModal('{{ object.photo5.url }}'); return false;">
-                    <img src="{{ object.photo5.url }}" class="carousel-item" alt="Car Photo 5">
-                </a>
-            {% endif %}
-
-            {% if object.photo6 %}
-                <a onclick="openModal('{{ object.photo6.url }}'); return false;">
-                    <img src="{{ object.photo6.url }}" class="carousel-item" alt="Car Photo 6">
-                </a>
-            {% endif %}
-
+      <!-- Specifications -->
+      <div class="cardetail-specs">
+        <div class="cardetail-spec-item">
+          <div class="cardetail-spec-label">Ano de Fabricação</div>
+          <div class="cardetail-spec-value">
+            <i class="fas fa-calendar-alt cardetail-spec-icon"></i>
+            {{ object.factory_year }}
+          </div>
         </div>
 
-        <button class="prev" onclick="prevSlide()">&#10094;</button> 
-        <button class="next" onclick="nextSlide()">&#10095;</button>
+        <div class="cardetail-spec-item">
+          <div class="cardetail-spec-label">Ano do Modelo</div>
+          <div class="cardetail-spec-value">
+            <i class="fas fa-calendar cardetail-spec-icon"></i>
+            {{ object.model_year }}
+          </div>
+        </div>
 
+        <div class="cardetail-spec-item">
+          <div class="cardetail-spec-label">Combustível</div>
+          <div class="cardetail-spec-value">
+            <i class="fas fa-gas-pump cardetail-spec-icon"></i>
+            {{ object.fuel|capfirst }}
+          </div>
+        </div>
+
+        <div class="cardetail-spec-item">
+          <div class="cardetail-spec-label">Câmbio</div>
+          <div class="cardetail-spec-value">
+            <i class="fas fa-cogs cardetail-spec-icon"></i>
+            {{ object.exchange|capfirst  }}
+          </div>
+        </div>
+
+        {% if object.km %}
+        <div class="cardetail-spec-item">
+          <div class="cardetail-spec-label">Quilometragem</div>
+          <div class="cardetail-spec-value">
+            <i class="fas fa-tachometer-alt cardetail-spec-icon"></i>
+            {{ object.km|floatformat:"0" }} km
+          </div>
+        </div>
+        {% endif %}
+
+        {% if object.color %}
+        <div class="cardetail-spec-item">
+          <div class="cardetail-spec-label">Cor</div>
+          <div class="cardetail-spec-value">
+            <i class="fas fa-palette cardetail-spec-icon"></i>
+            {{ object.color }}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Contact Information -->
+      <div class="cardetail-contact">
+        <h4>
+          <i class="fas fa-user-tie"></i>
+          Informações do Vendedor
+        </h4>
+        <div class="cardetail-contact-info">
+          <div class="cardetail-contact-item">
+            <i class="fas fa-user"></i>
+            <span>{{ object.seller }}</span>
+          </div>
+          <div class="cardetail-contact-item">
+            <i class="fas fa-phone"></i>
+            <span>{{ object.contact }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="cardetail-actions">
+        <a href="{% url 'interest_form' pk=object.pk %}" class="cardetail-btn cardetail-btn-primary">
+          <i class="fas fa-heart"></i>
+          Tenho Interesse
+        </a>
+        
+        <a href="https://api.whatsapp.com/send?phone=5521964243121&text=Olá!%20Tenho%20interesse%20no%20{{ object.brand }}%20{{ object.model }}%20{{ object.factory_year }}%20anunciado%20no%20site." 
+           target="_blank" class="cardetail-btn cardetail-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+          WhatsApp
+        </a>
+
+        {% if user.is_authenticated and user == object.seller %}
+          <a href="{% url 'car_update' pk=object.pk %}" class="cardetail-btn cardetail-btn-secondary">
+            <i class="fas fa-edit"></i>
+            Editar
+          </a>
+        {% endif %}
+      </div>
     </div>
-    <h2><strong>{{ object.brand }} {{ object.model }}</strong></h2>
-    <p><strong>Ano: </strong> {{ object.factory_year }}/{{ object.model_year }}</p>
-    <p><strong>Combustivel:</strong> {{ object.fuel }}</p>
-    <p><strong>Câmbio:</strong> {{ object.exchange }}</p>
-    <p><strong>KM:</strong> {{ car.km|floatformat:"2g" }}</p>
-    <p><strong>Preço:</strong> R$ {{ car.value|floatformat:"2g" }}</p>
-    <p><strong>Vendedor:</strong> {{ object.seller }}</p>
-    <p><strong>Contato:</strong> {{ object.contact }}</p>
+  </div>
+
+  <!-- Additional Features -->
+  <div class="cardetail-features fade-in">
+    <h4>
+      <i class="fas fa-star"></i>
+      Características Destacadas
+    </h4>
+    <div class="cardetail-features-grid">
+      <div class="cardetail-feature-card">
+        <div class="cardetail-feature-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div>Garantia Inclusa</div>
+      </div>
+      
+      <div class="cardetail-feature-card">
+        <div class="cardetail-feature-icon">
+          <i class="fas fa-tools"></i>
+        </div>
+        <div>Revisado</div>
+      </div>
+      
+      <div class="cardetail-feature-card">
+        <div class="cardetail-feature-icon">
+          <i class="fas fa-certificate"></i>
+        </div>
+        <div>Documentação em Dia</div>
+      </div>
+      
+      <div class="cardetail-feature-card">
+        <div class="cardetail-feature-icon">
+          <i class="fas fa-handshake"></i>
+        </div>
+        <div>Financiamento</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- Modal para Imagem Grande -->
-<div id="imageModal" class="modal">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <img class="modal-content" id="modalImage">
+<!-- Enhanced Modal -->
+<div id="imageModal" class="cardetail-modal" onclick="closeModal()">
+  <span class="cardetail-modal-close" onclick="closeModal()">
+    <i class="fas fa-times"></i>
+  </span>
+  <img class="cardetail-modal-content" id="modalImage" onclick="event.stopPropagation()">
 </div>
 
-<div class="buttons-container">
-    <a href="{% url 'interest_form' pk=object.pk %}" class="btn btn-primary">Tenho Interesse</a>
-</div>
+<script>
+  // Image gallery functionality
+  let currentImageIndex = 0;
+  const images = [
+    {% if object.photo1 %}'{{ object.photo1.url }}',{% endif %}
+    {% if object.photo2 %}'{{ object.photo2.url }}',{% endif %}
+    {% if object.photo3 %}'{{ object.photo3.url }}',{% endif %}
+    {% if object.photo4 %}'{{ object.photo4.url }}',{% endif %}
+    {% if object.photo5 %}'{{ object.photo5.url }}',{% endif %}
+    {% if object.photo6 %}'{{ object.photo6.url }}',{% endif %}
+  ].filter(img => img); // Remove empty strings
 
-  <!-- {% if user.is_authenticated %}
-  <div class="buttons-container">
-    <a href="{% url 'car_update' pk=object.pk %}" class="btn btn-primary">Editar</a>
-    <a href="{% url 'car_delete' pk=object.pk %}" class="btn btn-danger">Deletar</a>
-    <a href="{% url 'interest_form' pk=object.pk %}" class="btn btn-primary">Tenho Interesse</a>
-  </div> -->
-{% endif %}
+  // Update total images counter
+  document.getElementById('totalImages').textContent = images.length;
 
-<!-- JavaScript Carousel -->
-<script src="{% static 'js/carousel.js' %}"></script>
-<script src="{% static 'js/modal.js' %}"></script>
+  function changeMainImage(src, index) {
+    const mainImage = document.getElementById('mainImage');
+    const thumbnails = document.querySelectorAll('.cardetail-thumbnail');
+    const currentCounter = document.getElementById('currentImage');
+    
+    if (mainImage) {
+      mainImage.src = src;
+      currentImageIndex = index;
+      
+      // Update counter
+      currentCounter.textContent = index + 1;
+      
+      // Update active thumbnail
+      thumbnails.forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === index);
+      });
+    }
+  }
+
+  function nextImage() {
+    if (images.length > 1) {
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+      changeMainImage(images[currentImageIndex], currentImageIndex);
+    }
+  }
+
+  function prevImage() {
+    if (images.length > 1) {
+      currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+      changeMainImage(images[currentImageIndex], currentImageIndex);
+    }
+  }
+
+  // Modal functionality
+  function openModal(src) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    
+    modal.style.display = 'block';
+    modalImg.src = src;
+    
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+    
+    // Restore body scroll
+    document.body.style.overflow = 'auto';
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    const modal = document.getElementById('imageModal');
+    
+    if (modal.style.display === 'block') {
+      if (e.key === 'Escape') {
+        closeModal();
+      } else if (e.key === 'ArrowLeft') {
+        prevImage();
+        openModal(images[currentImageIndex]);
+      } else if (e.key === 'ArrowRight') {
+        nextImage();
+        openModal(images[currentImageIndex]);
+      }
+    } else {
+      if (e.key === 'ArrowLeft') {
+        prevImage();
+      } else if (e.key === 'ArrowRight') {
+        nextImage();
+      }
+    }
+  });
+
+  // Touch/swipe support for mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  const mainImageContainer = document.querySelector('.cardetail-main-image-container');
+  if (mainImageContainer) {
+    mainImageContainer.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    mainImageContainer.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+  }
+
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        nextImage(); // Swipe left - next image
+      } else {
+        prevImage(); // Swipe right - previous image
+      }
+    }
+  }
+
+  // Initialize gallery counter if no photos
+  if (images.length === 0) {
+    document.getElementById('currentImage').textContent = '0';
+    document.getElementById('totalImages').textContent = '0';
+  }
+</script>
 
 {% endblock %}

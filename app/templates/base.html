@@ -1,209 +1,688 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}{% endblock %}</title>
+  <meta name="theme-color" content="#FF6B35">
+  <title>{% block title %}Carbon Tech Motors{% endblock %}</title>
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://stackpath.bootstrapcdn.com">
+  
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
+    :root {
+      /* Colors */
+      --primary-color: #FF6B35;
+      --primary-dark: #E5531F;
+      --primary-light: #FF8F66;
+      --secondary-color: #2C3E50;
+      --accent-color: #3498DB;
+      --text-dark: #2C3E50;
+      --text-light: #7F8C8D;
+      --text-muted: #95A5A6;
+      --bg-light: #F8F9FA;
+      --bg-white: #FFFFFF;
+      --bg-dark: #1A1A1A;
+      --border-color: #E9ECEF;
+      --success-color: #27AE60;
+      --warning-color: #F39C12;
+      --danger-color: #E74C3C;
+      
+      /* Gradients */
+      --gradient-primary: #ff8800;
+      --gradient-secondary: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+      --gradient-success: linear-gradient(135deg, #27AE60 0%, #2ECC71 100%);
+      
+      /* Shadows */
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+      --shadow-xl: 0 15px 50px rgba(0, 0, 0, 0.15);
+      --shadow-colored: 0 8px 25px rgba(255, 107, 53, 0.2);
+      
+      /* Transitions */
+      --transition-fast: 0.2s ease;
+      --transition-normal: 0.3s ease;
+      --transition-slow: 0.5s ease;
+      
+      /* Border Radius */
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      
+      /* Spacing */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+    }
+
+   /* Reset geral de margens e padding */
+    * {
+      margin: 0; /* remove margens padrão de todos os elementos */
+      padding: 0; /* remove espaçamento interno padrão */
+      box-sizing: border-box; /* inclui padding e border no cálculo de largura/altura */
+    }
+
+    /* Comportamento de rolagem suave */
+    html {
+      scroll-behavior: smooth; /* anima a rolagem ao navegar por âncoras */
+    }
+
+    /* Estilo base do corpo da página */
     body {
-      font-family: 'Open Sans', sans-serif;
-      background-color: #f7f7f7;
-      color: #333;
-      margin: 0;
-      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; /* fonte principal com fallback */
+      background-color: #F8F9FA; /* cor de fundo clara */
+      color: var(--text-dark); /* cor do texto definida pela variável */
+      line-height: 1.6; /* altura da linha para melhorar leitura */
+      font-weight: 400; /* peso normal do texto */
+      overflow-x: hidden; /* evita rolagem horizontal indesejada */
     }
 
-    header {
-      background-color: #FFA500;
-      color: #fff;
-      padding: 10px 0;
-      text-align: center;
+    /* Loader da página (animação enquanto carrega) */
+    .page-loader {
+      position: fixed; /* fixa em toda a tela */
+      top: 0; /* topo da tela */
+      left: 0; /* esquerda da tela */
+      width: 100%; /* largura total */
+      height: 100%; /* altura total */
+      background: var(--bg-white); /* fundo branco */
+      display: flex; /* layout flexível */
+      align-items: center; /* centraliza verticalmente */
+      justify-content: center; /* centraliza horizontalmente */
+      z-index: 9999; /* sobre todos os elementos */
+      opacity: 1; /* visível por padrão */
+      visibility: visible; /* visível por padrão */
+      transition: all 0.5s ease; /* transição suave para desaparecer */
     }
 
-    footer {
-      background-color: #333;
-      color: #fff;
-      padding: 40px 0;
+    /* Quando a página termina de carregar */
+    .page-loader.loaded {
+      opacity: 0; /* torna invisível */
+      visibility: hidden; /* esconde do fluxo */
+    }
+
+    /* Spinner de carregamento */
+    .loader-spinner {
+      width: 50px; /* largura do spinner */
+      height: 50px; /* altura do spinner */
+      border: 3px solid var(--border-color); /* borda do spinner */
+      border-top: 3px solid var(--primary-color); /* borda superior colorida para animação */
+      border-radius: 50%; /* forma circular */
+      animation: spin 1s linear infinite; /* gira infinitamente com 1s de duração */
+    }
+
+    /* Animação de rotação do spinner */
+    @keyframes spin {
+      0% { transform: rotate(0deg); } /* início da rotação */
+      100% { transform: rotate(360deg); } /* rotação completa */
+    }
+
+
+    /* Header Styles */
+    .main-header {
+      background: var(--bg-dark); /* Define a cor de fundo do cabeçalho usando a variável do tema (--bg-dark) */
+      backdrop-filter: blur(20px); /* Aplica efeito de desfoque no que está atrás do cabeçalho */
+      box-shadow: var(--shadow-md); /* Adiciona uma sombra média para dar profundidade */
+      position: sticky; /* Faz o cabeçalho “colar” no topo quando a página é rolada */
+      top: 0; /* Mantém o cabeçalho preso no topo da tela */
+      z-index: 1000; /* Garante que o cabeçalho fique acima de outros elementos */
+      border-bottom: 1px solid var(--border-color); /* Adiciona uma borda inferior usando a cor do tema */
+      transition: all var(--transition-normal); /* Aplica transição suave em todas as propriedades */
+    }
+
+    .main-header.scrolled {
+      box-shadow: var(--shadow-lg); /* Ao rolar, aumenta a intensidade da sombra */
+      background: var(--bg-dark); /* Mantém ou redefine a cor de fundo */
     }
 
     .navbar {
-      justify-content: center;
-      background-color: #FFA500;
+      padding: var(--space-lg) 0; /* Espaçamento vertical grande para o menu */
+      transition: padding var(--transition-normal); /* Transição suave na mudança de padding */
     }
 
-    .navbar-nav {
-      display: flex; /* Usar flexbox para alinhar os itens */
-      flex-direction: column; /* Empilhar verticalmente */
-      align-items: center; /* Centralizar os itens */
-      text-align: center; /* Centralizar o texto */
-      padding: 10px 0; /* Espaçamento no menu */
-    }
-
-    .navbar-nav .nav-link {
-      color: #000;
-      text-shadow: none;
-      transition: color 0.3s ease, transform 0.3s ease;
-      width: 100%; /* Garantir que o link ocupe 100% da largura */
-    }
-
-    .navbar-nav .nav-link:hover {
-      color: #333;
-      transform: translateY(-3px);
-    }
-
-    .navbar-toggler {
-      border-color: rgba(0, 0, 0, 0.1);
-    }
-
-    .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%280, 0, 0, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-    }
-
-    .footer-section h4 {
-      font-size: 18px;
-      color: #fff;
-      border-bottom: 2px solid #898989;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
-    }
-
-    .footer-section p {
-      font-size: 9px;
-      line-height: 1.6;
-    }
-
-    .footer-section p a {
-      color: #ccc;
-      text-decoration: none;
-    }
-
-    .footer-section p a:hover {
-      text-decoration: underline;
-    }
-
-    @media (min-width: 992px) {
-      .navbar {
-        height: 70px;
-      }
-
-      .navbar-nav {
-        flex-direction: row; /* Muda a direção para linha em telas grandes */
-        margin-left: 20px; /* Ajuste a margem esquerda conforme necessário */
-      }
-
-      .navbar-nav .nav-item {
-        margin: 0 15px;
-      }
+    .navbar.compact {
+      padding: var(--space-md) 0; /* Espaçamento vertical menor quando em modo compacto */
     }
 
     .logo {
-      max-width: 300px; /* Tamanho padrão da logo */
-      height: auto;
-      margin: 0 auto;
+      max-width: 200px; /* Define largura máxima da logo */
+      height: auto; /* Mantém a proporção da altura conforme a largura */
+      transition: all var(--transition-normal); /* Transição suave para todos os efeitos */
+      filter: drop-shadow(var(--shadow-sm)); /* Sombra suave ao redor da logo */
     }
 
-    @media (max-width: 576px) { /* Tamanho máximo para dispositivos móveis */
-      .logo {
-        max-width: 200px; /* Tamanho reduzido da logo em mobile */
-      }
+    .logo:hover {
+      transform: scale(1.05); /* Ao passar o mouse, aumenta 5% o tamanho da logo */
     }
 
-    /* Estilo para o botão do WhatsApp */
-    .whatsapp-button {
-      position: fixed;
-      bottom: 20px; /* Distância do fundo da tela */
-      right: 20px; /* Distância da direita da tela */
-      background-color: #25D366; /* Cor do fundo do botão */
-      border-radius: 50%; /* Botão redondo */
-      width: 60px; /* Largura do botão */
-      height: 60px; /* Altura do botão */
-      display: flex;
-      justify-content: center;
+    /* Navigation */
+
+    /* Estilo do texto/link da marca (Carbon Tech Motors) */
+    .navbar-brand {
+      font-family: 'Poppins', sans-serif; /* Fonte personalizada Poppins */
+      font-weight: 600; /* Deixa a fonte mais encorpada */
+      font-size: 1.2rem; /* Define o tamanho do texto (corrigi o espaço que estava entre "1" e "rem") */
+      color: inherit; /* Mantém a cor herdada do tema */
+      text-decoration: none; /* Remove sublinhado do link */
+    }
+
+    .navbar-brand:hover {
+      color: #ff8800; /* Muda a cor para laranja no hover */
+      transform: scale(1.05); /* Aumenta levemente o tamanho ao passar o mouse */
+    }
+
+    /* Container dos links do menu */
+    .navbar-nav {
+      align-items: center; /* Centraliza verticalmente os itens */
+      gap: var(--space-sm); /* Espaçamento horizontal entre os itens */
+    }
+
+    /* Estilo base para os links do menu */
+    .nav-link {
+      color: var(--text-dark) !important; /* Cor do texto (sobrescreve outros estilos) */
+      font-weight: 500; /* Peso da fonte intermediário */
+      font-size: 0.95rem; /* Tamanho levemente menor que 1rem */
+      padding: var(--space-md) var(--space-lg) !important; /* Espaçamento interno (vertical, horizontal) */
+      border-radius: var(--radius-md); /* Cantos arredondados */
+      transition: all var(--transition-normal); /* Transição suave para qualquer mudança */
+      display: flex; /* Layout flexível (para ícones e texto lado a lado) */
+      align-items: center; /* Centraliza verticalmente o conteúdo dentro do link */
+      gap: var(--space-sm); /* Espaço entre ícone e texto */
+      text-decoration: none; /* Remove sublinhado */
+      position: relative; /* Necessário para o pseudo-elemento ::before funcionar */
+      overflow: hidden; /* Garante que o efeito de fundo não ultrapasse os limites do link */
+    }
+
+    /* Efeito de destaque no fundo ao passar o mouse */
+    .nav-link::before {
+      content: ''; /* Necessário para o pseudo-elemento aparecer */
+      position: absolute; /* Posiciona em relação ao link */
+      top: 0;
+      left: -100%; /* Começa fora da tela (à esquerda) */
+      width: 100%; /* Cobre toda a largura do link */
+      height: 100%; /* Cobre toda a altura do link */
+      background: var(--gradient-primary); /* Gradiente de fundo */
+      opacity: 0.1; /* Fundo quase transparente */
+      transition: left var(--transition-normal); /* Movimento suave da esquerda para a posição final */
+    }
+
+    /* Quando o mouse passa sobre o link, o fundo desliza para cobrir */
+    .nav-link:hover::before {
+      left: 0;
+    }
+
+    /* Efeito ao passar o mouse no link */
+    .nav-link:hover {
+      color: #F8F9FA !important; /* Muda a cor do texto para a primária do tema */
+      transform: translateY(-2px); /* Move levemente para cima */
+      box-shadow: var(--shadow-md); /* Adiciona sombra */
+    }
+
+    /* Estado ativo (quando a página corresponde ao link) */
+    .nav-link.active {
+      background: var(--gradient-primary); /* Fundo com gradiente */
+      color: white !important; /* Texto branco */
+      box-shadow: var(--shadow-colored); /* Sombra colorida */
+    }
+
+    /* Botão principal no menu */
+    .nav-link.btn-primary {
+      background: var(--gradient-primary) !important; /* Gradiente de fundo */
+      color: white !important; /* Texto branco */
+      border: none; /* Sem borda */
+      box-shadow: var(--shadow-colored); /* Sombra colorida */
+    }
+
+    .nav-link.btn-primary:hover {
+      transform: translateY(-3px); /* Sobe mais no hover */
+      box-shadow: var(--shadow-lg); /* Sombra maior */
+    }
+
+    /* Botão com borda (estilo contornado) */
+    .nav-link.btn-outline {
+
+      color: var(--gradient-primary) !important; /* Texto da cor primária */
+      background: transparent; /* Fundo transparente */
+    }
+
+    .nav-link.btn-outline:hover {
+      background: var(--gradient-primary); /* Fundo vira cor primária no hover */
+      color: white !important; /* Texto branco */
+    }
+
+    /* Ícones do menu */
+    .nav-icon {
+      width: 20px; /* Largura do ícone */
+      height: 20px; /* Altura do ícone */
+      opacity: 0.8; /* Levemente transparente */
+      transition: opacity var(--transition-fast); /* Transição rápida de opacidade */
+    }
+
+    /* Quando passa o mouse no link, o ícone fica totalmente visível */
+    .nav-link:hover .nav-icon {
+      opacity: 1;
+    }
+
+
+    /* Botão de menu mobile */
+    .navbar-toggler {
+      border: none; /* remove a borda padrão */
+      padding: var(--space-sm); /* espaçamento interno */
+      border-radius: var(--radius-md); /* cantos arredondados */
+      background: var(--bg-light); /* cor de fundo clara */
+      transition: all var(--transition-normal); /* animação suave para todas as mudanças */
+    }
+
+    .navbar-toggler:hover {
+      background: var(--primary-color); /* muda cor no hover */
+      transform: scale(1.1); /* aumenta levemente no hover */
+    }
+
+    .navbar-toggler:focus {
+      box-shadow: none; /* remove o contorno quando clicado */
+    }
+
+    .navbar-collapse {
+      margin-top: var(--space-lg); /* dá espaçamento acima do menu colapsado */
+    }
+
+    /* Conteúdo principal */
+    .main-content {
+      min-height: calc(100vh - 300px); /* ocupa toda a altura menos o footer/header */
+      padding: var(--space-xl) 0; /* espaçamento vertical */
+    }
+
+    /* Estilo moderno para cartões */
+    .card-modern {
+      border: none; /* sem borda */
+      border-radius: var(--radius-lg); /* cantos arredondados grandes */
+      box-shadow: var(--shadow-md); /* sombra média */
+      transition: all var(--transition-normal); /* animação suave */
+      overflow: hidden; /* esconde conteúdo que ultrapassar */
+      background: var(--bg-white); /* fundo branco */
+    }
+
+    .card-modern:hover {
+      transform: translateY(-8px); /* eleva o cartão */
+      box-shadow: var(--shadow-xl); /* aumenta a sombra */
+    }
+
+    /* Botões modernos */
+    .btn-modern {
+      padding: var(--space-md) var(--space-xl); /* espaçamento interno */
+      border-radius: var(--radius-md); /* cantos arredondados */
+      font-weight: 600; /* texto mais encorpado */
+      font-size: 0.95rem; /* tamanho do texto */
+      transition: all var(--transition-normal); /* animação suave */
+      border: none; /* sem borda */
+      position: relative; /* permite elementos posicionados dentro */
+      overflow: hidden; /* esconde conteúdo extra */
+      text-transform: uppercase; /* tudo maiúsculo */
+      letter-spacing: 0.5px; /* espaço entre letras */
+    }
+
+    /* Botão primário moderno */
+    .btn-primary-modern {
+      background: var(--gradient-primary); /* gradiente principal */
+      color: white; /* texto branco */
+      box-shadow: var(--shadow-colored); /* sombra colorida */
+    }
+
+    .btn-primary-modern:hover {
+      transform: translateY(-3px); /* levanta um pouco */
+      box-shadow: var(--shadow-lg); /* aumenta sombra */
+    }
+
+    /* Footer principal */
+    .main-footer {
+      background: var(--bg-white); /* fundo branco */
+      color: white; /* cor do texto */
+      padding: var(--space-xl) 0 var(--space-lg) 0; /* espaçamento */
+      margin-top: var(--space-xl); /* margem superior */
+      position: relative; /* para elementos posicionados dentro */
+      overflow: hidden; /* esconde conteúdo extra */
+    }
+
+    /* Textura no fundo do footer */
+    .main-footer::before {
+      content: ''; /* elemento vazio */
+      position: absolute; /* ocupa o footer inteiro */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml,...'); /* padrão granular */
+      opacity: 0.5; /* semitransparente */
+    }
+
+    /* Seções internas do footer */
+    .footer-section {
+      position: relative;
+      z-index: 1; /* fica acima do ::before */
+    }
+
+    .footer-section h5 {
+      color: white; /* título branco */
+      font-family: 'Poppins', sans-serif; /* fonte */
+      font-weight: 700; /* negrito */
+      font-size: 1.2rem; /* tamanho */
+      margin-bottom: var(--space-lg); /* espaçamento inferior */
+      position: relative; /* para ::after */
+    }
+
+    .footer-section h5:after {
+      content: ''; /* barra decorativa */
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 50px;
+      height: 4px;
+      background: var(--gradient-primary);
+      border-radius: var(--radius-sm);
+    }
+
+    .footer-section p {
+      color: #BDC3C7; /* cinza claro */
+      font-size: 0.9rem; /* tamanho menor */
+      line-height: 1.7; /* altura da linha */
+      margin-bottom: var(--space-sm);
+    }
+
+    .footer-section a {
+      color: #BDC3C7; /* link cinza */
+      text-decoration: none; /* remove sublinhado */
+      transition: all var(--transition-fast); /* animação rápida */
+    }
+
+    .footer-section a:hover {
+      color: var(--primary-light); /* cor primária clara */
+      text-decoration: none;
+      transform: translateX(5px); /* desloca ligeiramente */
+    }
+
+    /* Linha inferior do footer */
+    .footer-bottom {
+      border-top: 1px solid #34495E; /* linha divisória */
+      padding-top: var(--space-xl); /* espaçamento superior */
+      margin-top: var(--space-xl); /* margem superior */
+      text-align: center; /* centraliza conteúdo */
+    }
+
+    /* Links sociais */
+    .social-links {
+      display: flex; /* layout flexível */
+      justify-content: center; /* centraliza */
+      gap: var(--space-lg); /* espaço entre ícones */
+      margin-top: var(--space-lg); /* espaçamento superior */
+    }
+
+    .social-link {
+      display: flex; /* centraliza ícone */
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Sombra do botão */
-      z-index: 1000; /* Para garantir que o botão fique acima de outros elementos */
-      transition: background-color 0.3s; /* Efeito de transição para a cor de fundo */
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.1); /* fundo transparente */
+      border-radius: 50%; /* formato circular */
+      transition: all var(--transition-normal);
+      backdrop-filter: blur(10px); /* desfoque no fundo */
     }
 
-    .whatsapp-button:hover {
-      background-color: #128C7E; /* Cor do fundo ao passar o mouse */
+    .social-link:hover {
+      background: var(--gradient-primary); /* gradiente no hover */
+      transform: translateY(-5px) scale(1.1); /* eleva e aumenta */
+      box-shadow: var(--shadow-colored);
     }
 
-    .whatsapp-button img {
-      width: 30px; /* Largura do ícone do WhatsApp */
-      height: 30px; /* Altura do ícone do WhatsApp */
+    .social-link i {
+      font-size: 1.2rem; /* tamanho do ícone */
+      color: white; /* cor do ícone */
     }
 
-    .footer-section img {
-      transition: transform 0.3s;
+    /* Botão do WhatsApp */
+    .whatsapp-btn {
+      position: fixed; /* fixo na tela */
+      bottom: var(--space-xl); /* distância do rodapé */
+      right: var(--space-xl); /* distância da direita */
+      width: 70px;
+      height: 70px;
+      background: var(--gradient-success); /* gradiente verde */
+      border-radius: 50%; /* circular */
+      display: flex; /* centraliza ícone */
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-xl);
+      z-index: 1000; /* fica sobre tudo */
+      transition: all var(--transition-normal);
+      text-decoration: none;
+      cursor: pointer; /* cursor de link */
     }
-  
-    .footer-section img:hover {
-      transform: scale(1.1); /* Aumenta o tamanho do ícone ao passar o mouse */
+
+    .whatsapp-btn:hover {
+      transform: scale(1.15); /* aumenta no hover */
+      box-shadow: 0 20px 60px rgba(39, 174, 96, 0.4); /* sombra especial */
+      text-decoration: none;
+    }
+
+    .whatsapp-btn i {
+      font-size: 1.8rem; /* tamanho do ícone */
+      color: white; /* ícone branco */
+    }
+
+    /* Animação de pulsar do WhatsApp */
+    .whatsapp-btn::before {
+      content: ''; /* círculo animado */
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--success-color);
+      animation: pulse-enhanced 2.5s infinite;
+      z-index: -1; /* atrás do botão */
+    }
+
+    @keyframes pulse-enhanced {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.7; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* Botão de voltar ao topo */
+    .scroll-top-btn {
+      position: fixed;
+      bottom: calc(var(--space-xl) + 90px);
+      right: var(--space-xl);
+      width: 50px;
+      height: 50px;
+      background: var(--gradient-primary);
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+      opacity: 0; /* escondido por padrão */
+      visibility: hidden; /* invisível por padrão */
+      transition: all var(--transition-normal);
+      cursor: pointer;
+    }
+
+    .scroll-top-btn.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .scroll-top-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .scroll-top-btn i {
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    /* Responsividade para telas grandes */
+    @media (min-width: 992px) {
+      .navbar-collapse { margin-top: 0; }
+      .navbar-nav { flex-direction: row; margin-left: auto; }
+    }
+
+    /* Responsividade para tablets */
+    @media (max-width: 768px) {
+      .logo { max-width: 160px; }
+      .whatsapp-btn { bottom: var(--space-lg); right: var(--space-lg); width: 60px; height: 60px; }
+      .whatsapp-btn i { font-size: 1.5rem; }
+      .scroll-top-btn { bottom: calc(var(--space-lg) + 80px); right: var(--space-lg); }
+      .main-footer { padding: var(--space-xl) 0 var(--space-lg) 0; }
+      .social-links { gap: var(--space-md); }
+      .nav-link { margin: var(--space-xs) 0; }
+    }
+
+    /* Responsividade para celulares pequenos */
+    @media (max-width: 576px) {
+      .navbar { padding: var(--space-md) 0; }
+      .main-content { padding: var(--space-lg) 0; }
+      .logo { max-width: 140px; }
+      .footer-section h5 { font-size: 1.1rem; }
+      .social-links { flex-wrap: wrap; justify-content: center; }
+    }
+
+    /* Utilitários de animação */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all var(--transition-slow);
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slide-in-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: all var(--transition-slow);
+    }
+
+    .slide-in-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .slide-in-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all var(--transition-slow);
+    }
+
+    .slide-in-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Texto com gradiente */
+    .text-gradient {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+
+    /* Variáveis para modo escuro */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-light: #121212;
+        --bg-white: #1E1E1E;
+        --text-dark: #FFFFFF;
+        --text-light: #B0B0B0;
+        --border-color: #333333;
+      }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <nav class="navbar navbar-expand-lg">
+  <!-- Page Loader -->
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-spinner"></div>
+  </div>
+
+  <header class="main-header" id="mainHeader">
+    <nav class="navbar navbar-expand-lg" id="mainNavbar">
       <div class="container">
         {% load static %}
-        <img src="{% static 'visual/LogoFJ.png' %}" alt="Logo FJ" class="logo">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span> <!-- Ícone do menu -->
+        <a class="navbar-brand" href="{% url 'cars_list' %}">
+          CarbonTechMotors | Automóveis
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
         </button>
+        
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'cars_list' %}">
-                <img src="{% static 'visual/Home.png' %}" alt="Início" style="width: 20px; height: 20px; margin-right: 5px;">
+              <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'cars_list' %}">
+                <i class="fas fa-home nav-icon"></i>
                 Início
               </a>
             </li>
+            
             {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'new_car' %}">
-                <img src="{% static 'visual/Cadastro.png' %}" alt="Cadastro" style="width: 20px; height: 20px; margin-right: 5px;">
-                Cadastro
-              </a>
-            </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'contato_geral' %}">
-                  <img src="{% static 'visual/envelope.png' %}" alt="Contato" style="width: 20px; height: 20px; margin-right: 5px;">
+                <a class="nav-link {% if request.path == '/new_car/' %}active{% endif %}" href="{% url 'new_car' %}">
+                  <i class="fas fa-plus-circle nav-icon"></i>
+                  Cadastrar
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if request.path == '/contato_geral/' %}active{% endif %}" href="{% url 'contato_geral' %}">
+                  <i class="fas fa-envelope nav-icon"></i>
                   Contato
                 </a>
               </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'register' %}">
-                <img src="{% static 'visual/Registro.png' %}" alt="Cadastra-se" style="width: 20px; height: 20px; margin-right: 5px;">
-                Cadastra-se
-              </a>
-            </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">
-                  <img src="{% static 'visual/Login.png' %}" alt="Login" style="width: 20px; height: 20px; margin-right: 5px;">
+                <a class="nav-link {% if request.path == '/meu_perfil/' %}active{% endif %}" href="{% url 'meu_perfil' %}">
+                  <i class="fas fa-user nav-icon"></i>
+                  Meu Perfil
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link btn-outline" href="{% url 'logout' %}">
+                  <i class="fas fa-sign-out-alt nav-icon"></i>
+                  Sair
+                </a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link {% if request.path == '/register/' %}active{% endif %}" href="{% url 'register' %}">
+                  <i class="fas fa-user-plus nav-icon"></i>
+                  Cadastrar-se
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if request.path == '/login/' %}active{% endif %}" href="{% url 'login' %}">
+                  <i class="fas fa-sign-in-alt nav-icon"></i>
                   Login
                 </a>
               </li>
-            {% endif %}
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'meu_perfil' %}">
-                <img src="{% static 'visual/Login.png' %}" alt="Meu Perfil" style="width: 20px; height: 20px; margin-right: 5px;">
-                Meu Perfil
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}">
-                <img src="{% static 'visual/Sair.png' %}" alt="Sair" style="width: 20px; height: 20px; margin-right: 5px;">
-                Sair
-              </a>
-            </li>
             {% endif %}
           </ul>
         </div>
@@ -211,51 +690,207 @@
     </nav>
   </header>
 
-  <main class="container">
-    {% block content %}
-    {% endblock %}
+  <!-- Breadcrumb Section -->
+  {% block breadcrumb %}
+  {% endblock %}
+
+  <main class="main-content">
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
   </main>
 
-  <footer>
+  <footer class="main-footer">
     <div class="container">
-        <div class="row">
-            <div class="col-md-4 footer-section">
-                <h4>QUEM SOMOS</h4>
-                <p>Somos especialistas na comercialização de veículos novos e usados, tanto nacionais quanto importados...</p>
-            </div>
-            <div class="col-md-4 footer-section">
-                <h4>CONTATO</h4>
-                <p>Felipe - (21) 99999-9999 / Júlia - (21) 99999-9999</p>
-            </div>
-            <div class="col-md-4 footer-section">
-                <h4>ENDEREÇO</h4>
-                <p>Estrada do Rio Grande 3587 - Taquara - Rio de Janeiro - RJ</p>
-            </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4 fade-in">
+          <div class="footer-section">
+            <h5><i class="fas fa-car-side"></i> Sobre a Carbon Tech Motors</h5>
+            <p>Especialistas em comercialização de veículos novos e usados, nacionais e importados. Qualidade, confiança e transparência.</p>
+            <p><strong>CNPJ:</strong> 00.000.000/0001-00</p>
+            <p><strong>Fundada em:</strong> 2014</p>
+          </div>
         </div>
+        
+        <div class="col-lg-4 col-md-6 mb-4 fade-in">
+          <div class="footer-section">
+            <h5><i class="fas fa-phone"></i> Contato</h5>
+            <p><i class="fas fa-user"></i> <strong>Bruno:</strong> 
+               <a href="tel:+5521999999999">(21) 99999-9999</a>
+            </p>
+            <p><i class="fas fa-user"></i> <strong>Bruno:</strong> 
+               <a href="tel:+5521999999999">(21) 99999-9999</a>
+            </p>
+            <p><i class="fas fa-envelope"></i> <strong>E-mail:</strong> 
+               <a href="#">carbontechmotors@gmail.com</a>
+            </p>
+            <p><i class="fas fa-clock"></i> <strong>Horário:</strong> Seg-Sex 8h às 18h | Sáb 8h às 14h</p>
+          </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-12 mb-4 fade-in">
+          <div class="footer-section">
+            <h5><i class="fas fa-map-marker-alt"></i> Localização</h5>
+            <p><strong>Endereço:</strong><br>
+               Estrada do Rio Grande, 4136<br>
+               Taquara - Rio de Janeiro - RJ<br>
+               CEP: 22723-002</p>
+            <div class="mt-3">
+              <a href="https://www.google.com/maps/place/Carbon+Tech+-+Centro+de+Est%C3%A9tica+Automotiva/data=!4m2!3m1!1s0x0:0x7ee65d5b25e69fae?sa=X&ved=1t:2428&ictx=111" target="_blank" class="btn btn-primary-modern btn-sm">
+                <i class="fas fa-map"></i> Ver no Mapa
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div class="row align-items-center">
+          <div class="col-md-6 text-center text-md-left">
+            <p class="mb-0">&copy; 2025 Carbon Tech Motors. Todos os direitos reservados.</p>
+            <small class="text-muted">Desenvolvido por Felipe Duque</small>
+          </div>
+          <div class="col-md-6">
+            <div class="social-links">
+              <a href="https://www.facebook.com/fjmultimarcas" target="_blank" class="social-link" 
+                 aria-label="Facebook">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="https://www.instagram.com/fjmultimarcas" target="_blank" class="social-link" 
+                 aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="https://www.youtube.com/fjmultimarcas" target="_blank" class="social-link" 
+                 aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <br>
-    <p class="text-center">&copy; 2024 FJ Multimarcas</p>
+  </footer>
 
-    <!-- Links de redes sociais -->
-    <div class="text-center">
-        <a href="https://www.facebook.com/seu-perfil" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" style="width: 30px; height: 30px; margin: 0 10px;">
-        </a>
-        <a href="https://www.instagram.com/seu-perfil" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width: 30px; height: 30px; margin: 0 10px;">
-        </a>
-    </div>
-</footer>
-
-  <!-- Botão do WhatsApp -->
-  <a href="https://api.whatsapp.com/send?phone=5521964243121&text=Olá!%20Estou%20interessado%20em%20saber%20mais%20sobre%20os%20veículos." target="_blank" class="whatsapp-button">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+  <!-- WhatsApp Button -->
+  <a href="https://api.whatsapp.com/send?phone=5521964243121&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20veículos%20disponíveis." 
+     target="_blank" class="whatsapp-btn" aria-label="Conversar no WhatsApp">
+    <i class="fab fa-whatsapp"></i>
   </a>
 
-  <!-- jQuery e Bootstrap JS -->
+  <!-- Scroll to Top Button -->
+  <button class="scroll-top-btn" id="scrollTopBtn" onclick="scrollToTop()" aria-label="Voltar ao topo">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+  <script>
+    // Page loader
+    window.addEventListener('load', function() {
+      const loader = document.getElementById('pageLoader');
+      loader.classList.add('loaded');
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 500);
+    });
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('mainHeader');
+      const navbar = document.getElementById('mainNavbar');
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      if (scrollTop > 100) {
+        header.classList.add('scrolled');
+        navbar.classList.add('compact');
+      } else {
+        header.classList.remove('scrolled');
+        navbar.classList.remove('compact');
+      }
+    });
+
+    // Scroll to top button
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    
+    window.addEventListener('scroll', function() {
+      if (window.pageYOffset > 300) {
+        scrollTopBtn.classList.add('visible');
+      } else {
+        scrollTopBtn.classList.remove('visible');
+      }
+    });
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Active navigation link
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentLocation = window.location.pathname;
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentLocation) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Fade in animation on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    // Observe elements with animation classes
+    document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Mobile menu enhancement
+    document.querySelector('.navbar-toggler').addEventListener('click', function() {
+      this.classList.toggle('active');
+    });
+
+    // Preload critical images
+    const criticalImages = [
+      '{% static "visual/LogoFJ.png" %}'
+    ];
+    
+    criticalImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  </script>
 </body>
 
 </html>

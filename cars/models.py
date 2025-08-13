@@ -6,21 +6,76 @@ class Brand(models.Model):
 
     def __str__(self):  # Retorna o nome da marca
         return self.name
+    
+FUEL_CHOICES = [
+    ('Gasolina', 'Gasolina'),
+    ('Alcool', 'Álcool'),
+    ('Flex', 'Flex'),
+    ('Diesel', 'Diesel'),
+    ('Eletrico', 'Elétrico'),
+]
+
+EXCHANGE_CHOICES = [
+    ('Manual', 'Manual'),
+    ('Automatico', 'Automático'),
+]
+
+MARCA_CHOICES = [
+    ('Chevrolet', 'Chevrolet'),
+    ('Fiat', 'Fiat'),
+    ('Volkswagen', 'Volkswagen'),
+    ('Ford', 'Ford'),
+    ('Renault', 'Renault'),
+    ('Hyundai', 'Hyundai'),
+    ('Toyota', 'Toyota'),
+    ('Honda', 'Honda'),
+    ('Nissan', 'Nissan'),
+    ('Jeep', 'Jeep'),
+    ('Mitsubishi', 'Mitsubishi'),
+    ('Peugeot', 'Peugeot'),
+    ('Citroen', 'Citroën'),
+    ('Kia', 'Kia'),
+    ('Bmw', 'BMW'),
+    ('Mercedes', 'Mercedes-Benz'),
+    ('Audi', 'Audi'),
+    ('Volvo', 'Volvo'),
+    ('Jac', 'JAC'),
+    ('Chery', 'Chery'),
+]
+
+CAR_TYPE_CHOICES = (
+    ('sedan', 'Sedan'),
+    ('suv', 'SUV'),
+    ('hatch', 'Hatch'),
+    ('pickup', 'Pickup'),
+    ('coupé', 'Coupé'),
+    ('convertible', 'Convertible'),
+)
 
 
 class Car(models.Model):
     id = models.AutoField(primary_key=True)  # ID automático
     model = models.CharField(max_length=200)  # Modelo do carro
-    marca = models.CharField(max_length=200, blank=True, null=True)
+    marca = models.CharField(max_length=50, choices=MARCA_CHOICES, blank=True, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.PROTECT, related_name='cars', blank=True, null=True)
     seller = models.CharField(max_length=200, blank=True, null=True)
-    exchange = models.CharField(max_length=200, blank=True, null=True)
+    exchange = models.CharField(max_length=20, choices=EXCHANGE_CHOICES, blank=True, null=True)
     color = models.CharField(max_length=200, blank=True, null=True)
     factory_year = models.IntegerField(blank=True, null=True)  # Ano de fabricação
     model_year = models.IntegerField(blank=True, null=True)  # Ano do modelo
+    tipo = models.CharField(
+        max_length=20,
+        choices=CAR_TYPE_CHOICES,
+        blank=True, null=True
+    )
     plate = models.CharField(max_length=20, blank=True, null=True)
-    value = models.FloatField(blank=True, null=True)  # Valor do carro
-    fuel = models.CharField(max_length=20, blank=True, null=True)
+    value = models.DecimalField(
+        max_digits=10,  # total de dígitos
+        decimal_places=2,  # casas decimais
+        blank=True,
+        null=True
+    )
+    fuel = models.CharField(max_length=20, choices=FUEL_CHOICES, blank=True, null=True)
     email = models.EmailField(max_length=254, blank=True, null=True)  # Usar EmailField para emails
     km = models.CharField(max_length=20, blank=True, null=True)
     contact = models.CharField(max_length=20, blank=True, null=True)
@@ -32,6 +87,11 @@ class Car(models.Model):
     photo6 = models.ImageField(upload_to='cars/', blank=True, null=True)
     active = models.BooleanField(default=False)
     bio = models.TextField(blank=True, null=True)
+
+    def formatted_value(self):
+        if self.value is not None:
+            return f"R$ {self.value:,.2f}".replace(',', 'v').replace('.', ',').replace('v', '.')
+        return "R$ 0,00"
 
     def __str__(self):  # Retorna o modelo do carro
         return self.model

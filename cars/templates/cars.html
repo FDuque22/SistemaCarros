@@ -1,161 +1,708 @@
 {% extends "base.html" %}
 
-{% block title %}FJ - Multimarcas{% endblock %}
+{% block title %}Carbon Tech Motors{% endblock %}
 
 {% block content %}
 <style>
-    .car-card {
-        background-color: #e3e1e1;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-        overflow: hidden;
-        text-align: center;
-        transition: all 0.3s ease;
+    /* Hero Search Section */
+    .carslist-hero-search {
+        padding: 4rem 0 3rem 0; /* espaçamento interno */
+        margin: 0; /* remove todas as margens externas */
+        position: relative; /* permite posicionamento absoluto dos filhos */
+        overflow: hidden; /* esconde conteúdo que ultrapassa o container */
+        max-width: 100vw; /* garante que não haja limite */
+        box-sizing: border-box; /* inclui padding dentro da largura */
+        }
+  
+    .carslist-hero-search::before {
+      content: ''; /* Gera um elemento antes do container */
+      position: absolute; /* Posiciona de forma absoluta dentro do container */
+      top: 0; /* Alinha no topo */
+      left: 0; /* Alinha na esquerda */
+      width: 100%; /* Largura completa do container */
+      height: 100%; /* Altura completa do container */
+      background: url('data:image/svg+xml,<svg ...></svg>'); /* Adiciona padrão SVG semi-transparente */
+    }
+  
+    .carslist-hero-content {
+      position: relative; /* Permite usar z-index */
+      z-index: 2; /* Coloca conteúdo acima do pseudo-elemento ::before */
+      text-align: center; /* Centraliza o texto */
+    }
+  
+    .carslist-hero-title {
+        font-family: 'Poppins', sans-serif; /* Fonte Poppins */
+        font-size: 3rem; /* Aumenta o tamanho para mais destaque */
+        font-weight: 800; /* Mais negrito para chamar atenção */
+        color: #ff8800; /* Cor laranja vibrante */
+        margin-bottom: 0.5rem; /* Espaço abaixo do título */
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.25); /* Sombra mais intensa e suave */
+        letter-spacing: 1px; /* Espaço entre letras para modernizar */
+        text-transform: uppercase; /* Deixa todas as letras maiúsculas para impacto */
+        line-height: 1.2; /* Altura da linha para melhor leitura */
+        }
+  
+    .carslist-hero-subtitle {
+      font-size: 1.1rem; /* Tamanho da fonte do subtítulo */
+      color: rgba(255, 255, 255, 0.9); /* Cor branca semi-transparente */
+      margin-bottom: 2.5rem; /* Espaço abaixo do subtítulo */
+      font-weight: 400; /* Peso normal da fonte */
+    }
+  
+    /* Search Form */
+    .carslist-search-container {
+      max-width: 600px; /* Largura máxima do formulário */
+      margin: 0 auto; /* Centraliza horizontalmente */
+      position: relative; /* Para elementos posicionados dentro */
+    }
+  
+    .carslist-search-form {
+      display: flex; /* Flex container */
+      background: white; /* Fundo branco */
+      border-radius: var(--radius-xl); /* Bordas arredondadas */
+      box-shadow: var(--shadow-xl); /* Sombra do container */
+      overflow: hidden; /* Esconde conteúdo que extrapola */
+      transition: all var(--transition-normal); /* Transição suave de mudanças */
+    }
+  
+    .carslist-search-form:focus-within {
+      transform: translateY(-2px); /* Eleva o formulário quando focado */
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); /* Sombra mais intensa ao focar */
+    }
+  
+    .carslist-search-input {
+      flex: 1; /* Ocupa todo espaço disponível */
+      padding: 1.2rem 1.5rem; /* Espaçamento interno */
+      border: none; /* Remove borda padrão */
+      font-size: 1rem; /* Tamanho da fonte */
+      color: #303030; /* Cor do texto */
+      background: transparent; /* Fundo transparente */
+    }
+  
+    .carslist-search-input::placeholder {
+      color: var(--text-muted); /* Cor do texto placeholder */
+    }
+  
+    .carslist-search-input:focus {
+      outline: none; /* Remove contorno azul padrão do navegador */
+    }
+  
+    .carslist-search-btn {
+      background: var(--gradient-primary); /* Fundo do botão */
+      border: none; /* Remove borda */
+      padding: 1.2rem 2rem; /* Espaçamento interno */
+      color: white; /* Cor do texto */
+      font-weight: 600; /* Peso da fonte */
+      cursor: pointer; /* Muda cursor ao passar em cima */
+      transition: all var(--transition-normal); /* Transição suave */
+      display: flex; /* Flex container */
+      align-items: center; /* Alinha verticalmente ao centro */
+      gap: 0.5rem; /* Espaçamento entre ícones/texto */
+    }
+  
+    .carslist-search-btn:hover {
+      background: #db7500; /* Cor laranja vibrante */
     }
 
-    .car-card:hover {
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-        transform: translateY(-2px);
+  /* Featured Section */
+  .carslist-featured-section {
+    text-align: center; /* Centraliza o texto da seção */
+    margin-bottom: 3rem; /* Espaço abaixo da seção */
+  }
+
+  .carslist-section-title {
+    font-family: 'Poppins', sans-serif; /* Fonte Poppins */
+    font-size: 2.2rem; /* Tamanho do título */
+    font-weight: 700; /* Negrito */
+    color: #303030; /* Cor do texto */
+    margin-bottom: 0.2rem; /* Espaço abaixo do título */
+    position: relative; /* Necessário para o pseudo-elemento ::after */
+    display: inline-block; /* Permite centralizar o título e usar ::after */
+  }
+
+  .carslist-section-title::after {
+    content: ''; /* Cria um elemento decorativo */
+    position: absolute; /* Posicionamento absoluto relativo ao título */
+    bottom: -10px; /* Posiciona 10px abaixo do título */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translateX(-50%); /* Ajusta centralização */
+    width: 80px; /* Largura da linha decorativa */
+    height: 4px; /* Altura da linha */
+    border-radius: 2px; /* Bordas arredondadas */
+  }
+
+  .carslist-section-subtitle {
+    font-size: 1rem; /* Tamanho do subtítulo */
+    color: var(--text-light); /* Cor clara */
+    margin-bottom: 2rem; /* Espaço abaixo do subtítulo */
+    font-weight: 500; /* Peso médio da fonte */
+    text-transform: uppercase; /* Converte para letras maiúsculas */
+    letter-spacing: 1px; /* Espaçamento entre letras */
+  }
+
+  /* Filters Section */
+  .carslist-filters-container {
+    background: white; /* Fundo branco */
+    padding: 1.5rem; /* Espaçamento interno */
+    border-radius: var(--radius-lg); /* Bordas arredondadas */
+    box-shadow: var(--shadow-md); /* Sombra leve */
+    margin-bottom: 2rem; /* Espaço abaixo */
+    display: flex; /* Flex container */
+    justify-content: center; /* Centraliza horizontalmente */
+    gap: 1rem; /* Espaço entre filtros */
+    flex-wrap: wrap; /* Permite quebrar em múltiplas linhas */
+  }
+
+  .carslist-filter-btn {
+    background: var(--bg-light); /* Fundo leve */
+    border: 2px solid var(--border-color); /* Borda clara */
+    color: var(--text-dark); /* Cor do texto */
+    padding: 0.75rem 1.5rem; /* Espaçamento interno */
+    border-radius: var(--radius-md); /* Bordas arredondadas */
+    font-weight: 500; /* Peso da fonte */
+    cursor: pointer; /* Cursor de mão */
+    transition: all var(--transition-normal); /* Transição suave */
+    text-decoration: none; /* Remove sublinhado */
+    display: inline-flex; /* Flex para alinhar ícone e texto */
+    align-items: center; /* Alinha verticalmente */
+    gap: 0.5rem; /* Espaço entre elementos internos */
+  }
+
+  .carslist-filter-btn:hover,
+  .carslist-filter-btn.active {
+    background: var(--gradient-primary); /* Fundo ativo ou hover */
+    border-color: var(--gradient-primary); /* Borda igual ao fundo */
+    color: white; /* Texto branco */
+    transform: translateY(-2px); /* Leve elevação */
+    box-shadow: var(--shadow-colored); /* Sombra colorida */
+    text-decoration: none; /* Remove sublinhado */
+  }
+
+  /* Car Cards */
+  .carslist-cars-grid {
+    display: grid; /* Grid layout */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* Colunas automáticas */
+    gap: 2rem; /* Espaço entre cards */
+    margin-bottom: 3rem; /* Espaço abaixo da grid */
+  }
+
+  .carslist-car-card {
+    background: white; /* Fundo branco */
+    border-radius: var(--radius-lg); /* Bordas arredondadas */
+    overflow: hidden; /* Esconde conteúdo que extrapola */
+    box-shadow: var(--shadow-md); /* Sombra leve */
+    transition: all var(--transition-normal); /* Transição suave */
+    position: relative; /* Para posicionar badges */
+    text-decoration: none; /* Remove sublinhado */
+    color: #303030;
+  }
+
+  .carslist-car-card:hover {
+    transform: translateY(-8px); /* Elevação ao passar mouse */
+    box-shadow: var(--shadow-xl); /* Sombra mais intensa */
+    text-decoration: none; /* Mantém sem sublinhado */
+    color: inherit; /* Mantém cor do texto */
+  }
+
+  .carslist-car-image-container {
+    position: relative; /* Para posicionamento absoluto da imagem */
+    width: 100%; /* Largura total do card */
+    height: 220px; /* Altura fixa da imagem */
+    overflow: hidden; /* Esconde excessos */
+    background: var(--bg-light); /* Fundo leve caso não tenha imagem */
+  }
+
+  .carslist-car-image {
+    width: 100%; /* Largura total */
+    height: 100%; /* Altura total */
+    object-fit: cover; /* Cobre todo o container sem distorcer */
+    transition: transform var(--transition-slow); /* Transição suave para zoom */
+  }
+
+  .carslist-car-card:hover .carslist-car-image {
+    transform: scale(1.05); /* Zoom leve na imagem ao passar mouse */
+  }
+
+  .carslist-car-badge {
+    position: absolute; /* Posicionado dentro do card */
+    top: 1rem; /* Distância do topo */
+    right: 1rem; /* Distância da direita */
+    background: var(--gradient-primary); /* Fundo gradiente */
+    color: white; /* Texto branco */
+    padding: 0.5rem 1rem; /* Espaçamento interno */
+    border-radius: var(--radius-md); /* Bordas arredondadas */
+    font-size: 0.8rem; /* Tamanho da fonte */
+    font-weight: 600; /* Negrito leve */
+    text-transform: uppercase; /* Letras maiúsculas */
+    letter-spacing: 0.5px; /* Espaçamento entre letras */
+    box-shadow: var(--shadow-md); /* Sombra leve */
+  }
+
+  .carslist-no-photo-placeholder {
+    display: flex; /* Flex container */
+    align-items: center; /* Alinha verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+    flex-direction: column; /* Organiza elementos verticalmente */
+    background: var(--bg-light); /* Fundo leve */
+    color: var(--text-muted); /* Texto cinza */
+    gap: 0.5rem; /* Espaço entre ícone e texto */
+  }
+
+  .carslist-no-photo-placeholder i {
+    font-size: 2.5rem; /* Tamanho do ícone */
+    opacity: 0.5; /* Transparência do ícone */
+  }
+
+  .carslist-car-info {
+    padding: 1.5rem; /* Espaçamento interno do card */
+  }
+
+  .carslist-car-brand-model {
+    font-family: 'Poppins', sans-serif; /* Fonte Poppins */
+    font-size: 1.3rem; /* Tamanho da fonte */
+    font-weight: 600; /* Semi-negrito */
+    color: #303030;
+    margin-bottom: 0.75rem; /* Espaço abaixo */
+    line-height: 1.3; /* Espaçamento entre linhas */
+  }
+
+  .carslist-car-details {
+    display: flex; /* Flex container */
+    justify-content: space-between; /* Espaço entre elementos */
+    align-items: center; /* Alinha verticalmente */
+    margin-bottom: 1rem; /* Espaço abaixo */
+  }
+
+  .carslist-car-year {
+    background: var(--bg-light); /* Fundo leve */
+    color: var(--text-dark); /* Cor do texto */
+    padding: 0.4rem 0.8rem; /* Espaçamento interno */
+    border-radius: var(--radius-sm); /* Bordas arredondadas pequenas */
+    font-size: 0.9rem; /* Tamanho da fonte */
+    font-weight: 500; /* Peso médio */
+  }
+
+  .carslist-car-price {
+    font-family: 'Poppins', sans-serif; /* Fonte Poppins */
+    font-size: 1.4rem; /* Tamanho da fonte */
+    font-weight: 700; /* Negrito */
+    color: var(--gradient-primary); /* Cor principal */
+  }
+
+  .carslist-car-features {
+    display: flex; /* Flex container */
+    gap: 0.5rem; /* Espaço entre tags */
+    flex-wrap: wrap; /* Quebra linhas se necessário */
+    margin-top: 0.75rem; /* Espaço acima */
+  }
+
+  .carslist-feature-tag {
+    background: var(--bg-light); /* Fundo leve */
+    color: var(--text-light); /* Texto claro */
+    padding: 0.25rem 0.75rem; /* Espaçamento interno pequeno */
+    border-radius: var(--radius-sm); /* Bordas arredondadas pequenas */
+    font-size: 0.8rem; /* Fonte pequena */
+    font-weight: 500; /* Peso médio */
+  }
+
+  /* Empty State */
+  .carslist-empty-state {
+    text-align: center; /* Centraliza conteúdo */
+    padding: 4rem 2rem; /* Espaçamento interno */
+    background: white; /* Fundo branco */
+    border-radius: var(--radius-lg); /* Bordas arredondadas */
+    box-shadow: var(--shadow-md); /* Sombra leve */
+  }
+
+  .carslist-empty-icon {
+    font-size: 4rem; /* Tamanho do ícone */
+    color: var(--text-muted); /* Cor cinza */
+    margin-bottom: 1.5rem; /* Espaço abaixo */
+    opacity: 0.6; /* Transparência */
+  }
+
+  .carslist-empty-title {
+    font-size: 1.5rem; /* Tamanho da fonte */
+    font-weight: 600; /* Semi-negrito */
+    color: var(--text-dark); /* Cor do texto */
+    margin-bottom: 0.5rem; /* Espaço abaixo */
+  }
+
+  .carslist-empty-message {
+    color: var(--text-light); /* Cor clara */
+    font-size: 1rem; /* Tamanho da fonte */
+    margin-bottom: 2rem; /* Espaço abaixo */
+  }
+
+  .carslist-empty-action {
+    background: var(--gradient-primary); /* Fundo gradiente */
+    color: white; /* Texto branco */
+    padding: 0.75rem 2rem; /* Espaçamento interno */
+    border-radius: var(--radius-md); /* Bordas arredondadas */
+    text-decoration: none; /* Remove sublinhado */
+    font-weight: 600; /* Semi-negrito */
+    transition: all var(--transition-normal); /* Transição suave */
+    display: inline-block; /* Para comportar como botão */
+  }
+
+  .carslist-empty-action:hover {
+    transform: translateY(-2px); /* Eleva botão */
+    box-shadow: var(--shadow-colored); /* Sombra colorida */
+    text-decoration: none; /* Remove sublinhado */
+    color: white; /* Mantém cor do texto */
+  }
+
+  /* Quick Stats */
+  .carslist-stats-container {
+    display: grid; /* Grid layout */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Colunas automáticas */
+    gap: 1.5rem; /* Espaço entre estatísticas */
+    margin-bottom: 3rem; /* Espaço abaixo */
+  }
+
+  .carslist-stat-card {
+    background: white; /* Fundo branco */
+    padding: 2rem 1.5rem; /* Espaçamento interno */
+    border-radius: var(--radius-lg); /* Bordas arredondadas */
+    box-shadow: var(--shadow-md); /* Sombra leve */
+    text-align: center; /* Centraliza conteúdo */
+    transition: all var(--transition-normal); /* Transição suave */
+  }
+
+  .carslist-stat-card:hover {
+    transform: translateY(-5px); /* Eleva ao passar mouse */
+    box-shadow: var(--shadow-lg); /* Sombra maior */
+  }
+
+  .carslist-stat-icon {
+    font-size: 2.5rem; /* Tamanho do ícone */
+    color: var(--gradient-primary); /* Cor principal */
+    margin-bottom: 1rem; /* Espaço abaixo */
+  }
+
+  .carslist-stat-number {
+    font-family: 'Poppins', sans-serif; /* Fonte Poppins */
+    font-size: 2rem; /* Tamanho da fonte */
+    font-weight: 700; /* Negrito */
+    color: #646464;
+    margin-bottom: 0.5rem; /* Espaço abaixo */
+  }
+
+  .carslist-stat-label {
+    color: #797979;
+    font-size: 0.9rem; /* Tamanho da fonte */
+    font-weight: 500; /* Peso médio */
+    text-transform: uppercase; /* Letras maiúsculas */
+    letter-spacing: 0.5px; /* Espaçamento entre letras */
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .carslist-hero-title {
+      font-size: 2rem; /* Reduz tamanho do título em tablets */
     }
 
-    .car-card img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
+    .carslist-section-title {
+      font-size: 1.8rem; /* Reduz tamanho do título da seção */
     }
 
-    .car-card h3 {
-        font-size: 20px;
-        margin-top: 10px;
-        margin-bottom: 5px;
+    .carslist-search-form {
+      flex-direction: column; /* Alinha campos verticalmente */
+      border-radius: var(--radius-lg); /* Bordas arredondadas menores */
     }
 
-    .car-card h2 {
-        font-size: 1.5rem;
-        margin: 10px;
+    .carslist-search-input {
+      border-bottom: 1px solid var(--border-color); /* Adiciona linha inferior */
     }
 
-    .car-card p {
-        font-size: 1rem;
-        margin-bottom: 10px;
+    .carslist-search-btn {
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* Arredonda só a base */
     }
 
-    form {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
-        text-align: center;
-        padding: 20px;
+    .carslist-filters-container {
+      padding: 1rem; /* Reduz padding */
+      gap: 0.75rem; /* Reduz espaço entre filtros */
     }
 
-    input[type="text"] {
-        padding: 10px;
-        font-size: 16px;
-        border: 2px solid #e3e1e1;
-        border-radius: 4px;
-        margin-right: 10px;
-        transition: border-bottom-color 0.3s ease-in-out;
+    .carslist-cars-grid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Colunas menores */
+      gap: 1.5rem; /* Ajusta espaçamento */
     }
 
-    input[type="text"]:focus {
-        outline: none;
-        border-bottom-color: #e3e1e1;
+    .carslist-stats-container {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Colunas menores */
+      gap: 1rem; /* Espaçamento menor */
     }
 
-    button[type="submit"] {
-        background-color: #FFA500;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        font-size: 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease-in-out;
+    .carslist-stat-card {
+      padding: 1.5rem 1rem; /* Padding reduzido */
+    }
+  }
+
+  @media (max-width: 576px) {
+    .carslist-hero-search {
+      padding: 3rem 0 2rem 0; /* Reduz padding em mobile */
     }
 
-    button[type="submit"]:hover {
-        background-color: #cc8400;
+    .carslist-hero-title {
+      font-size: 1.75rem; /* Tamanho menor do título */
     }
 
-    a {
-        font-size: 18px;
-        color: #333;
-        text-decoration: none;
+    .carslist-cars-grid {
+      grid-template-columns: 1fr; /* Apenas uma coluna em mobile */
+      gap: 1rem; /* Espaçamento menor */
     }
 
-    a:hover {
-        color: #FFA500;
+    .carslist-car-details {
+      flex-direction: column; /* Alinha detalhes verticalmente */
+      gap: 0.75rem; /* Espaço entre elementos */
+      align-items: flex-start; /* Alinha à esquerda */
     }
-
-    .btn-filter {
-        background-color: #FFA500;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        margin: 0 10px;
-        cursor: pointer;
-        border-radius: 4px;
-        transition: background-color 0.3s ease-in-out;
-    }
-
-    .btn-filter:hover {
-        background-color: #cc8400;
-    }
-
-    /* Estilos para a seção de ofertas em destaque */
-    .highlight-section {
-        text-align: center;
-        margin: 30px 0;
-    }
-
-    .highlight-section h2 {
-        font-size: 24px;
-        color: #333;
-        margin-bottom: 5px;
-    }
-
-    .highlight-section p {
-        font-size: 14px;
-        color: #888;
-        margin-top: 0;
-    }
+  }
 </style>
 
-<form method="GET" action="{% url 'cars_list' %}">
-    <input type="text" name="search" placeholder="Buscar carro...">
-    <button type="submit">Buscar</button>
-</form>
-
-<!-- Seção de Ofertas em Destaque -->
-<div class="highlight-section">
-    <h2>OFERTAS EM DESTAQUES</h2>
-    <p>CARROS REVISADOS E COM GARANTIAS</p>
-</div>
-
-<div class="container">
-    <div class="row">
-        {% if cars %}
-            {% for car in cars %}
-            <div class="col-md-4 col-sm-6 mb-4"> <!-- 3 cartões por linha em telas grandes e 2 em telas pequenas -->
-                <a href='{% url 'car_detail' car.pk %}'>
-                    <div class="car-card">
-                        {% if car.photo1 %}
-                            <img src="{{ car.photo1.url }}" alt="{{ car.model }} - {{ car.brand }}">
-                        {% else %}
-                            <p class="no-photo1">FOTO NÃO DISPONIVEL</p>
-                        {% endif %}
-                        <h2><strong>{{ car.brand }} {{ car.model }}</strong></h2>
-                        <p>{{ car.factory_year }} - R$ {{ car.value|floatformat:"2g" }}</p>
-                    </div>
-                </a>
-            </div>
-            {% endfor %}
-        {% else %}
-            <p class="no-results">Nenhum carro encontrado.</p>
-        {% endif %}
+<!-- Hero Search Section -->
+<div class="carslist-hero-search">
+  <div class="container">
+    <div class="carslist-hero-content">
+      <h1 class="carslist-hero-title">Encontre seu Veículo Aqui</h1>
+      <p class="carslist-hero-subtitle">Mais de 50 veículos revisados e com garantia</p>
+      
+      <div class="carslist-search-container">
+        <form method="GET" action="{% url 'cars_list' %}" class="carslist-search-form">
+          <input type="text" name="search" class="carslist-search-input" 
+                 placeholder="Digite marca, modelo ou ano..." 
+                 value="{{ request.GET.search }}">
+          <button type="submit" class="carslist-search-btn">
+            <i class="fas fa-search"></i>
+            Buscar
+          </button>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
+
+<!-- Quick Stats
+<div class="container">
+  <div class="carslist-stats-container fade-in">
+    <div class="carslist-stat-card">
+      <div class="carslist-stat-icon">
+        <i class="fas fa-car"></i>
+      </div>
+      <div class="carslist-stat-number">{{ cars.count|default:"50+" }}</div>
+      <div class="carslist-stat-label">Veículos Disponíveis</div>
+    </div>
+    
+    <div class="carslist-stat-card">
+      <div class="carslist-stat-icon">
+        <i class="fas fa-shield-alt"></i>
+      </div>
+      <div class="carslist-stat-number">100%</div>
+      <div class="carslist-stat-label">Com Garantia</div>
+    </div>
+    
+    <div class="carslist-stat-card">
+      <div class="carslist-stat-icon">
+        <i class="fas fa-star"></i>
+      </div>
+      <div class="carslist-stat-number">10+</div>
+      <div class="carslist-stat-label">Anos de Experiência</div>
+    </div>
+    
+    <div class="carslist-stat-card">
+      <div class="carslist-stat-icon">
+        <i class="fas fa-handshake"></i>
+      </div>
+      <div class="carslist-stat-number">1000+</div>
+      <div class="carslist-stat-label">Clientes Satisfeitos</div>
+    </div>
+  </div> -->
+
+  <!-- Filters Section -->
+  <div class="carslist-filters-container slide-in-left">
+    <a href="{% url 'cars_list' %}" class="carslist-filter-btn {% if not request.GET.search %}active{% endif %}">
+      <i class="fas fa-th-large"></i>
+      Todos os Veículos
+    </a>
+    <a href="?search=sedan" class="carslist-filter-btn">
+      <i class="fas fa-car"></i>
+      Sedans
+    </a>
+    <a href="?search=suv" class="carslist-filter-btn">
+      <i class="fas fa-truck"></i>
+      SUVs
+    </a>
+    <a href="?search=hatch" class="carslist-filter-btn">
+      <i class="fas fa-car-side"></i>
+      Hatches
+    </a>
+  </div>
+
+  <!-- Featured Section Title -->
+  <div class="carslist-featured-section slide-in-right">
+    <h2 class="carslist-section-title">Veículos Disponíveis</h2>
+    <p class="carslist-section-subtitle">Veículos Revisados e com Garantia</p>
+  </div>
+
+  <!-- Cars Grid -->
+  {% if cars %}
+    <div class="carslist-cars-grid">
+      {% for car in cars %}
+        <a href="{% url 'car_detail' car.pk %}" class="carslist-car-card fade-in">
+          <div class="carslist-car-image-container">
+            {% if car.photo1 %}
+              <img src="{{ car.photo1.url }}" alt="{{ car.model }} - {{ car.brand }}" class="carslist-car-image">
+            {% else %}
+              <div class="carslist-no-photo-placeholder">
+                <i class="fas fa-car"></i>
+                <span>Foto não disponível</span>
+              </div>
+            {% endif %}
+            
+            <!-- Badge for featured/new cars -->
+            {% if forloop.counter <= 3 %}
+              <div class="carslist-car-badge">
+                <i class="fas fa-star"></i>
+                Destaque
+              </div>
+            {% endif %}
+          </div>
+          
+          <div class="carslist-car-info">
+            <h3 class="carslist-car-brand-model">{{ car.marca|capfirst }} {{ car.model }}</h3>
+            
+            <div class="carslist-car-details">
+              <span class="carslist-feature-tag">
+                <i class="fas fa-calendar-alt"></i>
+                {{ car.factory_year }}/{{ car.model_year }}
+              </span>
+              <span class="carslist-car-price">
+                {{ car.formatted_value }}
+              </span>
+            </div>
+
+            <div class="carslist-car-features">
+              {% if car.fuel %}
+                <span class="carslist-feature-tag">
+                  <i class="fas fa-gas-pump"></i>
+                  {{ car.fuel|capfirst  }}
+                </span>
+              {% endif %}
+              {% if car.exchange %}
+                <span class="carslist-feature-tag">
+                  <i class="fas fa-cogs"></i>
+                  {{ car.exchange|capfirst  }}
+                </span>
+              {% endif %}
+              {% if car.color %}
+                <span class="carslist-feature-tag">
+                  <i class="fas fa-palette"></i>
+                  {{ car.color }}
+                </span>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <!-- Empty State -->
+    <div class="carslist-empty-state fade-in">
+      <div class="carslist-empty-icon">
+        <i class="fas fa-search"></i>
+      </div>
+      <h3 class="carslist-empty-title">Nenhum veículo encontrado</h3>
+      <p class="carslist-empty-message">
+        {% if request.GET.search %}
+          Não encontramos veículos que correspondam à sua busca por "{{ request.GET.search }}".
+          <br>Tente pesquisar por marca, modelo ou ano diferente.
+        {% else %}
+          Parece que não há veículos cadastrados no momento.
+        {% endif %}
+      </p>
+      <a href="{% url 'cars_list' %}" class="carslist-empty-action">
+        <i class="fas fa-refresh"></i>
+        Ver Todos os Veículos
+      </a>
+    </div>
+  {% endif %}
+
+  <!-- Call to Action 
+  <div class="text-center mt-5 fade-in">
+    <div class="card-modern" style="padding: 3rem 2rem; background: var(--gradient-primary); color: white;">
+      <h3 style="font-family: 'Poppins', sans-serif; font-weight: 700; margin-bottom: 1rem;">
+        Não encontrou o que procura?
+      </h3>
+      <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.9;">
+        Entre em contato conosco! Temos uma ampla rede de fornecedores e podemos encontrar o veículo perfeito para você.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{% if user.is_authenticated %}{% url 'contato_geral' %}{% else %}{% url 'register' %}{% endif %}" 
+           class="btn btn-light btn-modern">
+          <i class="fas fa-envelope"></i>
+          Fale Conosco
+        </a>
+        <a href="https://api.whatsapp.com/send?phone=5521964243121&text=Olá!%20Não%20encontrei%20o%20veículo%20que%20procuro%20no%20site.%20Podem%20me%20ajudar?" 
+           target="_blank" class="btn btn-light btn-modern">
+          <i class="fab fa-whatsapp"></i>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+<script>
+  // Lazy loading for images
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          img.classList.remove('lazy');
+          imageObserver.unobserve(img);
+        }
+      });
+    });
+
+    document.querySelectorAll('img[data-src]').forEach(img => {
+      imageObserver.observe(img);
+    });
+  }
+
+  // Search input enhancements
+  const searchInput = document.querySelector('.carslist-search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      if (this.value.length > 0) {
+        this.parentElement.classList.add('has-value');
+      } else {
+        this.parentElement.classList.remove('has-value');
+      }
+    });
+  }
+
+  // Filter buttons interaction
+  document.querySelectorAll('.carslist-filter-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      // Remove active class from all buttons
+      document.querySelectorAll('.carslist-filter-btn').forEach(b => b.classList.remove('active'));
+      // Add active class to clicked button
+      this.classList.add('active');
+    });
+  });
+
+  // Staggered animation for car cards
+  document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.carslist-car-card');
+    cards.forEach((card, index) => {
+      setTimeout(() => {
+        card.classList.add('visible');
+      }, index * 100);
+    });
+  });
+</script>
 
 {% endblock %}

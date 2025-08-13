@@ -1,241 +1,841 @@
 {% extends 'base.html' %}
 
-{% block title %}Cadastrar Carro{% endblock %}
+{% block title %}Cadastrar Veículo - FJ Multimarcas{% endblock %}
+
+{% load static %}
 
 {% block content %}
 <style>
-    h2 {
-        font-size: 30px;
-        color: #333;
-        text-align: left;
-        margin-left: 20px; /* Ajustado para ser responsivo */
+  /* Container and Layout */
+  .carnew-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .carnew-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    background: white;
+    padding: 3rem 2rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .carnew-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--gradient-primary);
+  }
+
+  .carnew-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #303030;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .carnew-title i {
+    color: var(--gradient-primary);
+    font-size: 2rem;
+  }
+
+  .carnew-subtitle {
+    font-size: 1.0rem;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .carnew-requirements {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--gradient-primary);
+  }
+
+  .carnew-requirements h4 {
+    color: #303030;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .carnew-requirements ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .carnew-requirements li {
+    padding: 0.5rem 0;
+    color: #494949;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .carnew-requirements li i {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+  }
+
+  /* Progress Indicator */
+  .carnew-progress {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+  }
+
+  .carnew-progress-steps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+
+  .carnew-progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  .carnew-progress-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--bg-light);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    border: 3px solid var(--border-color);
+    transition: all var(--transition-normal);
+  }
+
+  .carnew-progress-step.active .carnew-progress-circle {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-colored);
+  }
+
+  .carnew-progress-step.completed .carnew-progress-circle {
+    background: var(--success-color);
+    color: white;
+    border-color: var(--success-color);
+  }
+
+  .carnew-progress-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  .carnew-progress-step.active .carnew-progress-label {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+
+  .carnew-progress-line {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--border-color);
+    z-index: 1;
+  }
+
+  /* Form Styling */
+  .carnew-form {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+
+  .carnew-form-section {
+    padding: 2.5rem;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+  }
+
+  .carnew-form-section:last-child {
+    border-bottom: none;
+  }
+
+  .carnew-section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .carnew-section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #303030;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .carnew-section-title i {
+    color: var(--gradient-primary);
+    font-size: 1.2rem;
+  }
+
+  .carnew-section-subtitle {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  /* Form Fields */
+  .carnew-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .carnew-form-group {
+    position: relative;
+  }
+
+  .carnew-form-label {
+    display: block;
+    font-weight: 600;
+    color: #303030;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .carnew-form-label i {
+    color: var(--gradient-primary);
+  }
+
+  .carnew-form-input,
+  .carnew-form-select {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border: 0.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    color: #303030;
+    transition: all var(--transition-normal);
+    box-sizing: border-box;
+  }
+
+  .carnew-form-input:focus,
+  .carnew-form-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+    transform: translateY(-2px);
+  }
+
+  /* File Upload */
+  .carnew-file-upload {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 150px;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-light);
+    transition: all var(--transition-normal);
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .carnew-file-upload:hover {
+    border-color: var(--gradient-primary);
+    background: rgba(255, 107, 53, 0.05);
+  }
+
+  .carnew-file-upload.has-file {
+    border-color: var(--success-color);
+    border-style: solid;
+  }
+
+  .carnew-file-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .carnew-file-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .carnew-file-icon {
+    font-size: 2rem;
+    color: var(--gradient-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .carnew-file-text {
+    color: var(--text-dark);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .carnew-file-hint {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  .carnew-file-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+  }
+
+  .carnew-file-remove {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    transition: all var(--transition-fast);
+  }
+
+  .carnew-file-upload.has-file .carnew-file-remove {
+    display: flex;
+  }
+
+  .carnew-file-remove:hover {
+    background: var(--primary-dark);
+    transform: scale(1.1);
+  }
+
+  /* Photos Grid */
+  .carnew-photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* Submit Section */
+  .carnew-submit-section {
+    background: var(--gradient-primary);
+    padding: 3rem 2rem;
+    text-align: center;
+    color: white;
+  }
+
+  .carnew-submit-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .carnew-submit-text {
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    font-size: 1rem;
+  }
+
+  .carnew-submit-btn {
+    background: white;
+    color: var(--gradient-primary);
+    border: none;
+    padding: 1.25rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: var(--shadow-lg);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .carnew-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+    background: var(--bg-light);
+  }
+
+  .carnew-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Validation Messages */
+  .carnew-error-message {
+    color: var(--danger-color);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .carnew-success-message {
+    color: var(--success-color);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Form Help */
+  .carnew-form-help {
+    background: rgba(52, 152, 219, 0.1);
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 2rem;
+  }
+
+  .carnew-form-help h5 {
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .carnew-form-help p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .carnew-title {
+      font-size: 2rem;
     }
 
-    .text-Cabecalho {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 10px;
-        margin-left: 20px; /* Ajustado para ser responsivo */
-        margin-top: 5px;    
+    .carnew-form-grid {
+      grid-template-columns: 1fr;
     }
 
-    form {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f8f8f8;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    .carnew-photos-grid {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
 
-    .form-section {
-        margin-bottom: 30px;
+    .carnew-form-section {
+      padding: 2rem 1.5rem;
     }
 
-    h3 {
-        font-size: 18px;
-        color: #333;
-        text-align: center;  
-        position: relative;  
-        margin-bottom: 15px; 
-        padding-bottom: 10px; 
+    .carnew-progress-steps {
+      flex-direction: column;
+      gap: 1rem;
     }
 
-    h3::after {
-        content: '';  
-        position: absolute;
-        bottom: -5px;  
-        left: 50%;  
-        width: 50%;  
-        height: 2px;  
-        background-color: #898989;  
-        transform: translateX(-50%); 
+    .carnew-progress-line {
+      display: none;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .carnew-container {
+      padding: 0 0.5rem;
     }
 
-    label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
+    .carnew-header {
+      padding: 2rem 1rem;
     }
 
-    input, textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 14px;
-        box-sizing: border-box;
+    .carnew-title {
+      font-size: 1.75rem;
+      flex-direction: column;
+      gap: 0.5rem;
     }
 
-    input[type="file"] {
-        padding: 3px;
+    .carnew-form-section {
+      padding: 1.5rem 1rem;
     }
 
-    .btn-primary {
-        background-color: #FFA500;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 4px;
-        text-align: center;
-        display: block;
-        margin: 0 auto;
+    .carnew-photos-grid {
+      grid-template-columns: 1fr;
     }
 
-    .btn-primary:hover {
-        background-color: #cc8400;
+    .carnew-file-upload {
+      min-height: 120px;
     }
+  }
 </style>
-<br>
-<br>
-<h2>ANUNCIE SEU CARRO</h2>
-<p class="text-Cabecalho">
-    Oferecemos uma solução completa para vender seu carro.
-</p>
-<p class="text-Cabecalho">
-    - Todos os Campos são OBRIGATÓRIOS;
-</p>
-<p class="text-Cabecalho">
-    - Todos os anúncios são revisados antes de publicar.
-</p>
-<br>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+
+<div class="carnew-container">
+    <!-- Header Section -->
+    <div class="carnew-header carnew-fade-in">
+      <h1 class="carnew-title">
+        <i class="fas fa-car-side"></i>
+        Anuncie seu Veículo
+      </h1>
+      <p class="carnew-subtitle">
+        Oferecemos uma solução completa e segura para vender seu carro. 
+        Preencha o formulário abaixo e nossa equipe entrará em contato.
+      </p>
+      
+      <div class="carnew-requirements">
+        <h4>
+          <i class="fas fa-info-circle"></i>
+          Informações Importantes
+        </h4>
+        <ul>
+          <li><i class="fas fa-check"></i> Todos os campos são obrigatórios</li>
+          <li><i class="fas fa-check"></i> Todos os anúncios são revisados antes da publicação</li>
+          <li><i class="fas fa-check"></i> Fotos de boa qualidade aumentam as chances de venda</li>
+          <li><i class="fas fa-check"></i> Você receberá uma confirmação por e-mail</li>
+        </ul>
+      </div>
+    </div>
+  
+    <!-- Progress Indicator -->
+    <div class="carnew-progress carnew-slide-in">
+      <div class="carnew-progress-steps">
+        <div class="carnew-progress-line"></div>
+        <div class="carnew-progress-step active">
+          <div class="carnew-progress-circle"><i class="fas fa-car"></i></div>
+          <span class="carnew-progress-label">Dados do Veículo</span>
+        </div>
+        <div class="carnew-progress-step">
+          <div class="carnew-progress-circle"><i class="fas fa-user"></i></div>
+          <span class="carnew-progress-label">Dados Pessoais</span>
+        </div>
+        <div class="carnew-progress-step">
+          <div class="carnew-progress-circle"><i class="fas fa-camera"></i></div>
+          <span class="carnew-progress-label">Fotos</span>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Main Form -->
+    <form method="post" enctype="multipart/form-data" class="carnew-form carnew-fade-in">
+      {% csrf_token %}
+      
+      <!-- Vehicle Data Section -->
+      <div class="carnew-form-section" id="vehicleSection">
+        <div class="carnew-section-header">
+          <h3 class="carnew-section-title"><i class="fas fa-car"></i> Dados do Veículo</h3>
+          <p class="carnew-section-subtitle">Informações técnicas do seu veículo</p>
+        </div>
+  
+        <div class="carnew-form-grid">
+          <div class="carnew-form-group">
+            <label for="{{ form.marca.id_for_label }}" class="carnew-form-label"><i class="fas fa-tag"></i> Marca</label>
+            {{ form.marca }}
+          </div>
+  
+          <div class="carnew-form-group">
+            <label for="{{ form.model.id_for_label }}" class="carnew-form-label"><i class="fas fa-car-side"></i> Modelo</label>
+            {{ form.model }}
+          </div>
+  
+          <div class="carnew-form-group">
+            <label for="{{ form.factory_year.id_for_label }}" class="carnew-form-label"><i class="fas fa-calendar-alt"></i> Ano de Fabricação</label>
+            {{ form.factory_year }}
+          </div>
+  
+          <div class="carnew-form-group">
+            <label for="{{ form.model_year.id_for_label }}" class="carnew-form-label"><i class="fas fa-calendar"></i> Ano do Modelo</label>
+            {{ form.model_year }}
+          </div>
+  
+          <div class="carnew-form-group">
+            <label for="{{ form.km.id_for_label }}" class="carnew-form-label"><i class="fas fa-tachometer-alt"></i> Quilometragem</label>
+            {{ form.km }}
+          </div>
+  
+          <div class="carnew-form-group">
+            <label for="{{ form.fuel.id_for_label }}" class="carnew-form-label"><i class="fas fa-gas-pump"></i> Combustível</label>
+            {{ form.fuel }}
+          </div>
+  
+          <div class="carnew-form-group">
+            <label for="{{ form.exchange.id_for_label }}" class="carnew-form-label"><i class="fas fa-cogs"></i> Câmbio</label>
+            {{ form.exchange }}
+          </div>
+  
+          <div class="carnew-form-group">
+            <label for="{{ form.color.id_for_label }}" class="carnew-form-label"><i class="fas fa-palette"></i> Cor</label>
+            {{ form.color }}
+          </div>
+  
+          <div class="carnew-form-group">
+            <label for="{{ form.value.id_for_label }}" class="carnew-form-label"><i class="fas fa-dollar-sign"></i> Valor (R$)</label>
+            {{ form.value }}
+          </div>
+        </div>
+      </div>
+  
+      <!-- Personal Data Section -->
+      <div class="carnew-form-section" id="personalSection">
+        <div class="carnew-section-header">
+          <h3 class="carnew-section-title"><i class="fas fa-user"></i> Dados Pessoais</h3>
+          <p class="carnew-section-subtitle">Suas informações de contato</p>
+        </div>
+  
+        <div class="carnew-form-help">
+          <h5><i class="fas fa-shield-alt"></i> Privacidade e Segurança</h5>
+          <p>Seus dados pessoais são protegidos e usados apenas para facilitar o contato com interessados.</p>
+        </div>
+  
+        <div class="carnew-form-grid">
+          <div class="carnew-form-group">
+            <label for="{{ form.seller.id_for_label }}" class="carnew-form-label"><i class="fas fa-user"></i> Nome Completo</label>
+            {{ form.seller }}
+          </div>
+  
+          <div class="carnew-form-group">
+            <label for="{{ form.email.id_for_label }}" class="carnew-form-label"><i class="fas fa-envelope"></i> E-mail</label>
+            {{ form.email }}
+          </div>
+  
+          <div class="carnew-form-group">
+            <label for="{{ form.contact.id_for_label }}" class="carnew-form-label"><i class="fas fa-phone"></i> Telefone/WhatsApp</label>
+            {{ form.contact }}
+          </div>
+        </div>
+      </div>
+  
+      <!-- Photos Section -->
+      <div class="carnew-form-section" id="photosSection">
+        <div class="carnew-section-header">
+          <h3 class="carnew-section-title"><i class="fas fa-camera"></i> Fotos do Veículo</h3>
+          <p class="carnew-section-subtitle">Adicione até 6 fotos do seu veículo</p>
+        </div>
+  
+        <div class="carnew-form-help">
+          <h5><i class="fas fa-lightbulb"></i> Dicas para Boas Fotos</h5>
+          <p>Use boa iluminação, mostre diferentes ângulos e inclua interior e exterior. Fotos de qualidade atraem mais interessados!</p>
+        </div>
+  
+        <div class="carnew-photos-grid">
+          {% for field in form %}
+            {% if 'photo' in field.name %}
+              <div class="carnew-form-group">
+                <label class="carnew-form-label"><i class="fas fa-image"></i> {{ field.label }}</label>
+                <div class="carnew-file-upload" onclick="document.getElementById('{{ field.id_for_label }}').click()">
+                  {{ field }}
+                  <div class="carnew-file-content">
+                    <div class="carnew-file-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <div class="carnew-file-text">Clique para selecionar</div>
+                    <div class="carnew-file-hint">JPG, PNG até 5MB</div>
+                  </div>
+                  <button type="button" class="carnew-file-remove" onclick="event.stopPropagation(); removeFile(this)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+  
+      <!-- Submit Section -->
+      <div class="carnew-submit-section">
+        <h4 class="carnew-submit-title">Pronto para Anunciar?</h4>
+        <p class="carnew-submit-text">Revise todas as informações e clique em "Cadastrar Veículo" para enviar seu anúncio.</p>
+        <button type="submit" class="carnew-submit-btn"><i class="fas fa-check-circle"></i> Cadastrar Veículo</button>
+      </div>
+    </form>
+  </div>
+  
+
+<script>
+  // Form progression tracking
+  function updateProgress() {
+    const vehicleInputs = document.querySelectorAll('#vehicleSection .carnew-form-input');
+    const personalInputs = document.querySelectorAll('#personalSection .carnew-form-input');
+    const photoInputs = document.querySelectorAll('#photosSection .carnew-file-input');
     
-    <div class="form-section">
-        <h3>DADOS DO VEÍCULO</h3>
-        <br>
-        <div class="row">
-            <div class="col-md-6 mb-3"> <!-- 2 grupos por linha em telas grandes -->
-                <div class="form-group">
-                    <label for="model">Marca: </label>
-                    {{ form.marca }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="model">Modelo: </label>
-                    {{ form.model }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="km">KM do Veículo</label>
-                    {{ form.km }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="fuel">Combustível: </label>
-                    {{ form.fuel }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="factory_year">Ano de Fabricação</label>
-                    {{ form.factory_year }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="model_year">Ano do Modelo</label>
-                    {{ form.model_year }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="exchange">Cambio (AT/MT)</label>
-                    {{ form.exchange }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="color">Cor (Documento)</label>
-                    {{ form.color }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="value">Valor do Veículo</label>
-                    {{ form.value }}
-                </div>
-            </div>
-        </div>
-    </div>
+    const steps = document.querySelectorAll('.carnew-progress-step');
+    
+    // Check vehicle section
+    let vehicleFilled = Array.from(vehicleInputs).every(input => input.value.trim() !== '');
+    if (vehicleFilled) {
+      steps[0].classList.add('completed');
+      steps[0].classList.remove('active');
+      steps[1].classList.add('active');
+    }
+    
+    // Check personal section
+    let personalFilled = Array.from(personalInputs).every(input => input.value.trim() !== '');
+    if (personalFilled && vehicleFilled) {
+      steps[1].classList.add('completed');
+      steps[1].classList.remove('active');
+      steps[2].classList.add('active');
+    }
+    
+    // Check photos section
+    let photosFilled = Array.from(photoInputs).some(input => input.files.length > 0);
+    if (photosFilled && personalFilled && vehicleFilled) {
+      steps[2].classList.add('completed');
+    }
+  }
 
-    <div class="form-section">
-        <h3>DADOS PESSOAIS</h3>
-        <br>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="nseller">Seu Nome: </label>
-                    {{ form.seller }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="email">Seu Email</label>
-                    {{ form.email }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="phone">Telefone: </label>
-                    {{ form.contact }}
-                </div>
-            </div>
-        </div>
-    </div>
+  // Scroll to section function
+  function scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  }
 
-    <div class="form-section">
-        <h3>FOTOS DO VEÍCULO</h3>
-        <br>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="photo1">Foto 1</label>
-                    {{ form.photo1 }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="photo2">Foto 2</label>
-                    {{ form.photo2 }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="photo3">Foto 3</label>
-                    {{ form.photo3 }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="photo4">Foto 4</label>
-                    {{ form.photo4 }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="photo5">Foto 5</label>
-                    {{ form.photo5 }}
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="form-group">
-                    <label for="photo6">Foto 6</label>
-                    {{ form.photo6 }}
-                </div>
-            </div>
-        </div>
-    </div>
+  // File upload preview
+  function handleFileUpload(input) {
+    const container = input.closest('.carnew-file-upload');
+    const content = container.querySelector('.carnew-file-content');
+    
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      
+      // Check file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Arquivo muito grande! O tamanho máximo é de 5MB.');
+        input.value = '';
+        return;
+      }
+      
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        container.classList.add('has-file');
+        content.innerHTML = `
+          <img src="${e.target.result}" class="carnew-file-preview" alt="Preview">
+          <button type="button" class="carnew-file-remove" onclick="removeFile(this)">
+            <i class="fas fa-times"></i>
+          </button>
+        `;
+      };
+      
+      reader.readAsDataURL(file);
+    }
+  }
 
-    <br>
-    <input type="submit" value="Cadastrar" class="btn btn-primary">
-</form>
-<br>
-<br>
+  function removeFile(button) {
+    event.stopPropagation();
+    const container = button.closest('.carnew-file-upload');
+    const input = container.querySelector('.carnew-file-input');
+    const content = container.querySelector('.carnew-file-content');
+    
+    input.value = '';
+    container.classList.remove('has-file');
+    content.innerHTML = `
+      <div class="carnew-file-icon">
+        <i class="fas fa-cloud-upload-alt"></i>
+      </div>
+      <div class="carnew-file-text">Clique para selecionar</div>
+      <div class="carnew-file-hint">JPG, PNG até 5MB</div>
+    `;
+    
+    updateProgress();
+  }
+
+  // Add event listeners to file inputs
+  document.querySelectorAll('.carnew-file-input').forEach(input => {
+    input.addEventListener('change', function() {
+      handleFileUpload(this);
+      updateProgress();
+    });
+  });
+
+  // Add event listeners to all form inputs
+  document.querySelectorAll('.carnew-form-input').forEach(input => {
+    input.addEventListener('input', updateProgress);
+    input.addEventListener('blur', updateProgress);
+  });
+
+  // Form validation enhancement
+  document.querySelectorAll('.carnew-form-input[required]').forEach(input => {
+    input.addEventListener('blur', function() {
+      const group = this.closest('.carnew-form-group');
+      
+      // Remove existing messages
+      const existingMsg = group.querySelector('.carnew-error-message, .carnew-success-message');
+      if (existingMsg) {
+        existingMsg.remove();
+      }
+      
+      if (this.value.trim() === '') {
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'carnew-error-message';
+        errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Este campo é obrigatório';
+        group.appendChild(errorMsg);
+      } else {
+        const successMsg = document.createElement('div');
+        successMsg.className = 'carnew-success-message';
+        successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Válido';
+        group.appendChild(successMsg);
+      }
+    });
+  });
+
+  // Form submission enhancement
+  document.querySelector('.carnew-form').addEventListener('submit', function(e) {
+    const submitBtn = document.querySelector('.carnew-submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+  });
+
+  // Initialize progress on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    updateProgress();
+  });
+</script>
+
 {% endblock %}

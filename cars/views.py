@@ -10,6 +10,7 @@ from django.contrib import messages
 
 # Classe para a visualização de carros
 class CarsView(View):
+
     def get(self, request):
         cars = Car.objects.filter(active=True).order_by('brand__name')
         search = request.GET.get('search')
@@ -18,10 +19,10 @@ class CarsView(View):
             cars_by_model = Car.objects.filter(model__icontains=search, active=True)
             cars_by_brand = Car.objects.filter(brand__name__icontains=search, active=True)
             cars = cars_by_model | cars_by_brand
-        
+
         return render(
-            request, 
-            'cars.html', 
+            request,
+            'cars.html',
             {'cars': cars}
         )
 

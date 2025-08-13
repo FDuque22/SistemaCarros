@@ -5,8 +5,28 @@ from cars.models import Car, CarInterest, Contato
 class CarModelForm(forms.ModelForm):
     class Meta:
         model = Car
-        exclude = ("active",)
-        fields = '__all__'
+        fields = "__all__"
+        widgets = {
+            "marca": forms.Select(attrs={"class": "carnew-form-input"}),
+            "model": forms.TextInput(attrs={"class": "carnew-form-input"}),
+            "factory_year": forms.NumberInput(attrs={"class": "carnew-form-input"}),
+            "model_year": forms.NumberInput(attrs={"class": "carnew-form-input"}),
+            "km": forms.NumberInput(attrs={"class": "carnew-form-input"}),
+            "fuel": forms.Select(attrs={"class": "carnew-form-input"}),
+            "exchange": forms.Select(attrs={"class": "carnew-form-input"}),
+            "color": forms.TextInput(attrs={"class": "carnew-form-input"}),
+            "value": forms.NumberInput(attrs={"class": "carnew-form-input"}),
+            "seller": forms.TextInput(attrs={"class": "carnew-form-input"}),
+            "email": forms.EmailInput(attrs={"class": "carnew-form-input"}),
+            "contact": forms.TextInput(attrs={"class": "carnew-form-input"}),
+            # Caso tenha campos de foto:
+            "photo1": forms.ClearableFileInput(attrs={"class": "carnew-file-input"}),
+            "photo2": forms.ClearableFileInput(attrs={"class": "carnew-file-input"}),
+            "photo3": forms.ClearableFileInput(attrs={"class": "carnew-file-input"}),
+            "photo4": forms.ClearableFileInput(attrs={"class": "carnew-file-input"}),
+            "photo5": forms.ClearableFileInput(attrs={"class": "carnew-file-input"}),
+            "photo6": forms.ClearableFileInput(attrs={"class": "carnew-file-input"}),
+        }
 
 # Criação do formulário de interesse
 class InterestForm(forms.ModelForm):
