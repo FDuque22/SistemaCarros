@@ -5,7 +5,7 @@ from cars.models import Car, CarInterest, Contato
 class CarModelForm(forms.ModelForm):
     class Meta:
         model = Car
-        fields = "__all__"
+        exclude = ["usuario"]  # Não mostrar o campo de usuário
         widgets = {
             "marca": forms.Select(attrs={"class": "carnew-form-input"}),
             "model": forms.TextInput(attrs={"class": "carnew-form-input"}),
@@ -19,7 +19,6 @@ class CarModelForm(forms.ModelForm):
             "seller": forms.TextInput(attrs={"class": "carnew-form-input"}),
             "email": forms.EmailInput(attrs={"class": "carnew-form-input"}),
             "contact": forms.TextInput(attrs={"class": "carnew-form-input"}),
-            # Caso tenha campos de foto:
             "photo1": forms.ClearableFileInput(attrs={"class": "carnew-file-input"}),
             "photo2": forms.ClearableFileInput(attrs={"class": "carnew-file-input"}),
             "photo3": forms.ClearableFileInput(attrs={"class": "carnew-file-input"}),
@@ -27,6 +26,7 @@ class CarModelForm(forms.ModelForm):
             "photo5": forms.ClearableFileInput(attrs={"class": "carnew-file-input"}),
             "photo6": forms.ClearableFileInput(attrs={"class": "carnew-file-input"}),
         }
+
 
 # Criação do formulário de interesse
 class InterestForm(forms.ModelForm):

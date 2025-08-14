@@ -644,18 +644,18 @@
                 Início
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <i class="fas fa-home nav-icon"></i>
+                  Planos
+              </a>
+            </li>
             
             {% if user.is_authenticated %}
               <li class="nav-item">
                 <a class="nav-link {% if request.path == '/new_car/' %}active{% endif %}" href="{% url 'new_car' %}">
                   <i class="fas fa-plus-circle nav-icon"></i>
-                  Cadastrar
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link {% if request.path == '/contato_geral/' %}active{% endif %}" href="{% url 'contato_geral' %}">
-                  <i class="fas fa-envelope nav-icon"></i>
-                  Contato
+                  Cadastrar Carro
                 </a>
               </li>
               <li class="nav-item">
@@ -672,15 +672,9 @@
               </li>
             {% else %}
               <li class="nav-item">
-                <a class="nav-link {% if request.path == '/register/' %}active{% endif %}" href="{% url 'register' %}">
-                  <i class="fas fa-user-plus nav-icon"></i>
-                  Cadastrar-se
-                </a>
-              </li>
-              <li class="nav-item">
                 <a class="nav-link {% if request.path == '/login/' %}active{% endif %}" href="{% url 'login' %}">
                   <i class="fas fa-sign-in-alt nav-icon"></i>
-                  Login
+                  Entrar
                 </a>
               </li>
             {% endif %}

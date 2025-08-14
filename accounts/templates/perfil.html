@@ -2,96 +2,376 @@
 
 {% block title %}Meu Perfil{% endblock %}
 
+{% load static %}
+
 {% block content %}
 <style>
-    .profile-container {
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
-    .profile-header {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 20px;
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: white;
+        color: var(--text-dark);
+        line-height: 1.6;
+        min-height: 100vh;
     }
 
-    .profile-info {
-        margin-bottom: 20px;
-        padding: 15px;
-        background-color: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    .carperfil-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
     }
 
-    .option-button {
-        display: block;
-        margin: 10px 0;
-        padding: 10px;
+    .carperfil-profile-wrapper {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 2rem;
+        background: var(--bg-white);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    }
+
+    .carperfil-profile-sidebar {
+        background: var(--gradient-primary);
+        padding: 3rem 2rem;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
-        border-radius: 5px;
-        color: #fff; /* Cor do texto do botão */
-        text-decoration: none; /* Remove sublinhado dos links */
-        transition: background-color 0.3s, transform 0.3s; /* Transições suaves */
     }
 
-    .option-button.primary {
-        background-color: #007bff;
+    .carperfil-profile-sidebar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
     }
 
-    .option-button.secondary {
-        background-color: #6c757d;
+    .carperfil-avatar-container {
+        position: relative;
+        z-index: 2;
+        margin-bottom: 2rem;
     }
 
-    .option-button.danger {
-        background-color: #dc3545;
+    .carperfil-avatar {
+        width: 120px;
+        height: 120px;
+        background: var(--bg-white);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: var(--primary-color);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        border: 4px solid rgba(255, 255, 255, 0.3);
     }
 
-    /* Remover aparência de link ao passar o mouse */
-    .option-button:hover {
-        background-color: rgba(0, 123, 255, 0.8); /* Um pouco mais escuro para o botão primário */
-        transform: translateY(-2px); /* Levanta o botão */
-        opacity: 0.9;
-        text-decoration: none; /* Garante que não haja sublinhado */
-        color: #fff; /* Mantém a cor do texto inalterada */
-        cursor: default; /* Evita que o mouse mude para a mão de link */
+    .carperfil-user-name {
+        color: var(--bg-white);
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        position: relative;
+        z-index: 2;
     }
 
-    .option-button.secondary:hover {
-        background-color: rgba(108, 117, 125, 0.8);
-        transform: translateY(-2px);
-        color: #fff;
+    .carperfil-user-role {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1rem;
+        font-weight: 400;
+        position: relative;
+        z-index: 2;
+    }
+
+    .carperfil-profile-content {
+        padding: 3rem;
+    }
+
+    .carperfil-profile-header {
+        margin-bottom: 2.5rem;
+    }
+
+    .carperfil-profile-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+    }
+
+    .carperfil-profile-subtitle {
+        color: var(--text-light);
+        font-size: 1rem;
+    }
+
+    .carperfil-info-section {
+        background: var(--bg-light);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .carperfil-info-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .carperfil-info-title::before {
+        content: '';
+        width: 4px;
+        height: 20px;
+        background: var(--gradient-primary);
+        border-radius: 2px;
+    }
+
+    .carperfil-info-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(233, 236, 239, 0.5);
+    }
+
+    .carperfil-info-item:last-child {
+        border-bottom: none;
+    }
+
+    .carperfil-info-label {
+        font-weight: 600;
+        color: var(--text-dark);
+    }
+
+    .carperfil-info-value {
+        color: var(--text-light);
+        font-weight: 500;
+    }
+
+    .carperfil-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .carperfil-action-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        padding: 1.25rem 1.5rem;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
         text-decoration: none;
-        cursor: default;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
 
-    .option-button.danger:hover {
-        background-color: rgba(220, 53, 69, 0.8);
-        transform: translateY(-2px);
-        color: #fff;
+    .carperfil-action-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .carperfil-action-button:hover::before {
+        left: 100%;
+    }
+
+    .carperfil-action-primary {
+        background: var(--gradient-primary);
+        color: var(--bg-white);
+        box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+    }
+
+    .carperfil-action-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(255, 107, 53, 0.4);
+        color: var(--bg-white);
         text-decoration: none;
-        cursor: default;
+    }
+
+    .carperfil-action-secondary {
+        background: var(--gradient-secondary);
+        color: var(--bg-white);
+        box-shadow: 0 8px 25px rgba(44, 62, 80, 0.3);
+    }
+
+    .carperfil-action-secondary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(44, 62, 80, 0.4);
+        color: var(--bg-white);
+        text-decoration: none;
+    }
+
+    .carperfil-action-danger {
+        background: var(--danger-color);
+        color: var(--bg-white);
+        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+    }
+
+    .carperfil-action-danger:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(231, 76, 60, 0.4);
+        color: var(--bg-white);
+        text-decoration: none;
+    }
+
+    .carperfil-stats-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .carperfil-stat-card {
+        background: var(--bg-white);
+        padding: 1.5rem;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid var(--border-color);
+        transition: transform 0.3s ease;
+    }
+
+    .carperfil-stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .carperfil-stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--gradient-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    .carperfil-stat-label {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+        .carperfil-container {
+            padding: 1rem;
+        }
+
+        .carperfil-profile-wrapper {
+            grid-template-columns: 1fr;
+        }
+
+        .carperfil-profile-sidebar {
+            padding: 2rem 1.5rem;
+        }
+
+        .carperfil-profile-content {
+            padding: 2rem 1.5rem;
+        }
+
+        .carperfil-actions-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .carperfil-stats-container {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
+</head>
+<body>
+<div class="carperfil-container">
+    <div class="carperfil-profile-wrapper">
+        <div class="carperfil-profile-sidebar">
+            <div class="carperfil-avatar-container">
+                <div class="carperfil-avatar">
+                    👤
+                </div>
+            </div>
+            <h1 class="carperfil-user-name">{{ user.get_full_name }}</h1>
+            <p class="carperfil-user-role">Usuário Premium</p>
+        </div>
 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-4 profile-container">
-            <h2 class="profile-header">Meu Perfil</h2>
-            <div class="profile-info">
-                <p><strong>Nome:</strong> {{ user.username }}</p>
-                <p><strong>Email:</strong> {{ user.email }}</p>
+        <div class="carperfil-profile-content">
+            <div class="carperfil-profile-header">
+                <h2 class="carperfil-profile-title">Meu Perfil</h2>
+                <p class="carperfil-profile-subtitle">Gerencie suas informações pessoais e configurações de conta</p>
+            </div>
+
+            <div class="carperfil-stats-container">
+                <div class="carperfil-stat-card">
+                    <div class="carperfil-stat-number">24</div>
+                    <div class="carperfil-stat-label">Dias Ativo</div>
+                </div>
+                <div class="carperfil-stat-card">
+                    <div class="carperfil-stat-number">12</div>
+                    <div class="carperfil-stat-label">Projetos</div>
+                </div>
+                <div class="carperfil-stat-card">
+                    <div class="carperfil-stat-number">98%</div>
+                    <div class="carperfil-stat-label">Satisfação</div>
+                </div>
+            </div>
+
+            <div class="carperfil-info-section">
+                <h3 class="carperfil-info-title">Informações Pessoais</h3>
+                <div class="carperfil-info-item">
+                    <span class="carperfil-info-label">Nome de Usuário:</span>
+                    <span class="carperfil-info-value">{{ user.username }}</span>
+                </div>
+                <div class="carperfil-info-item">
+                    <span class="carperfil-info-label">Email:</span>
+                    <span class="carperfil-info-value">{{ user.email }}</span>
+                </div>
+                <div class="carperfil-info-item">
+                    <span class="carperfil-info-label">Membro desde:</span>
+                    <span class="carperfil-info-value">Janeiro 2024</span>
+                </div>
+                <div class="carperfil-info-item">
+                    <span class="carperfil-info-label">Status:</span>
+                    <span class="carperfil-info-value">Ativo</span>
+                </div>
+            </div>
+
+            <div class="carperfil-info-section">
+                <h3 class="carperfil-info-title">Ações da Conta</h3>
+                <div class="carperfil-actions-grid">
+                    <a href="#" class="carperfil-action-button carperfil-action-primary">
+                        🔒 Alterar Senha
+                    </a>
+                    <a href="#" class="carperfil-action-button carperfil-action-secondary">
+                        ✏️ Editar Informações
+                    </a>
+                    <a href="#" class="carperfil-action-button carperfil-action-danger">
+                        🚪 Sair da Conta
+                    </a>
+                </div>
             </div>
         </div>
-
-        <div class="col-md-8 profile-container">
-            <h3 class="profile-header">Opções</h3>
-            <a href="{% url 'alterar_senha' %}" class="option-button primary">Alterar Senha</a>
-            <a href="#" class="option-button secondary">Editar Informações</a>
-            <a href="{% url 'logout' %}" class="option-button danger">Sair da Conta</a>
-        </div>
     </div>
-    <br>
 </div>
 {% endblock %}

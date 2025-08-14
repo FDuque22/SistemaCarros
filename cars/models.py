@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Brand(models.Model):
     id = models.AutoField(primary_key=True)
@@ -55,6 +56,12 @@ CAR_TYPE_CHOICES = (
 
 class Car(models.Model):
     id = models.AutoField(primary_key=True)  # ID automático
+    usuario = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='carros',
+        blank=True, null=True
+    )
     model = models.CharField(max_length=200)  # Modelo do carro
     marca = models.CharField(max_length=50, choices=MARCA_CHOICES, blank=True, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.PROTECT, related_name='cars', blank=True, null=True)
@@ -87,6 +94,7 @@ class Car(models.Model):
     photo6 = models.ImageField(upload_to='cars/', blank=True, null=True)
     active = models.BooleanField(default=False)
     bio = models.TextField(blank=True, null=True)
+    data_criacao = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def formatted_value(self):
         if self.value is not None:
@@ -111,9 +119,9 @@ class CarInventory(models.Model):
 
 class CarInterest(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='interests')
-    nome = models.CharField(max_length=100)
-    email = models.EmailField(max_length=254)
-    telefone = models.CharField(max_length=15)
+    nome = models.CharField(max_length=100,blank=True, null=True)
+    email = models.EmailField(max_length=254,blank=True, null=True)
+    telefone = models.CharField(max_length=15,blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

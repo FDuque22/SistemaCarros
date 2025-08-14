@@ -1,90 +1,664 @@
 {% extends "base.html" %}
 
-{% block title %}Tenho Interesse - {{ car.brand }} {{ car.model }}{% endblock %}
+{% block title %}Tenho Interesse - {{ car.brand }} {{ car.model }} - FJ Multimarcas{% endblock %}
 
 {% load static %}
 
 {% block content %}
-<div class="interest-container">
-    <h2>Tenho Interesse no {{ car.brand }} {{ car.model }}</h2>
-    <form method="post" enctype="multipart/form-data">
+<style>
+  /* Container and Layout */
+  .carinterest-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .carinterest-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gradient-primary);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    transition: all var(--transition-fast);
+  }
+
+  .carinterest-back-btn:hover {
+    color: var(--primary-dark);
+    transform: translateX(-5px);
+    text-decoration: none;
+  }
+
+  /* Header Section */
+  .carinterest-header {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 3rem 2rem 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .carinterest-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--gradient-primary);
+  }
+
+  .carinterest-title {
+    font-family: 'Poppins', sans-serif;
+    color: #303030;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .carinterest-title i {
+    color: var(--gradient-primary);
+    font-size: 1.8rem;
+  }
+
+  .carinterest-subtitle {
+    color: #777777;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .carinterest-car-info {
+    background: var(--bg-light);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .carinterest-car-icon {
+    font-size: 2rem;
+    color: var(--gradient-primary);
+  }
+
+  .carinterest-car-details h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0 0 0.25rem 0;
+  }
+
+  .carinterest-car-details p {
+    color: var(--text-light);
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  /* Form Section */
+  .carinterest-form-container {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+
+  .carinterest-form-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .carinterest-form-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .carinterest-form-description {
+    opacity: 0.9;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .carinterest-form {
+    padding: 3rem 2rem;
+  }
+
+  .carinterest-form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .carinterest-form-group {
+    position: relative;
+  }
+
+  .carinterest-form-label {
+    display: block;
+    font-weight: 600;
+    color: #727272;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .carinterest-form-label i {
+    color: var(--gradient-primary);
+    font-size: 1rem;
+  }
+
+  .carinterest-form-input {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    color: #303030;
+    background: #ffffff;
+    transition: all var(--transition-normal);
+    box-sizing: border-box;
+  }
+
+  .carinterest-form-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .carinterest-form-input:valid {
+    border-color: var(--success-color);
+  }
+
+  .carinterest-form-input:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: var(--danger-color);
+  }
+
+  /* Message Field */
+  .carinterest-form-textarea {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    color: var(--text-dark);
+    background: #ffffff;
+    transition: all var(--transition-normal);
+    box-sizing: border-box;
+    min-height: 120px;
+    resize: vertical;
+    font-family: inherit;
+  }
+
+  .carinterest-form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+    transform: translateY(-2px);
+  }
+
+  /* Submit Section */
+  .carinterest-submit-section {
+    background: #ffffff;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .carinterest-submit-btn {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 1.25rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: var(--shadow-colored);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .carinterest-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .carinterest-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Contact Methods */
+  .carinterest-contact-methods {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+
+  .carinterest-contact-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #494949;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .carinterest-contact-title i {
+    color: var(--gradient-primary);
+  }
+
+  .carinterest-contact-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .carinterest-contact-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all var(--transition-normal);
+    min-width: 160px;
+    justify-content: center;
+  }
+
+  .carinterest-contact-btn-whatsapp {
+    background: var(--gradient-success);
+    color: white;
+    box-shadow: 0 8px 25px rgba(39, 174, 96, 0.2);
+  }
+
+  .carinterest-contact-btn-whatsapp:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(39, 174, 96, 0.3);
+    text-decoration: none;
+    color: white;
+  }
+
+  .carinterest-contact-btn-phone {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-colored);
+  }
+
+  .carinterest-contact-btn-phone:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+    text-decoration: none;
+    color: white;
+  }
+
+  /* Validation Messages */
+  .carinterest-error-message {
+    color: var(--danger-color);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .carinterest-success-message {
+    color: var(--success-color);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Info Box */
+  .carinterest-info-box {
+    background: rgba(52, 152, 219, 0.1);
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 2rem;
+  }
+
+  .carinterest-info-box h5 {
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .carinterest-info-box p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  /* Success State */
+  .carinterest-success-container {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 3rem 2rem;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .carinterest-success-icon {
+    font-size: 4rem;
+    color: var(--success-color);
+    margin-bottom: 1rem;
+  }
+
+  .carinterest-success-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+  }
+
+  .carinterest-success-message {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .carinterest-title {
+      font-size: 1.5rem;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .carinterest-form {
+      padding: 2rem 1.5rem;
+    }
+
+    .carinterest-header {
+      padding: 2rem 1.5rem 1.5rem;
+    }
+
+    .carinterest-car-info {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .carinterest-contact-buttons {
+      flex-direction: column;
+    }
+
+    .carinterest-contact-btn {
+      min-width: 100%;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .carinterest-container {
+      padding: 0 0.5rem;
+    }
+
+    .carinterest-header {
+      padding: 1.5rem 1rem;
+    }
+
+    .carinterest-form {
+      padding: 1.5rem 1rem;
+    }
+
+    .carinterest-form-header {
+      padding: 1.5rem 1rem;
+    }
+
+    .carinterest-title {
+      font-size: 1.3rem;
+    }
+
+    .carinterest-submit-btn {
+      width: 100%;
+      padding: 1rem 2rem;
+    }
+  }
+</style>
+
+<div class="carinterest-container">
+  <!-- Back Button -->
+  <a href="{% url 'car_detail' car.pk %}" class="carinterest-back-btn">
+    <i class="fas fa-arrow-left"></i>
+    Voltar aos Detalhes do Veículo
+  </a>
+
+  <!-- Header -->
+  <div class="carinterest-header">
+    <h1 class="carinterest-title">
+      <i class="fas fa-heart"></i>
+      Demonstrar Interesse
+    </h1>
+    <p class="carinterest-subtitle">
+      Preencha o formulário abaixo para demonstrar seu interesse neste veículo. 
+      Entraremos em contato em breve!
+    </p>
+    
+    <div class="carinterest-car-info">
+      <div class="carinterest-car-icon">
+        <i class="fas fa-car"></i>
+      </div>
+      <div class="carinterest-car-details">
+        <h3>{{ car.marca|capfirst }} {{ car.model|capfirst }}</h3>
+        <p>Ano: {{ car.factory_year }} | Valor: R$ {{ car.value|floatformat:"0" }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Container -->
+  <div class="carinterest-form-container">
+    <div class="carinterest-form-header">
+      <h2 class="carinterest-form-title">
+        <i class="fas fa-user-edit"></i>
+        Seus Dados de Contato
+      </h2>
+      <p class="carinterest-form-description">
+        Seus dados são protegidos e usados apenas para este contato
+      </p>
+    </div>
+
+    <form method="post" 
+          action="{% url 'interest_form' car.id %}"  
+          class="carinterest-form" 
+          id="interestForm">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="name">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
+      
+      <div class="carinterest-info-box">
+        <h5>
+          <i class="fas fa-clock"></i>
+          Tempo de Resposta
+        </h5>
+        <p>Normalmente respondemos em até 2 horas durante horário comercial (8h às 18h).</p>
+      </div>
+
+      <div class="carinterest-form-grid">
+        <div class="carinterest-form-group">
+          <label for="nome" class="carinterest-form-label">
+            <i class="fas fa-user"></i>
+            Nome Completo
+          </label>
+          <input type="text" 
+                 id="nome" 
+                 name="nome" 
+                 class="carinterest-form-input" 
+                 placeholder="Digite seu nome completo"
+                 required>
         </div>
 
-        <div class="form-group">
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" required>
+        <div class="carinterest-form-group">
+          <label for="telefone" class="carinterest-form-label">
+            <i class="fas fa-phone"></i>
+            Telefone/WhatsApp
+          </label>
+          <input type="tel" 
+                 id="telefone" 
+                 name="telefone" 
+                 class="carinterest-form-input" 
+                 placeholder="(11) 99999-9999"
+                 required>
         </div>
+      </div>
 
-        <div class="form-group">
-            <label for="phone">Número de Contato:</label>
-            <input type="tel" id="telefone" name="telefone" required>
-        </div>
-
-        <button type="submit" class="btn-submit">Enviar</button>
+      <div class="carinterest-submit-section">
+        <button type="submit" class="carinterest-submit-btn">
+          <i class="fas fa-paper-plane"></i>
+          Enviar Interesse
+        </button>
+      </div>
     </form>
+  </div>
 </div>
 
-<style>
-    .interest-container {
-        max-width: 600px; /* Limite de largura para dispositivos maiores */
-        margin: 20px auto; /* Centraliza o formulário na tela */
-        padding: 20px; /* Adiciona padding interno */
-        background-color: #f9f9f9; /* Fundo claro */
-        border-radius: 8px; /* Cantos arredondados */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra leve */
+<script>
+  // Validação dos campos
+  document.querySelectorAll('.carinterest-form-input, .carinterest-form-textarea').forEach(input => {
+    input.addEventListener('blur', function() {
+      validateField(this);
+    });
+
+    input.addEventListener('input', function() {
+      const group = this.closest('.carinterest-form-group');
+      const existingMsg = group.querySelector('.carinterest-error-message, .carinterest-success-message');
+      if (existingMsg) existingMsg.remove();
+    });
+  });
+
+  function validateField(field) {
+    const group = field.closest('.carinterest-form-group');
+    const existingMsg = group.querySelector('.carinterest-error-message, .carinterest-success-message');
+    if (existingMsg) existingMsg.remove();
+
+    if (!field.required && field.value.trim() === '') return;
+
+    if (field.required && field.value.trim() === '') {
+      showFieldMessage(group, 'error', 'Este campo é obrigatório');
+    } else if (!field.checkValidity()) {
+      if (field.type === 'email') showFieldMessage(group, 'error', 'Digite um e-mail válido');
+      else if (field.type === 'tel') showFieldMessage(group, 'error', 'Digite um telefone válido');
+      else showFieldMessage(group, 'error', 'Valor inválido');
+    } else {
+      showFieldMessage(group, 'success', 'Válido');
+    }
+  }
+
+  function showFieldMessage(group, type, message) {
+    const className = type === 'error' ? 'carinterest-error-message' : 'carinterest-success-message';
+    const iconClass = type === 'error' ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = className;
+    messageDiv.innerHTML = `<i class="${iconClass}"></i> ${message}`;
+    group.appendChild(messageDiv);
+  }
+
+  // Formatação do telefone
+  document.getElementById('telefone').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length >= 11) value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    else if (value.length >= 7) value = value.replace(/(\d{2})(\d{4})(\d+)/, '($1) $2-$3');
+    else if (value.length >= 3) value = value.replace(/(\d{2})(\d+)/, '($1) $2');
+    e.target.value = value;
+  });
+
+  // Envio do formulário via AJAX e abre WhatsApp em nova aba
+  document.getElementById('interestForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    let isValid = true;
+    document.querySelectorAll('.carinterest-form-input[required]').forEach(field => {
+      validateField(field);
+      if (!field.checkValidity() || field.value.trim() === '') isValid = false;
+    });
+
+    if (!isValid) {
+      const firstError = document.querySelector('.carinterest-error-message');
+      if (firstError) firstError.closest('.carinterest-form-group').scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+      return;
     }
 
-    .interest-form {
-        display: flex;
-        flex-direction: column; /* Organiza os elementos em coluna */
-    }
+    const submitBtn = document.querySelector('.carinterest-submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
 
-    .form-group {
-        margin-bottom: 15px; /* Espaçamento entre os grupos de formulário */
-    }
+    const formData = new FormData(this);
 
-    label {
-        font-weight: bold; /* Destaque para os rótulos */
-    }
+    fetch(this.action, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.whatsapp_url) {
+        // Abre o WhatsApp em nova aba
+        window.open(data.whatsapp_url, '_blank');
 
-    input {
-        padding: 10px; /* Espaçamento interno nos campos */
-        border: 1px solid #ccc; /* Borda leve */
-        border-radius: 4px; /* Cantos arredondados */
-        font-size: 16px; /* Tamanho da fonte */
-        width: 100%; /* Campos ocupam toda a largura */
-        box-sizing: border-box; /* Inclui padding na largura total */
-    }
+        alert("Interesse enviado com sucesso! O WhatsApp será aberto em nova guia.");
 
-    .btn-submit {
-        background-color: #FFA500; /* Cor do botão */
-        color: white; /* Cor do texto do botão */
-        border: none; /* Remove borda padrão */
-        padding: 10px 20px; /* Espaçamento interno do botão */
-        font-size: 16px; /* Tamanho da fonte do botão */
-        border-radius: 4px; /* Cantos arredondados do botão */
-        cursor: pointer; /* Muda o cursor para pointer */
-        transition: background-color 0.3s; /* Animação para mudança de cor */
-    }
+        // Resetar formulário
+        document.getElementById('interestForm').reset();
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Interesse';
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Ocorreu um erro ao enviar o interesse.");
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Interesse';
+    });
+  });
+</script>
 
-    .btn-submit:hover {
-        background-color: #cc8400; /* Cor do botão ao passar o mouse */
-    }
-
-    /* Media Queries para Responsividade */
-    @media (max-width: 600px) {
-        .interest-container {
-            padding: 15px; /* Reduz o padding em telas pequenas */
-        }
-
-        .btn-submit {
-            width: 100%; /* Botão ocupa toda a largura em telas pequenas */
-        }
-    }
-</style>
 
 {% endblock %}

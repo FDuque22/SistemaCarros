@@ -7,12 +7,14 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.contrib import messages
+from urllib.parse import quote
+from django.http import JsonResponse
 
 # Classe para a visualização de carros
 class CarsView(View):
 
     def get(self, request):
-        cars = Car.objects.filter(active=True).order_by('brand__name')
+        cars = Car.objects.filter(active=True).order_by('-data_criacao')
         search = request.GET.get('search')
 
         if search:
@@ -39,6 +41,10 @@ class NewCarCreateView(CreateView):
     template_name = 'new_car.html'
     success_url = '/cars/'
 
+    def form_valid(self, form):
+        form.instance.usuario = self.request.user
+        return super().form_valid(form)
+    
 # Classe para atualização de carros
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class CarUpdateView(UpdateView):
@@ -77,10 +83,26 @@ class InterestFormView(View):
         form = InterestForm(request.POST)
         
         if form.is_valid():
-            interest = form.save(commit=False) 
-            interest.car = car 
-            interest.save() 
-            return redirect('car_detail', pk=pk)  
+            interest = form.save(commit=False)
+            interest.car = car
+            interest.save()
+
+            owner_number = car.contact or ''
+            owner_number = ''.join(filter(str.isdigit, owner_number))
+            if owner_number.startswith('0'):
+                owner_number = owner_number[1:]
+            if not owner_number.startswith('55'):
+                owner_number = '55' + owner_number
+
+            message = (
+                f"Olá, tenho interesse no {car.marca } { car.model}!\n\n"
+                f"Meus dados:\n"
+                f"Nome: {interest.nome}\n"
+                f"Telefone: {interest.telefone}"
+            )
+
+            whatsapp_url = f"https://wa.me/{owner_number}?text={quote(message)}"
+            return JsonResponse({'whatsapp_url': whatsapp_url})
 
         return render(request, 'car_interest.html', {'form': form, 'car': car})
 
