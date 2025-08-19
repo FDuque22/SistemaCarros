@@ -2,11 +2,14 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from cars.views import CarsView, NewCarCreateView, CarDetailView, CarUpdateView, CarDeleteView, InterestFormView, ContatoView
+from cars.views import CarsView, NewCarCreateView, CarDetailView, CarUpdateView, CarDeleteView, InterestFormView, ContatoView, plano, inicio
 from accounts.views import register_view, login_view, logout_view, meu_perfil, alterar_senha  # Importando as views necessárias
+from accounts.views import check_username
 
-urlpatterns = [
+urlpatterns = [ 
     path('admin/', admin.site.urls),
+    path("plano/", plano, name="plano"),
+    path('', inicio, name='inicio'),
     
     # Autenticação
     path('register/', register_view, name='register'),
@@ -15,7 +18,6 @@ urlpatterns = [
 
     # Views de Carros
     path('cars/', CarsView.as_view(), name='cars_list'),
-    path('', CarsView.as_view(), name='cars_list'),
     path('new_car/', NewCarCreateView.as_view(), name='new_car'),
     path('car/<int:pk>/', CarDetailView.as_view(), name='car_detail'),
     path('car/<int:pk>/update/', CarUpdateView.as_view(), name='car_update'),
@@ -26,5 +28,6 @@ urlpatterns = [
     # URLs do app accounts
     path('meu_perfil/', meu_perfil, name='meu_perfil'),  # URL para Meu Perfil
     path('alterar_senha/', alterar_senha, name='alterar_senha'),  # URL para Alterar Senha
+    path('check-username/', check_username, name='check_username'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

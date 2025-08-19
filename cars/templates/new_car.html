@@ -536,7 +536,6 @@
           <li><i class="fas fa-check"></i> Todos os campos são obrigatórios</li>
           <li><i class="fas fa-check"></i> Todos os anúncios são revisados antes da publicação</li>
           <li><i class="fas fa-check"></i> Fotos de boa qualidade aumentam as chances de venda</li>
-          <li><i class="fas fa-check"></i> Você receberá uma confirmação por e-mail</li>
         </ul>
       </div>
     </div>
@@ -633,20 +632,20 @@
   
         <div class="carnew-form-grid">
           <div class="carnew-form-group">
-            <label for="{{ form.seller.id_for_label }}" class="carnew-form-label"><i class="fas fa-user"></i> Nome Completo</label>
-            {{ form.seller }}
+            <label class="carnew-form-label"><i class="fas fa-user"></i> Nome Completo</label>
+            <input type="text" class="carnew-form-input" value="{{ user.get_full_name|default:user.username }}" readonly>
           </div>
   
           <div class="carnew-form-group">
-            <label for="{{ form.email.id_for_label }}" class="carnew-form-label"><i class="fas fa-envelope"></i> E-mail</label>
-            {{ form.email }}
+            <label class="carnew-form-label"><i class="fas fa-envelope"></i> E-mail</label>
+            <input type="email" class="carnew-form-input" value="{{ user.email }}" readonly>
           </div>
   
-          <div class="carnew-form-group">
+          <!--  <div class="carnew-form-group">
             <label for="{{ form.contact.id_for_label }}" class="carnew-form-label"><i class="fas fa-phone"></i> Telefone/WhatsApp</label>
             {{ form.contact }}
           </div>
-        </div>
+        </div>  -->
       </div>
   
       <!-- Photos Section -->

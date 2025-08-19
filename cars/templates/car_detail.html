@@ -666,23 +666,21 @@
 
       <!-- Action Buttons -->
       <div class="cardetail-actions">
-        <a href="{% url 'interest_form' pk=object.pk %}" class="cardetail-btn cardetail-btn-primary">
+        <button 
+            id="btn-interest" 
+            data-car-id="{{ object.pk }}" 
+            class="cardetail-btn cardetail-btn-whatsapp">
           <i class="fas fa-heart"></i>
           Tenho Interesse
-        </a>
-        
-        <a href="https://api.whatsapp.com/send?phone=5521964243121&text=Olá!%20Tenho%20interesse%20no%20{{ object.brand }}%20{{ object.model }}%20{{ object.factory_year }}%20anunciado%20no%20site." 
-           target="_blank" class="cardetail-btn cardetail-btn-whatsapp">
-          <i class="fab fa-whatsapp"></i>
-          WhatsApp
-        </a>
+        </button>
 
-        {% if user.is_authenticated and user == object.seller %}
+        {% if user.is_authenticated and user.id == object.usuario.id %}
           <a href="{% url 'car_update' pk=object.pk %}" class="cardetail-btn cardetail-btn-secondary">
             <i class="fas fa-edit"></i>
             Editar
           </a>
         {% endif %}
+
       </div>
     </div>
   </div>
@@ -734,6 +732,34 @@
 </div>
 
 <script>
+
+document.getElementById('btn-interest').addEventListener('click', function() {
+    const carId = this.dataset.carId;
+
+    // Dados padrão, você pode adaptar para pegar do usuário logado
+    const data = {
+        nome: "{{ request.user.get_full_name|escapejs }}", 
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+    };
+
+    fetch("{% url 'interest_form' pk=object.pk %}", {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: new URLSearchParams(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.whatsapp_url) {
+            window.open(data.whatsapp_url, '_blank');
+        } else {
+            alert('Erro ao processar interesse.');
+        }
+    })
+    .catch(err => console.error(err));
+});
+
   // Image gallery functionality
   let currentImageIndex = 0;
   const images = [

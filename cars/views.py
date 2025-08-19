@@ -54,6 +54,11 @@ class CarUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('car_detail', kwargs={'pk': self.object.pk})
+    
+    def test_func(self):
+        """Verifica se o usuário logado é o dono do carro"""
+        car = self.get_object()
+        return self.request.user == car.seller
 
 # Classe para deletar carros (marcando como inativo)
 @method_decorator(login_required(login_url='login'), name='dispatch')
@@ -95,10 +100,7 @@ class InterestFormView(View):
                 owner_number = '55' + owner_number
 
             message = (
-                f"Olá, tenho interesse no {car.marca } { car.model}!\n\n"
-                f"Meus dados:\n"
-                f"Nome: {interest.nome}\n"
-                f"Telefone: {interest.telefone}"
+                f"Olá, me chamo {interest.nome} e tenho interesse no {car.marca } { car.model} { car.color } { car.factory_year }/{ car.model_year }!\n\n"
             )
 
             whatsapp_url = f"https://wa.me/{owner_number}?text={quote(message)}"
@@ -122,3 +124,12 @@ class ContatoView(View):
 
         messages.error(request, 'Por favor, corrija os erros abaixo.')
         return render(request, 'contato.html', {'form': form})
+    
+# Classe para Planos
+def plano(request):
+    return render(request, "plano.html")
+
+def inicio(request):
+    if request.user.is_authenticated:
+        return redirect('cars_list')  # precisa ser o name da URL correto
+    return render(request, "inicio.html")

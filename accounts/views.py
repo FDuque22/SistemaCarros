@@ -4,17 +4,37 @@ from django.shortcuts import render, redirect
 from django.contrib import messages  # Para mostrar mensagens de erro
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+from .forms import CustomUserCreationForm
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+
 
 def register_view(request):
     if request.method == "POST":
-        user_form = UserCreationForm(request.POST)
-        if user_form.is_valid():
-            user_form.save()
-            messages.success(request, "Registro realizado com sucesso!")
-            return redirect('login')
-    else:
-        user_form = UserCreationForm()
-    return render(request, 'register.html', {'user_form': user_form})
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+
+        if User.objects.filter(username=username).exists():
+            return render(request, "register.html", {"error": "Usuário já existe!"})
+
+        user = User(
+            username=username,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+        )
+        user.set_password("123456")  # senha padrão
+        user.save()
+        return redirect("inicio")
+
+    return render(request, "register.html")
+
+def check_username(request):
+    username = request.GET.get('username', None)
+    exists = User.objects.filter(username=username).exists()
+    return JsonResponse({'exists': exists})
 
 def login_view(request):
     if request.method == "POST":
@@ -33,7 +53,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     messages.success(request, "Você foi desconectado com sucesso!")  # Mensagem de sucesso
-    return redirect('cars_list')  # Redirecionar para a lista de carros
+    return redirect('inicio')  # Redirecionar para a lista de carros
 
 @login_required
 def meu_perfil(request):

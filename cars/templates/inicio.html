@@ -1,0 +1,681 @@
+{% extends 'base.html' %}
+
+{% block title %}Carbon Motors
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+<style>
+    .iniciocar-container {
+        /* Colors */
+        --primary-color: #FF6B35;
+        --primary-dark: #E5531F;
+        --primary-light: #FF8F66;
+        --secondary-color: #2C3E50;
+        --accent-color: #3498DB;
+        --text-dark: #2C3E50;
+        --text-light: #7F8C8D;
+        --text-muted: #95A5A6;
+        --bg-light: #F8F9FA;
+        --bg-white: #FFFFFF;
+        --bg-dark: #1A1A1A;
+        --border-color: #E9ECEF;
+        --success-color: #27AE60;
+        --warning-color: #F39C12;
+        --danger-color: #E74C3C;
+        
+        /* Gradients */
+        --gradient-primary: linear-gradient(135deg, #FF6B35 0%, #ff8800 100%);
+        --gradient-secondary: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+        --gradient-success: linear-gradient(135deg, #27AE60 0%, #2ECC71 100%);
+        
+        /* New Professional Gradients */
+        --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+        --gradient-shadow: linear-gradient(145deg, rgba(255, 107, 53, 0.1), rgba(255, 136, 0, 0.1));
+    }
+
+    .iniciocar-reset * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .iniciocar-body {
+        font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+        line-height: 1.6;
+        color: var(--text-dark);
+        overflow-x: hidden;
+    }
+
+    /* Hero Section */
+    .iniciocar-hero {
+        background: var(--gradient-bg);
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding: 40px;
+        text-align: center;
+    }
+
+    .iniciocar-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+    }
+
+    .iniciocar-hero-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+        animation: iniciocar-fadeInUp 1s ease-out;
+    }
+
+    @keyframes iniciocar-fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(60px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .iniciocar-hero-badge {
+        display: inline-flex;
+        align-items: center;
+        background: #ff8800;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 30px;
+        animation: iniciocar-float 3s ease-in-out infinite;
+    }
+
+    @keyframes iniciocar-float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    .iniciocar-hero-badge::before {
+        content: '🚀';
+        margin-right: 8px;
+    }
+
+    .iniciocar-hero-title {
+        font-size: 4rem;
+        font-weight: 900;
+        color: #444444;
+        margin-bottom: 25px;
+        line-height: 1.1;
+    }
+
+    .iniciocar-hero-subtitle {
+        font-size: 1.4rem;
+        color: #868686;
+        margin-bottom: 40px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        font-weight: 400;
+        white-space: nowrap;  /* impede quebras de linha */
+    }
+
+    .iniciocar-hero-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 60px;
+    }
+
+    .iniciocar-btn-primary {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 18px 36px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .iniciocar-btn-primary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .iniciocar-btn-primary:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 35px rgba(255, 107, 53, 0.5);
+    }
+
+    .iniciocar-btn-primary:hover::before {
+        left: 100%;
+    }
+
+    .iniciocar-btn-secondary {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        padding: 18px 36px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(20px);
+    }
+
+    .iniciocar-btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.5);
+        transform: translateY(-2px);
+    }
+
+    /* Stats Section */
+    .iniciocar-stats {
+        display: flex;
+        justify-content: center;
+        gap: 60px;
+        flex-wrap: wrap;
+    }
+
+    .iniciocar-stat {
+        text-align: center;
+        color: white;
+    }
+
+    .iniciocar-stat-number {
+        font-size: 3rem;
+        font-weight: 900;
+        margin-bottom: 8px;
+        background: linear-gradient(45deg, #fff, rgba(255, 255, 255, 0.8));
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .iniciocar-stat-label {
+        font-size: 1rem;
+        opacity: 0.9;
+        font-weight: 500;
+    }
+
+    /* Features Section */
+    .iniciocar-features {
+        padding: -80px;
+
+    }
+
+    .iniciocar-section-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .iniciocar-section-header {
+        text-align: center;
+        margin-bottom: 80px;
+    }
+
+    .iniciocar-section-badge {
+        display: inline-block;
+        background: var(--gradient-primary);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 30px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
+
+    .iniciocar-section-title {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #444444;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .iniciocar-section-subtitle {
+        font-size: 1.2rem;
+        color: var(--text-light);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .iniciocar-features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 40px;
+        margin-top: 80px;
+    }
+
+    .iniciocar-feature-card {
+        background: var(--gradient-card);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s ease;
+
+        position: relative;
+        overflow: hidden;
+    }
+
+    .iniciocar-feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-primary);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+        transform-origin: left;
+    }
+
+    .iniciocar-feature-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .iniciocar-feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .iniciocar-feature-icon {
+        width: 80px;
+        height: 80px;
+        background: var(--gradient-primary);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin-bottom: 25px;
+        box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+    }
+
+    .iniciocar-feature-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #464646;
+        margin-bottom: 15px;
+    }
+
+    .iniciocar-feature-description {
+        color: #555555;
+        line-height: 1.7;
+        font-size: 1rem;
+    }
+
+    /* How It Works Section */
+    .iniciocar-how-it-works {
+        padding: 120px 20px;
+    }
+
+    .iniciocar-steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 50px;
+        margin-top: 80px;
+    }
+
+    .iniciocar-step {
+        text-align: center;
+        position: relative;
+    }
+
+    .iniciocar-step-number {
+        width: 80px;
+        height: 80px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 900;
+        color: white;
+        margin: 0 auto 25px;
+        box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+        position: relative;
+    }
+
+    .iniciocar-step-number::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 2px;
+        background: var(--border-color);
+        z-index: -1;
+    }
+
+    .iniciocar-step:last-child .iniciocar-step-number::after {
+        display: none;
+    }
+
+    .iniciocar-step-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #444444;
+        margin-bottom: 15px;
+    }
+
+    .iniciocar-step-description {
+        color: var(--text-light);
+        line-height: 1.6;
+    }
+
+    /* Testimonials Section */
+    .iniciocar-testimonials {
+        padding: 120px 20px;
+        background: var(--bg-white);
+    }
+
+    .iniciocar-testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 40px;
+        margin-top: 80px;
+    }
+
+    .iniciocar-testimonial {
+        background: var(--gradient-card);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--border-color);
+        position: relative;
+    }
+
+    .iniciocar-testimonial::before {
+        content: '"';
+        position: absolute;
+        top: -10px;
+        left: 30px;
+        font-size: 6rem;
+        color: var(--primary-color);
+        opacity: 0.3;
+        font-family: serif;
+    }
+
+    .iniciocar-testimonial-text {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: var(--text-dark);
+        margin-bottom: 25px;
+        font-style: italic;
+    }
+
+    .iniciocar-testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .iniciocar-testimonial-avatar {
+        width: 50px;
+        height: 50px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+    .iniciocar-testimonial-info h4 {
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 3px;
+    }
+
+    .iniciocar-testimonial-info p {
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+
+    .iniciocar-stars {
+        color: #FFD700;
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+    }
+
+    /* CTA Section */
+    .iniciocar-cta {
+        padding: 120px 20px;
+        text-align: center;
+        position: relative;
+    }
+
+    .iniciocar-cta::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        pointer-events: none;
+    }
+
+    .iniciocar-cta-content {
+        position: relative;
+        z-index: 2;
+        color: white;
+    }
+
+    .iniciocar-cta-title {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #444444;
+    }
+
+    .iniciocar-cta-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 40px;
+        opacity: 0.9;
+        color: #868686;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .iniciocar-hero-title {
+            font-size: 2.5rem;
+        }
+
+        .iniciocar-hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .iniciocar-section-title {
+            font-size: 2.2rem;
+        }
+
+        .iniciocar-features-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .iniciocar-hero-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .iniciocar-btn-primary,
+        .iniciocar-btn-secondary {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .iniciocar-stats {
+            gap: 30px;
+        }
+
+        .iniciocar-step-number::after {
+            display: none;
+        }
+    }
+</style>
+
+<div class="iniciocar-reset iniciocar-body">
+
+    <!-- Hero Section -->
+    <section class="iniciocar-hero">
+        <div class="iniciocar-hero-content">           
+            <h1 class="iniciocar-hero-title">
+                Repasses de veículos com facilidade e segurança
+            </h1>
+            
+            <p class="iniciocar-hero-subtitle">
+                Todos os veículos e repasses em uma plataforma ágil e segura
+            </p>
+            
+            <div class="iniciocar-hero-buttons">
+                <a href="{% url 'plano' %}" class="iniciocar-btn-primary">
+                    Assine Agora
+                    <span>🚗</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="iniciocar-features">
+        <div class="iniciocar-section-container">
+            <div class="iniciocar-section-header">
+                <h2 class="iniciocar-section-title">Gerencie seus repasses com facilidade</h2>
+                <p class="iniciocar-section-subtitle">
+                    Benefícios exclusivos para assinantes do nosso sistema
+                </p>
+            </div>
+            
+            <div class="iniciocar-features-grid">
+                <div class="iniciocar-feature-card">
+                    <div class="iniciocar-feature-icon">📋</div>
+                    <h3 class="iniciocar-feature-title">Lista de Veículos Atualizada</h3>
+                    <p class="iniciocar-feature-description">
+                        Visualize veículos disponíveis para repasse em tempo real. Nunca perca uma oportunidade.
+                    </p>
+                </div>
+
+                <div class="iniciocar-feature-card">
+                    <div class="iniciocar-feature-icon">💸</div>
+                    <h3 class="iniciocar-feature-title">Controle de Acessos</h3>
+                    <p class="iniciocar-feature-description">
+                        Exclusivo para usuários Premium.
+                    </p>
+                </div>
+
+                <div class="iniciocar-feature-card">
+                    <div class="iniciocar-feature-icon">✉️</div>
+                    <h3 class="iniciocar-feature-title">Envio de Propostas</h3>
+                    <p class="iniciocar-feature-description">
+                        Envie propostas pelo WhatsApp com um clique direto do sistema.
+                    </p>
+                </div>
+
+                <div class="iniciocar-feature-card">
+                    <div class="iniciocar-feature-icon">📊</div>
+                    <h3 class="iniciocar-feature-title">Anuncios Detalhados</h3>
+                    <p class="iniciocar-feature-description">
+                        Acompanhe todos os seus anúncios de veículos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="iniciocar-how-it-works">
+        <div class="iniciocar-section-container">
+            <div class="iniciocar-section-header">
+                <h2 class="iniciocar-section-title">Acesso em 3 passos simples</h2>
+                <p class="iniciocar-section-subtitle">
+                    Torne-se assinante e comece a gerenciar repasses rapidamente
+                </p>
+            </div>
+            
+            <div class="iniciocar-steps">
+                <div class="iniciocar-step">
+                    <div class="iniciocar-step-number">1</div>
+                    <h3 class="iniciocar-step-title">Comece Agora</h3>
+                    <p class="iniciocar-step-description">
+                        Chame o suporte e realize o pagamento da assinatura para abrir sua conta.
+                    </p>
+                </div>
+                
+                <div class="iniciocar-step">
+                    <div class="iniciocar-step-number">2</div>
+                    <h3 class="iniciocar-step-title">Visualize e Cadastre Veículos</h3>
+                    <p class="iniciocar-step-description">
+                        Acesse veículos disponíveis e cadastre os seus.
+                    </p>
+                </div>
+                
+                <div class="iniciocar-step">
+                    <div class="iniciocar-step-number">3</div>
+                    <h3 class="iniciocar-step-title">Envie Propostas</h3>
+                    <p class="iniciocar-step-description">
+                        Envie propostas e acompanhe seus repasses em um só lugar.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="iniciocar-cta">
+        <div class="iniciocar-cta-content">
+            <h2 class="iniciocar-cta-title">Pronto para acessar os repasses?</h2>
+            <p class="iniciocar-cta-subtitle">
+                Torne-se assinante e tenha acesso completo ao sistema de repasses de veículos
+            </p>
+            <div class="iniciocar-hero-buttons">
+                <a href="{% url 'plano' %}" class="iniciocar-btn-primary">
+                    Assine Agora
+                    <span>🚀</span>
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

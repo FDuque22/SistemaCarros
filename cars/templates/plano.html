@@ -1,0 +1,484 @@
+{% extends 'base.html' %}
+
+{% block title %}Assine Agora{% endblock %}
+
+{% load static %}
+
+{% block content %}
+
+    <style>
+        .planoscar-container {
+            /* Colors */
+            --primary-color: #FF6B35;
+            --primary-dark: #E5531F;
+            --primary-light: #FF8F66;
+            --secondary-color: #2C3E50;
+            --accent-color: #3498DB;
+            --text-dark: #2C3E50;
+            --text-light: #7F8C8D;
+            --text-muted: #95A5A6;
+            --bg-light: #F8F9FA;
+            --bg-white: #FFFFFF;
+            --bg-dark: #1A1A1A;
+            --border-color: #E9ECEF;
+            --success-color: #27AE60;
+            --warning-color: #F39C12;
+            --danger-color: #E74C3C;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #FF6B35 0%, #ff8800 100%);
+            --gradient-secondary: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+            --gradient-success: linear-gradient(135deg, #27AE60 0%, #2ECC71 100%);
+            
+            /* New Professional Gradients */
+            --gradient-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-card: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            --gradient-shadow: linear-gradient(145deg, rgba(255, 107, 53, 0.1), rgba(255, 136, 0, 0.1));
+        }
+
+        .planoscar-reset * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .planoscar-body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .planoscar-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            pointer-events: none;
+        }
+
+        .planoscar-container {
+            max-width: 450px;
+            width: 100%;
+            position: relative;
+            animation: planoscar-slideUp 0.8s ease-out;
+        }
+
+        @keyframes planoscar-slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .planoscar-card {
+            background: var(--gradient-card);
+            border-radius: 24px;
+            box-shadow: 
+                0 32px 64px rgba(0, 0, 0, 0.12),
+                0 16px 32px rgba(0, 0, 0, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .planoscar-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 48px 80px rgba(0, 0, 0, 0.15),
+                0 24px 40px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .planoscar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--gradient-primary);
+            background-size: 200% 100%;
+            animation: planoscar-shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes planoscar-shimmer {
+            0%, 100% { background-position: -200% 0; }
+            50% { background-position: 200% 0; }
+        }
+
+        .planoscar-header {
+            padding: 40px 30px 30px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-white) 100%);
+        }
+
+        .planoscar-badge {
+            display: inline-flex;
+            align-items: center;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+            box-shadow: 
+                0 8px 20px rgba(255, 107, 53, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .planoscar-badge::before {
+            content: '⭐';
+            margin-right: 8px;
+            animation: planoscar-sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes planoscar-sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+        }
+
+        .planoscar-title {
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .planoscar-subtitle {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .planoscar-price-section {
+            text-align: center;
+            padding: 0 30px 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .planoscar-price {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            position: relative;
+            line-height: 1;
+            color: var(--primary-color); /* cor padrão laranja */
+        }
+
+        .planoscar-price::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: var(--gradient-primary);
+            border-radius: 1px;
+            opacity: 0.6;
+        }
+
+        .planoscar-currency {
+            font-size: 1.8rem;
+            font-weight: 700;
+            opacity: 0.9;
+            color: var(--gradient-primary);
+        }
+
+        .planoscar-period {
+            color: var(--gradient-primary);
+            font-size: 1.1rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .planoscar-discount {
+            display: inline-block;
+            background: var(--gradient-success);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 8px;
+            animation: planoscar-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes planoscar-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .planoscar-features {
+            padding: 30px;
+        }
+
+        .planoscar-features-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .planoscar-feature-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .planoscar-feature-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            color: var(--text-dark);
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            margin: 0 -10px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .planoscar-feature-item:hover {
+            background: rgba(255, 107, 53, 0.04);
+            transform: translateX(8px);
+        }
+
+        .planoscar-check-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-success);
+            border-radius: 50%;
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .planoscar-feature-item:hover .planoscar-check-icon {
+            transform: scale(1.1) rotate(360deg);
+            box-shadow: 0 6px 16px rgba(39, 174, 96, 0.4);
+        }
+
+        .planoscar-check-icon::after {
+            content: '✓';
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .planoscar-cta-section {
+            padding: 0 30px 40px;
+        }
+
+        .planoscar-btn {
+            width: 100%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 20px 30px;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 
+                0 12px 30px rgba(255, 107, 53, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            display: inline-block;   /* garante comportamento de botão */
+            text-decoration: none;   /* remove o sublinhado azul do link */
+            text-align: center;      /* centraliza o texto */
+        }
+
+        .planoscar-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .planoscar-btn::after {
+            content: '🚀';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .planoscar-btn:hover {
+            transform: translateY(-4px) rotateX(5deg);
+            box-shadow: 
+                0 20px 40px rgba(255, 107, 53, 0.5),
+                0 8px 16px rgba(255, 107, 53, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .planoscar-btn:hover::before {
+            left: 100%;
+        }
+
+        .planoscar-btn:hover::after {
+            transform: translateY(-50%) translateX(4px) rotate(15deg);
+        }
+
+        .planoscar-btn:active {
+            transform: translateY(-2px) rotateX(2deg);
+        }
+
+        .planoscar-guarantee {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .planoscar-security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .planoscar-security-icon {
+            width: 16px;
+            height: 16px;
+            background: var(--success-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .planoscar-security-icon::after {
+            content: '🔒';
+            font-size: 0.7rem;
+        }
+
+        @media (max-width: 480px) {
+            .planoscar-container {
+                margin: 10px;
+            }
+            
+            .planoscar-header {
+                padding: 30px 20px 25px;
+            }
+            
+            .planoscar-price-section,
+            .planoscar-features,
+            .planoscar-cta-section {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .planoscar-price {
+                font-size: 2.5rem;
+            }
+            
+            .planoscar-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<div class="planoscar-body">
+    <div class="planoscar-container">
+        <div class="planoscar-card">
+            <div class="planoscar-header">
+                <div class="planoscar-badge">ACESSO TOTAL</div>
+                <h1 class="planoscar-title">Assinatura Premium</h1>
+                <p class="planoscar-subtitle">Acesso completo a todos os recursos e funcionalidades da plataforma</p>
+            </div>
+            
+            <div class="planoscar-price-section">
+                <div class="planoscar-price">
+                    <span class="planoscar-currency">R$</span>
+                    <span class="planoscar-price-value">59</span>
+                    <span class="planoscar-period">,90/mês</span>
+                </div>
+            </div>
+            
+            <div class="planoscar-features">
+                <h3 class="planoscar-features-title">O que está incluído:</h3>
+                <ul class="planoscar-feature-list">
+                    <li class="planoscar-feature-item">
+                        <span class="planoscar-check-icon"></span>
+                        <div>
+                            <strong>Acesso ilimitado</strong><br>
+                            <small style="color: var(--text-light);">Visualize e cadastre todos os veículos disponíveis</small>
+                        </div>
+                    </li>
+                    <li class="planoscar-feature-item">
+                        <span class="planoscar-check-icon"></span>
+                        <div>
+                            <strong>Envio de propostas via WhatsApp</strong><br>
+                            <small style="color: var(--text-light);">Envie propostas com um clique e acompanhe os repasses</small>
+                        </div>
+                    </li>
+                    <li class="planoscar-feature-item">
+                        <span class="planoscar-check-icon"></span>
+                        <div>
+                            <strong>Suporte prioritário</strong><br>
+                            <small style="color: var(--text-light);">Atendimento rápido para dúvidas e ativação</small>
+                        </div>
+                    </li>
+                    <li class="planoscar-feature-item">
+                        <span class="planoscar-check-icon"></span>
+                        <div>
+                            <strong>Atualizações contínuas</strong><br>
+                            <small style="color: var(--text-light);">Novas funcionalidades sempre disponíveis</small>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="planoscar-cta-section">
+                <a href="https://api.whatsapp.com/send?phone=5521964243121&text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20veículos%20disponíveis." target="_blank">
+                  <button class="planoscar-btn">Começar Agora</button>
+                </a>
+              </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

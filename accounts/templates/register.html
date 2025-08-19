@@ -1,129 +1,480 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Usuário</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-{% block title %}Cadastra-se{% endblock %}
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-{% block content %}
-<style>
-    /* Estilos gerais para o formulário */
-    form {
-        max-width: 400px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
+        .signup-container {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            overflow: hidden;
+        }
 
-    h2 {
-        text-align: center;
-        color: #333;
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
+        .signup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #ff8800;
+        }
 
-    /* Estilos para as divs de grupo de formulários */
-    .form-group {
-        margin-bottom: 20px;
-    }
+        .form-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
 
-    .form-group label {
-        display: block;
-        font-size: 16px;
-        color: #333;
-        margin-bottom: 5px;
-    }
+        .form-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
 
-    /* Estilos para os campos de entrada */
-    input[type="text"],
-    input[type="password"] {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        border: 2px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        margin: 5px 0;
-        transition: border-color 0.3s; /* Transição suave para a mudança de cor */
-    }
+        .form-subtitle {
+            color: #6b7280;
+            font-size: 16px;
+            font-weight: 400;
+        }
 
-    input[type="text"]:focus,
-    input[type="password"]:focus {
-        border-color: #FFA500; /* Muda a cor da borda ao focar */
-        outline: none;
-    }
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
 
-    /* Estilos para os erros de validação */
-    .form-group .error {
-        color: red;
-        font-size: 12px;
-        margin-top: 5px;
-    }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            transition: color 0.2s ease;
+        }
 
-    /* Estilos para o botão de submit */
-    input[type="submit"] {
-        width: 100%;
-        padding: 12px;
-        background-color: #FFA500; /* Cor do botão */
-        color: white;
-        font-size: 16px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: #ffffff;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
 
-    input[type="submit"]:hover {
-        background-color: #cc8400; /* Cor mais escura do botão ao passar o mouse */
-    }
+        .form-input:focus {
+            outline: none;
+            border-color: #ff8800;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
 
-</style>
+        .form-input:focus + .form-label,
+        .form-input:not(:placeholder-shown) + .form-label {
+            color: #ff8800;
+        }
 
-<!-- Formulário de cadastro -->
-<form method="post">
-    <h2>CRIE SUA CONTA</h2>
-    {% csrf_token %}
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
 
-    <div class="form-group">
-        <label>Usuário: </label>
-        {{ user_form.username }}
-        <div class="error">
-            {% for error in user_form.username.errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
+        .error-message {
+            display: none;
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 8px;
+            padding-left: 4px;
+            font-weight: 500;
+        }
+
+        .form-input.error {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .form-input.error ~ .error-message {
+            display: block;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: #ff8800;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .login-link p {
+            color: #6b7280;
+            font-size: 25px;
+        }
+
+        .login-link a {
+            color:#ff8800;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .login-link a:hover {
+            color: #ac5c00;;
+        }
+
+        .strength-indicator {
+            margin-top: 8px;
+            display: none;
+        }
+
+        .strength-bar {
+            height: 4px;
+            border-radius: 2px;
+            background: #e5e7eb;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-text {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: 24px;
+                margin: 10px;
+            }
+
+            .form-title {
+                font-size: 24px;
+            }
+        }
+
+        /* Animação de entrada */
+        .signup-container {
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #e0f2fe 0%, #e8f5e8 100%);
+            border: 1px solid #b3e5fc;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .info-box::before {
+            content: 'ℹ️';
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            font-size: 18px;
+        }
+
+        .info-box p {
+            margin: 0;
+            padding-left: 32px;
+            color: #1565c0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .error-alert {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border: 1px solid #ef5350;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            color: #c62828;
+            font-weight: 600;
+            text-align: center;
+            position: relative;
+        }
+
+        .error-alert::before {
+            content: '⚠️';
+            margin-right: 8px;
+        }
+
+        /* Estados de validação visual */
+        .form-input.valid {
+            border-color: #10b981;
+        }
+
+        .form-input.valid:focus {
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .success-message {
+            color: #10b981;
+            font-size: 14px;
+            margin-top: 8px;
+            padding-left: 4px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .form-input.valid ~ .success-message {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="form-header">
+            <h1 class="form-title">Criar Usuário</h1>
+            <p class="form-subtitle">Preencha os dados para começar</p>
+        </div>
+
+        <!-- Exibir erro se existir -->
+        {% if error %}
+        <div class="error-alert">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="post" id="signupForm">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="username" class="form-label">Nome de Usuário</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="form-input" 
+                    placeholder="Digite seu nome de usuário"
+                    required
+                >
+                <div class="error-message">Por favor, insira um nome de usuário válido</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    class="form-input" 
+                    placeholder="seu@email.com"
+                    required
+                >
+                <div class="error-message">Por favor, insira um email válido</div>
+            </div>
+
+            <div class="form-group">
+                <label for="first_name" class="form-label">Nome</label>
+                <input 
+                    type="text" 
+                    id="first_name" 
+                    name="first_name" 
+                    class="form-input" 
+                    placeholder="Digite seu nome"
+                    required
+                >
+                <div class="error-message">Por favor, insira seu nome</div>
+            </div>
+
+            <div class="form-group">
+                <label for="last_name" class="form-label">Sobrenome</label>
+                <input 
+                    type="text" 
+                    id="last_name" 
+                    name="last_name" 
+                    class="form-input" 
+                    placeholder="Digite seu sobrenome"
+                    required
+                >
+                <div class="error-message">Por favor, insira seu sobrenome</div>
+            </div>
+
+            <div class="info-box">
+                <p><strong>Informação:</strong> A senha padrão será definida automaticamente como "123456". Você poderá alterá-la após o primeiro acesso.</p>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Criar Conta
+            </button>
+        </form>
+
+        <div class="login-link">
+            <p>Voltar para <a href="/cars/">Início</a></p>
         </div>
     </div>
 
-    <div class="form-group">
-        <label>Senha: </label>
-        {{ user_form.password1 }}
-        <div class="error">
-            {% for error in user_form.password1.errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
-        </div>
-    </div>
+    <script>
 
-    <div class="form-group">
-        <label>Confirmação de Senha: </label>
-        {{ user_form.password2 }}
-        <div class="error">
-            {% for error in user_form.password2.errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
-        </div>
-    </div>
+        const usernameInput = document.getElementById('username');
+        const errorMessage = usernameInput.nextElementSibling; // pega a div de erro
 
-    <div class="form-group">
-        <input type="submit" value="Cadastrar">
-    </div>
+        usernameInput.addEventListener('input', function() {
+            const username = this.value.trim();
+            if (username.length < 3) {
+                usernameInput.classList.remove('valid');
+                usernameInput.classList.add('error');
+                errorMessage.textContent = "O nome de usuário deve ter pelo menos 3 caracteres";
+                return;
+            }
 
-    {% if user_form.non_field_errors %}
-        <div class="error">
-            {% for error in user_form.non_field_errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
-</form>
+            fetch(`/check-username/?username=${username}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        usernameInput.classList.remove('valid');
+                        usernameInput.classList.add('error');
+                        errorMessage.textContent = "Usuário já existe!";
+                    } else {
+                        usernameInput.classList.remove('error');
+                        usernameInput.classList.add('valid');
+                        errorMessage.textContent = "";
+                    }
+                });
+        });
 
-{% endblock %}
+        // Validação em tempo real
+        const form = document.getElementById('signupForm');
+        const inputs = form.querySelectorAll('.form-input');
+
+        inputs.forEach(input => {
+            input.addEventListener('blur', validateInput);
+            input.addEventListener('input', function() {
+                if (this.classList.contains('error')) {
+                    validateInput.call(this);
+                }
+            });
+        });
+
+        function validateInput() {
+            const value = this.value.trim();
+            let isValid = true;
+
+            // Limpar estados anteriores
+            this.classList.remove('error', 'valid');
+
+            // Validações específicas
+            switch(this.type) {
+                case 'email':
+                    isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                    break;
+                default:
+                    isValid = value.length >= 2;
+            }
+
+            // Aplicar classe baseada na validação
+            if (value) {
+                this.classList.add(isValid ? 'valid' : 'error');
+            }
+
+            return isValid;
+        }
+
+        // Validação no submit
+        form.addEventListener('submit', function(e) {
+            let isFormValid = true;
+            inputs.forEach(input => {
+                if (!validateInput.call(input)) {
+                    isFormValid = false;
+                }
+            });
+            
+            if (isFormValid) {
+                // Feedback visual durante o envio
+                const submitBtn = form.querySelector('.submit-btn');
+                const originalText = submitBtn.textContent;
+                submitBtn.textContent = 'Criando conta...';
+                submitBtn.disabled = true;
+                
+                // Remover o disabled após um tempo para permitir reenvio se necessário
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }, 3000);
+            } else {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
