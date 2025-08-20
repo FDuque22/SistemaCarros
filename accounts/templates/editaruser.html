@@ -315,9 +315,9 @@
         </div>
         {% endif %}
 
-        <form method="post" action="{% url 'register' %}" id="signupForm">
+        <form method="post" action="{% url 'edit_user' user_obj.id %}" id="signupForm">
             {% csrf_token %}
-            
+        
             <div class="form-group">
                 <label for="username" class="form-label">Nome de Usuário</label>
                 <input 
@@ -326,11 +326,12 @@
                     name="username" 
                     class="form-input" 
                     placeholder="Digite seu nome de usuário"
+                    value="{{ user_obj.username }}"
                     required
                 >
                 <div class="error-message">Por favor, insira um nome de usuário válido</div>
             </div>
-
+        
             <div class="form-group">
                 <label for="email" class="form-label">Email</label>
                 <input 
@@ -339,11 +340,12 @@
                     name="email" 
                     class="form-input" 
                     placeholder="seu@email.com"
+                    value="{{ user_obj.email }}"
                     required
                 >
                 <div class="error-message">Por favor, insira um email válido</div>
             </div>
-
+        
             <div class="form-group">
                 <label for="first_name" class="form-label">Nome</label>
                 <input 
@@ -352,11 +354,12 @@
                     name="first_name" 
                     class="form-input" 
                     placeholder="Digite seu nome"
+                    value="{{ user_obj.first_name }}"
                     required
                 >
                 <div class="error-message">Por favor, insira seu nome</div>
             </div>
-
+        
             <div class="form-group">
                 <label for="last_name" class="form-label">Sobrenome</label>
                 <input 
@@ -365,11 +368,12 @@
                     name="last_name" 
                     class="form-input" 
                     placeholder="Digite seu sobrenome"
+                    value="{{ user_obj.last_name }}"
                     required
                 >
                 <div class="error-message">Por favor, insira seu sobrenome</div>
             </div>
-
+        
             <div class="form-group">
                 <label for="data_assinatura" class="form-label">Data de Assinatura Premium</label>
                 <input 
@@ -377,18 +381,20 @@
                     id="data_assinatura" 
                     name="data_assinatura" 
                     class="form-input"
+                    value="{{ profile.data_assinatura|date:'Y-m-d' }}"
                 >
                 <div class="error-message">Por favor, insira a data da assinatura</div>
             </div>
-
+        
             <div class="info-box">
-                <p><strong>Informação:</strong> A senha padrão será definida automaticamente como "123456". Você poderá alterá-la após o primeiro acesso.</p>
+                <p><strong>Informação:</strong> A senha padrão é "123456" se desejar redefinir. Alterações não mudam a senha atual.</p>
             </div>
-
+        
             <button type="submit" class="submit-btn">
-                Criar Conta
+                Atualizar Usuário
             </button>
         </form>
+        
 
         <div class="login-link">
             <p>Voltar para <a href="/cars/">Início</a></p>

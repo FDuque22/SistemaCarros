@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from cars.views import CarsView, NewCarCreateView, CarDetailView, CarUpdateView, CarDeleteView, InterestFormView, ContatoView, plano, inicio
 from accounts.views import register_view, login_view, logout_view, meu_perfil, alterar_senha  # Importando as views necessárias
-from accounts.views import check_username
+from accounts.views import check_username, configuracoes, editaruser
 
 urlpatterns = [ 
     path('admin/', admin.site.urls),
@@ -15,6 +15,8 @@ urlpatterns = [
     path('register/', register_view, name='register'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
+    path('configuracoes/', configuracoes, name='configuracoes'),
+    path("edit-user/<int:user_id>/", editaruser, name="edit_user"),
 
     # Views de Carros
     path('cars/', CarsView.as_view(), name='cars_list'),
