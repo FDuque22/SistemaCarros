@@ -1,0 +1,510 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .anuncioscar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .anuncioscar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #ff8800;
+        color: white;
+        padding: 15px 40px;
+        border-radius: 20px;
+        margin-bottom: 35px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        border: 1px solid rgba(255,255,255,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .anuncioscar-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+        pointer-events: none;
+    }
+
+    .anuncioscar-title {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin: 0;
+        text-shadow: 0 3px 8px rgba(0,0,0,0.3);
+        letter-spacing: -1px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .anuncioscar-count {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 30px;
+        padding: 14px 24px;
+        font-size: 1rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.2);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        z-index: 1;
+    }
+
+    .anuncioscar-count:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+
+    .anuncioscar-count-icon {
+        font-size: 1.3rem;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+
+    .anuncioscar-count-text {
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-right: 2px;
+        letter-spacing: 0.3px;
+    }
+
+    .anuncioscar-count-number {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+        color: #1a365d;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 800;
+        font-size: 1.15rem;
+        min-width: 35px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8);
+        border: 1px solid rgba(255,255,255,0.3);
+        position: relative;
+    }
+
+    .anuncioscar-count-number::before {
+        content: '';
+        position: absolute;
+        top: 1px;
+        left: 1px;
+        right: 1px;
+        height: 50%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.2) 100%);
+        border-radius: 18px 18px 0 0;
+        pointer-events: none;
+    }
+
+    .anuncioscar-list {
+        margin-top: 35px;
+    }
+
+    .anuncioscar-item {
+        background: white;
+        border-radius: 18px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+        margin-bottom: 24px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid rgba(0,0,0,0.04);
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    .anuncioscar-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #ff8800;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .anuncioscar-item:hover {
+        transform: translateX(8px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+
+    .anuncioscar-item:hover::before {
+        opacity: 1;
+    }
+
+    .anuncioscar-image {
+        width: 170px;
+        height: 130px;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748b;
+        font-size: 12px;
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+        border-radius: 15px 0 0 15px;
+    }
+
+    .anuncioscar-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .anuncioscar-item:hover .anuncioscar-image img {
+        transform: scale(1.08);
+    }
+
+    .anuncioscar-no-image {
+        background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+        color: #64748b;
+        font-weight: 600;
+        text-align: center;
+        font-size: 11px;
+        line-height: 1.3;
+    }
+
+    .anuncioscar-content {
+        flex: 1;
+        padding: 25px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .anuncioscar-info {
+        display: flex;
+        align-items: center;
+        gap: 35px;
+        flex: 1;
+    }
+
+    .anuncioscar-main-info {
+        min-width: 220px;
+    }
+
+    .anuncioscar-model {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin: 0 0 8px 0;
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+    }
+
+    .anuncioscar-brand {
+        color: #ff8800;
+        font-weight: 700;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        padding-left: 12px;
+    }
+
+    .anuncioscar-brand::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 4px;
+        background: #4c9ac9;
+        border-radius: 50%;
+    }
+
+    .anuncioscar-details-inline {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+    }
+
+    .anuncioscar-detail-item {
+        text-align: center;
+        position: relative;
+    }
+
+    .anuncioscar-detail-label {
+        font-size: 0.8rem;
+        color: #64748b;
+        font-weight: 600;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        display: block;
+    }
+
+    .anuncioscar-detail-value {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .anuncioscar-price {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #059669;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .anuncioscar-date {
+        font-size: 0.9rem;
+        color: #64748b;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .anuncioscar-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-left: 25px;
+    }
+
+    .anuncioscar-btn {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 0.85rem;
+        cursor: pointer;
+        text-align: center;
+        min-width: 90px;
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 0.3px;
+    }
+
+    .anuncioscar-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.6s ease;
+    }
+
+    .anuncioscar-btn:hover::before {
+        left: 100%;
+    }
+
+    .anuncioscar-btn-edit {
+        background: linear-gradient(135deg, #4c9ac9 0%, #2b77a5 100%);
+        color: white;
+        box-shadow: 0 6px 20px rgba(76, 154, 201, 0.3);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .anuncioscar-btn-edit:hover {
+        background: linear-gradient(135deg, #2b77a5 0%, #1a5882 100%);
+        transform: translateY(-3px);
+        color: white;
+        text-decoration: none;
+        box-shadow: 0 10px 25px rgba(76, 154, 201, 0.4);
+    }
+
+    .anuncioscar-btn-delete {
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        color: white;
+        box-shadow: 0 6px 20px rgba(220, 38, 38, 0.3);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .anuncioscar-btn-delete:hover {
+        background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+        transform: translateY(-3px);
+        color: white;
+        text-decoration: none;
+        box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+    }
+
+    .anuncioscar-empty {
+        text-align: center;
+        padding: 80px 30px;
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border: 2px dashed #cbd5e1;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .anuncioscar-empty::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 50% 50%, rgba(76, 154, 201, 0.05) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    .anuncioscar-empty-icon {
+        font-size: 5rem;
+        color: #cbd5e1;
+        margin-bottom: 25px;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        position: relative;
+        z-index: 1;
+    }
+
+    .anuncioscar-empty-text {
+        font-size: 1.3rem;
+        color: #64748b;
+        margin: 0;
+        font-weight: 600;
+        position: relative;
+        z-index: 1;
+        letter-spacing: -0.3px;
+    }
+
+    @media (max-width: 768px) {
+        .anuncioscar-container {
+            padding: 15px;
+        }
+
+        .anuncioscar-header {
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+        }
+        
+        .anuncioscar-item {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .anuncioscar-image {
+            width: 100%;
+            height: 150px;
+        }
+        
+        .anuncioscar-content {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .anuncioscar-info {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+        
+        .anuncioscar-details-inline {
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .anuncioscar-title {
+            font-size: 2rem;
+        }
+
+        .anuncioscar-count {
+            align-self: center;
+        }
+        
+        .anuncioscar-actions {
+            flex-direction: row;
+            gap: 10px;
+            margin-left: 0;
+        }
+        
+        .anuncioscar-btn {
+            flex: 1;
+        }
+        
+        .anuncioscar-item:hover {
+            transform: none;
+        }
+    }
+</style>
+
+<div class="anuncioscar-container">
+    <div class="anuncioscar-header">
+        <h2 class="anuncioscar-title">Meus Anúncios</h2>
+        <div class="anuncioscar-count">
+            <span class="anuncioscar-count-icon">🚗</span>
+            <span class="anuncioscar-count-text">Total:</span>
+            <span class="anuncioscar-count-number">{{ quantidade }}</span>
+        </div>
+    </div>
+
+    {% if carros %}
+        <div class="anuncioscar-list">
+            {% for carro in carros %}
+            <div class="anuncioscar-item">
+                <div class="anuncioscar-image">
+                    {% if carro.photo1 %}
+                        <img src="{{ carro.photo1.url }}" alt="{{ carro.model }}">
+                    {% else %}
+                        <div class="anuncioscar-no-image">
+                            📷<br>Sem foto
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="anuncioscar-content">
+                    <div class="anuncioscar-info">
+                        <div class="anuncioscar-main-info">
+                            <h3 class="anuncioscar-model">{{ carro.model }}</h3>
+                            <div class="anuncioscar-brand">{{ carro.marca }}</div>
+                        </div>
+                        
+                        <div class="anuncioscar-details-inline">
+                            <div class="anuncioscar-detail-item">
+                                <span class="anuncioscar-detail-label">Ano</span>
+                                <div class="anuncioscar-detail-value">{{ carro.model_year|default:carro.factory_year }}</div>
+                            </div>
+                            <div class="anuncioscar-detail-item">
+                                <span class="anuncioscar-detail-label">Preço</span>
+                                <div class="anuncioscar-price">{{ carro.formatted_value }}</div>
+                            </div>
+                            <div class="anuncioscar-detail-item">
+                                <span class="anuncioscar-detail-label">Criado em</span>
+                                <div class="anuncioscar-date">{{ carro.data_criacao|date:"d/m/Y" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="anuncioscar-actions">
+                        <a href="{% url 'car_update' pk=carro.pk %}" class="anuncioscar-btn anuncioscar-btn-edit">
+                            ✏️ Editar
+                        </a>
+                        <a href="#" class="anuncioscar-btn anuncioscar-btn-delete">🗑️ Excluir</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="anuncioscar-empty">
+            <div class="anuncioscar-empty-icon">🚗</div>
+            <p class="anuncioscar-empty-text">Você ainda não cadastrou nenhum carro.</p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

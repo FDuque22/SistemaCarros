@@ -149,3 +149,14 @@ def inicio(request):
     if request.user.is_authenticated:
         return redirect('cars_list')  # precisa ser o name da URL correto
     return render(request, "inicio.html")
+
+@login_required
+def meus_anuncios(request):
+    # Pega todos os carros cadastrados pelo usuário logado
+    carros = Car.objects.filter(usuario=request.user).order_by('-data_criacao')
+    quantidade = carros.count()
+
+    return render(request, 'meus_anuncios.html', {
+        'carros': carros,
+        'quantidade': quantidade
+    })
