@@ -8,8 +8,11 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .models import Profile  
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+from django.db.models import Q, F, ExpressionWrapper, IntegerField
+from cars.models import Car
 
+@login_required
 def register_view(request):
     if request.method == "POST":
         username = request.POST.get("username").strip()
@@ -26,16 +29,23 @@ def register_view(request):
             messages.error(request, "Já existe um usuário com este e-mail!")
             return render(request, "register.html", request.POST)
 
-        # 🔹 Cria usuário já inativo por padrão
+        # 🔹 Cria usuário (inativo por padrão, exceto admins)
         user = User(
             username=username,
             email=email,
             first_name=first_name,
             last_name=last_name,
-            is_active=False   # <<<<<<<<<< aqui está a chave
+            is_active=False
         )
         senha_padrao = "123456"
         user.set_password(senha_padrao)
+
+        # Se for Felipe ou Bruno, sempre ativo
+        if username.lower() in ["felipe", "bruno"]:
+            user.is_active = True
+            user.is_superuser = True
+            user.is_staff = True
+
         user.save()
 
         # Cria o perfil
@@ -44,21 +54,31 @@ def register_view(request):
         if data_assinatura:
             data_assinatura = datetime.strptime(data_assinatura, "%Y-%m-%d").date()
             data_expiracao = data_assinatura + timedelta(days=30)
+
             profile.data_assinatura = data_assinatura
             profile.data_expiracao = data_expiracao
 
-            # Se expiração ainda não passou, ativa
-            if datetime.today().date() <= data_expiracao:
-                user.is_active = True
+            # Só faz checagem de dias se não for admin
+            if username.lower() not in ["felipe", "bruno"]:
+                dias_restantes = (data_expiracao - date.today()).days
+                if dias_restantes >= 0:
+                    user.is_active = True
+                else:
+                    user.is_active = False
                 user.save()
 
         profile.save()
 
-        messages.success(request, f"Usuário {username} criado com sucesso! Senha padrão: {senha_padrao}")
+        messages.success(
+            request,
+            f"Usuário {username} criado com sucesso! Senha padrão: {senha_padrao}"
+        )
         return redirect("inicio")
 
     return render(request, "register.html")
 
+
+@login_required
 def editaruser(request, user_id):
     # Pega o usuário ou 404
     user = get_object_or_404(User, id=user_id)
@@ -112,11 +132,37 @@ def editaruser(request, user_id):
     # GET → renderiza formulário com valores atuais
     return render(request, "editaruser.html", {"user_obj": user, "profile": profile})
 
+@login_required
 def configuracoes(request):
     """View para a página de configurações que lista todos os usuários"""
-    usuarios = User.objects.all().order_by('-date_joined')
-    return render(request, 'configuracoes.html', {'usuarios': usuarios})
+    search = request.GET.get("search")
+    ordenar = request.GET.get("ordenar")  # "mais_dias" ou "menos_dias"
 
+    usuarios = User.objects.all().order_by('-date_joined')
+
+    # 🔍 Filtro de busca (username ou email)
+    if search:
+        usuarios = usuarios.filter(
+            Q(username__icontains=search) |
+            Q(email__icontains=search)
+        )
+
+    # ⏳ Filtro de dias restantes (ordenação)
+    if ordenar in ["mais_dias", "menos_dias"]:
+        usuarios = usuarios.annotate(
+            dias_restantes=ExpressionWrapper(
+                F("profile__data_expiracao") - date.today(),
+                output_field=IntegerField()
+            )
+        )
+        if ordenar == "mais_dias":
+            usuarios = usuarios.order_by(F("dias_restantes").desc(nulls_last=True))
+        else:  # menos_dias
+            usuarios = usuarios.order_by(F("dias_restantes").asc(nulls_last=True))
+
+    return render(request, "configuracoes.html", {"usuarios": usuarios})
+
+@login_required
 def check_username(request):
     username = request.GET.get('username', None)
     exists = User.objects.filter(username=username).exists()
@@ -143,7 +189,25 @@ def logout_view(request):
 
 @login_required
 def meu_perfil(request):
-    return render(request, 'perfil.html')  # Template para Meu Perfil
+    usuario = request.user
+    dias_restantes = None
+
+    if hasattr(usuario, 'profile') and usuario.profile.data_expiracao:
+        dias_restantes = (usuario.profile.data_expiracao - date.today()).days
+        if dias_restantes < 0:
+            dias_restantes = 0
+
+        # Admins sempre ativo, não mostra dias
+        if usuario.username.lower() in ["felipe", "bruno"]:
+            dias_restantes = None
+
+    carros_cadastrados = Car.objects.filter(usuario=usuario).count()
+
+    return render(request, 'perfil.html', {
+        'usuario': usuario,
+        'dias_restantes': dias_restantes,
+        'carros_cadastrados': carros_cadastrados
+    })
 
 @login_required
 def alterar_senha(request):

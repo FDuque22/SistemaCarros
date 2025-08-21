@@ -466,19 +466,18 @@
   <div class="container">
     <div class="carslist-hero-content">
       <h1 class="carslist-hero-title">Encontre seu Veículo Aqui</h1>
-      <p class="carslist-hero-subtitle">Mais de 50 veículos revisados e com garantia</p>
       
       <div class="carslist-search-container">
         <form method="GET" action="{% url 'cars_list' %}" class="carslist-search-form">
-          <input type="text" name="search" class="carslist-search-input" 
-                 placeholder="Digite marca, modelo ou ano..." 
-                 value="{{ request.GET.search }}">
-          <button type="submit" class="carslist-search-btn">
-            <i class="fas fa-search"></i>
-            Buscar
-          </button>
+            <input type="text" name="search" class="carslist-search-input" 
+                   placeholder="Digite marca, modelo ou ano..." 
+                   value="{{ search }}">
+            <button type="submit" class="carslist-search-btn">
+                <i class="fas fa-search"></i>
+                Buscar
+            </button>
         </form>
-      </div>
+    </div>
     </div>
   </div>
 </div>
@@ -520,24 +519,24 @@
   </div> -->
 
   <!-- Filters Section -->
-  <div class="carslist-filters-container slide-in-left">
-    <a href="{% url 'cars_list' %}" class="carslist-filter-btn {% if not request.GET.search %}active{% endif %}">
-      <i class="fas fa-th-large"></i>
-      Todos os Veículos
-    </a>
-    <a href="?search=sedan" class="carslist-filter-btn">
-      <i class="fas fa-car"></i>
-      Sedans
-    </a>
-    <a href="?search=suv" class="carslist-filter-btn">
-      <i class="fas fa-truck"></i>
-      SUVs
-    </a>
-    <a href="?search=hatch" class="carslist-filter-btn">
-      <i class="fas fa-car-side"></i>
-      Hatches
-    </a>
-  </div>
+<div class="carslist-filters-container slide-in-left">
+  <a href="{% url 'cars_list' %}" class="carslist-filter-btn {% if not tipo %}active{% endif %}">
+    <i class="fas fa-th-large"></i>
+    Todos os Veículos
+  </a>
+  <a href="?tipo=Sedan" class="carslist-filter-btn {% if tipo == 'Sedan' %}active{% endif %}">
+    <i class="fas fa-car"></i>
+    Sedans
+  </a>
+  <a href="?tipo=SUV" class="carslist-filter-btn {% if tipo == 'SUV' %}active{% endif %}">
+    <i class="fas fa-truck"></i>
+    SUVs
+  </a>
+  <a href="?tipo=Hatch" class="carslist-filter-btn {% if tipo == 'Hatch' %}active{% endif %}">
+    <i class="fas fa-car-side"></i>
+    Hatches
+  </a>
+</div>
 
   <!-- Featured Section Title -->
   <div class="carslist-featured-section slide-in-right">
@@ -567,7 +566,7 @@
                 Destaque
               </div>
             {% endif %}
-          </div>
+          </div> 
           
           <div class="carslist-car-info">
             <h3 class="carslist-car-brand-model">{{ car.marca|capfirst }} {{ car.model }}</h3>

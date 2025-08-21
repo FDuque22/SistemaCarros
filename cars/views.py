@@ -9,25 +9,39 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.contrib import messages
 from urllib.parse import quote
 from django.http import JsonResponse
+from django.shortcuts import render
+from django.db.models import Q
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 # Classe para a visualização de carros
 class CarsView(View):
-
     def get(self, request):
-        cars = Car.objects.filter(active=True).order_by('-data_criacao')
-        search = request.GET.get('search')
+        cars = Car.objects.all().order_by('-data_criacao')
+
+        search = request.GET.get('search', '').strip()
+        tipo = request.GET.get('tipo', '').strip()  # para filtro por tipo separado
 
         if search:
-            cars_by_model = Car.objects.filter(model__icontains=search, active=True)
-            cars_by_brand = Car.objects.filter(brand__name__icontains=search, active=True)
-            cars = cars_by_model | cars_by_brand
+            cars = cars.filter(
+                Q(marca__icontains=search) |
+                Q(brand__name__icontains=search) |
+                Q(model__icontains=search)
+            )
+
+        if tipo:
+            cars = cars.filter(tipo__iexact=tipo)
 
         return render(
             request,
             'cars.html',
-            {'cars': cars}
+            {
+                'cars': cars,
+                'search': search,
+                'tipo': tipo
+            }
         )
 
+@method_decorator(login_required(login_url='login'), name='dispatch')
 # Classe para detalhes de um carro
 class CarDetailView(DetailView):
     model = Car
@@ -77,6 +91,7 @@ class CarDeleteView(DeleteView):
         return get_object_or_404(Car, pk=self.kwargs['pk'])
 
 # Classe para o formulário de interesse em um carro
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class InterestFormView(View):
     def get(self, request, pk):
         car = get_object_or_404(Car, id=pk)
@@ -109,6 +124,7 @@ class InterestFormView(View):
         return render(request, 'car_interest.html', {'form': form, 'car': car})
 
 # Classe para o contato
+@method_decorator(login_required(login_url='login'), name='dispatch')
 class ContatoView(View):
     def get(self, request):
         form = ContatoForm()

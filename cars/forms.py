@@ -12,6 +12,7 @@ class CarModelForm(forms.ModelForm):
             "factory_year": forms.NumberInput(attrs={"class": "carnew-form-input"}),
             "model_year": forms.NumberInput(attrs={"class": "carnew-form-input"}),
             "km": forms.NumberInput(attrs={"class": "carnew-form-input"}),
+            "tipo": forms.Select(attrs={"class": "carnew-form-input"}),
             "fuel": forms.Select(attrs={"class": "carnew-form-input"}),
             "exchange": forms.Select(attrs={"class": "carnew-form-input"}),
             "color": forms.TextInput(attrs={"class": "carnew-form-input"}),

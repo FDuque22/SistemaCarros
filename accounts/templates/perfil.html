@@ -324,12 +324,20 @@
 
             <div class="carperfil-stats-container">
                 <div class="carperfil-stat-card">
-                    <div class="carperfil-stat-number">24</div>
+                    <div class="carperfil-stat-number">
+                        {% if dias_restantes != None %}
+                            {{ dias_restantes }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </div>
                     <div class="carperfil-stat-label">Dias Ativo</div>
                 </div>
                 <div class="carperfil-stat-card">
-                    <div class="carperfil-stat-number">12</div>
-                    <div class="carperfil-stat-label">Projetos</div>
+                    <div class="carperfil-stat-number">
+                        {{ carros_cadastrados }}
+                    </div>
+                    <div class="carperfil-stat-label">Anuncios</div>
                 </div>
                 <div class="carperfil-stat-card">
                     <div class="carperfil-stat-number">98%</div>
@@ -352,8 +360,14 @@
                     <span class="carperfil-info-value">Janeiro 2024</span>
                 </div>
                 <div class="carperfil-info-item">
-                    <span class="carperfil-info-label">Status:</span>
-                    <span class="carperfil-info-value">Ativo</span>
+                    <span class="carperfil-info-label">Assinatura:</span>
+                    <span class="carperfil-info-value">
+                        {% if usuario.is_active %}
+                            Ativo
+                        {% else %}
+                            Inativo
+                        {% endif %}
+                    </span>
                 </div>
             </div>
 

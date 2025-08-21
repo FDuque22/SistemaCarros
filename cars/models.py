@@ -92,7 +92,6 @@ class Car(models.Model):
     photo4 = models.ImageField(upload_to='cars/', blank=True, null=True)
     photo5 = models.ImageField(upload_to='cars/', blank=True, null=True)
     photo6 = models.ImageField(upload_to='cars/', blank=True, null=True)
-    active = models.BooleanField(default=False)
     bio = models.TextField(blank=True, null=True)
     data_criacao = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 

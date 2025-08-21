@@ -5,7 +5,7 @@ from cars.models import Car, CarInventory
 
 
 def car_inventory_update():
-    cars_count = Car.objects.filter(active=True).count()
+    cars_count = Car.objects.count()
     cars_value = Car.objects.aggregate(
         total_value=Sum('value')
     )['total_value']

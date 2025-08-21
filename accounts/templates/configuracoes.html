@@ -40,6 +40,26 @@
                     <i class="fas fa-user-plus"></i> Novo Usuário
                 </a>
             </div>
+
+            <form method="get" class="filtro-container">
+                <input type="text" name="search" placeholder="Buscar usuário ou e-mail"
+                       value="{{ request.GET.search }}">
+            
+                <select name="ordenar">
+                    <option value="">-- Ordenar --</option>
+                    <option value="mais_dias" {% if request.GET.ordenar == "mais_dias" %}selected{% endif %}>
+                        Mais dias de assinatura
+                    </option>
+                    <option value="menos_dias" {% if request.GET.ordenar == "menos_dias" %}selected{% endif %}>
+                        Menos dias de assinatura
+                    </option>
+                </select>
+            
+                <button type="submit">Filtrar</button>
+                <a href="{% url 'configuracoes' %}">Limpar</a>
+            </form>
+            
+
             <div class="config-card-content">
                 {% if usuarios %}
                 <div class="config-table-container">
@@ -52,6 +72,7 @@
                                 <th>Status</th>
                                 <th>Data da Assinatura</th>
                                 <th>Data de Expiração</th>
+                                <th>Dias Restantes</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -62,14 +83,38 @@
                                 <td>{{ usuario.get_full_name|default:"-" }}</td>
                                 <td>{{ usuario.email|default:"-" }}</td>
                                 <td>
-                                    {% if usuario.is_active %}
+                                    {% if usuario.username|lower == "felipe" or usuario.username|lower == "bruno" %}
                                         <span class="config-badge config-badge-success">Ativo</span>
                                     {% else %}
-                                        <span class="config-badge config-badge-danger">Inativo</span>
+                                        {% if usuario.is_active %}
+                                            <span class="config-badge config-badge-success">Ativo</span>
+                                        {% else %}
+                                            <span class="config-badge config-badge-danger">Inativo</span>
+                                        {% endif %}
                                     {% endif %}
                                 </td>
                                 <td>{{ usuario.profile.data_assinatura|date:"d/m/Y"|default:"-" }}</td>
                                 <td>{{ usuario.profile.data_expiracao|date:"d/m/Y"|default:"-" }}</td>
+                                <td>
+                                    {% if usuario.username|lower == "felipe" or usuario.username|lower == "bruno" %}
+                                        <span class="config-badge config-badge-success">Admin</span>
+                                    {% else %}
+                                        {% if usuario.profile.dias_restantes != None %}
+                                            {% if usuario.profile.dias_restantes >= 0 %}
+                                                <span class="config-badge config-badge-info">
+                                                    {{ usuario.profile.dias_restantes }} dias
+                                                </span>
+                                            {% else %}
+                                                <span class="config-badge config-badge-warning">
+                                                    Expirado há {{ usuario.profile.dias_expirados }} dias
+                                                </span>
+                                            {% endif %}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                
                                 <td class="config-actions">
                                     <a href="{% url 'edit_user' usuario.id %}" class="config-btn config-btn-sm config-btn-info" title="Editar">
                                         <i class="fas fa-edit"></i>
@@ -154,6 +199,69 @@
 
 <style>
 /* Estilos para a página de configurações */
+
+/* Container do filtro */
+.filtro-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Campos do filtro */
+.filtro-container input[type="text"],
+.filtro-container select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    min-width: 200px;
+    transition: border-color 0.3s ease;
+}
+
+.filtro-container input[type="text"]:focus,
+.filtro-container select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Botões */
+.filtro-container button,
+.filtro-container a {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.filtro-container button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+}
+
+.filtro-container button:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+.filtro-container a {
+    background: #6c757d;
+    color: #fff;
+}
+
+.filtro-container a:hover {
+    background: #5a6268;
+    transform: scale(1.05);
+}
+
 .config-container {
     max-width: 1200px;
     margin: 0 auto;

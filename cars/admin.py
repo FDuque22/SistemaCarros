@@ -8,7 +8,7 @@ class BrandAdmin(admin.ModelAdmin):
 
 # Classe de administração para Car
 class CarAdmin(admin.ModelAdmin):
-    list_display = ('model', 'brand', 'factory_year', 'model_year', 'plate', 'value', 'active',)
+    list_display = ('model', 'brand', 'factory_year', 'model_year', 'plate', 'value',)
     search_fields = ('model', 'brand__name',)  # Permite buscar carros pelo modelo e pela marca
 
 # Classe de administração para CarInterest
